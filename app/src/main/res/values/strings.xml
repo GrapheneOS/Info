@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Info</string>
+    <string name="release_notes">Release Notes</string>
+    <string name="community">Community</string>
+    <string name="donate">Donate</string>
+    <string name="github_sponsors">GitHub Sponsors</string>
+    <string name="cryptocurrencies">Cryptocurrencies</string>
+    <string name="paypal">PayPal</string>
+    <string name="bank_transfers">Bank Transfers</string>
+    <string name="bitcoin">Bitcoin</string>
+    <string name="monero">Monero</string>
+    <string name="zcash">Zcash</string>
+    <string name="ethereum">Ethereum</string>
+    <string name="cardano">Cardano</string>
+    <string name="litecoin">Litecoin</string>
+</resources>
