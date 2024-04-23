@@ -58,7 +58,9 @@ import app.grapheneos.info.ui.donate.cryptocurrency.MoneroScreen
 import app.grapheneos.info.ui.donate.cryptocurrency.ZcashScreen
 import app.grapheneos.info.ui.releasenotes.ReleaseNotesScreen
 import app.grapheneos.info.ui.releasenotes.ReleaseNotesViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 enum class InfoAppScreens(@StringRes val title: Int) {
     ReleaseNotes(title = R.string.release_notes),
@@ -91,7 +93,9 @@ fun InfoApp() {
 
     val releaseNotesUiState = releaseNotesViewModel.uiState.collectAsState()
 
-    val releaseNotesLazyList = rememberLazyListState()
+    val releaseNotesLazyListState = rememberLazyListState()
+
+    val releaseNotesLazyListStateScope = rememberCoroutineScope()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -210,10 +214,17 @@ fun InfoApp() {
                             useCaches = useCaches,
                             showSnackbarError = {
                                 snackbarHostState.showSnackbar(it)
-                            }
+                            },
+                            {
+                                releaseNotesLazyListStateScope.launch {
+                                    withContext(Dispatchers.Main) {
+                                        releaseNotesLazyListState.animateScrollToItem(it)
+                                    }
+                                }
+                            },
                         )
                     },
-                    releaseNotesLazyList
+                    releaseNotesLazyListState,
                 )
             }
             composable(

@@ -1,8 +1,8 @@
 package app.grapheneos.info.ui.releasenotes
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,14 +18,15 @@ import javax.net.ssl.HttpsURLConnection
 
 const val TAG = "ReleaseNotesViewModel"
 
-class ReleaseNotesViewModel(application: Application) : AndroidViewModel(application) {
+class ReleaseNotesViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ReleaseNotesUiState())
+    private val _uiState = MutableStateFlow(ReleaseNotesUiState(savedStateHandle))
     val uiState: StateFlow<ReleaseNotesUiState> = _uiState.asStateFlow()
 
     fun updateReleaseNotes(
         useCaches: Boolean,
         showSnackbarError: suspend (message: String) -> Unit,
+        scrollReleaseNotesLazyListTo: (scrollTo: Int) -> Unit,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -51,6 +52,20 @@ class ReleaseNotesViewModel(application: Application) : AndroidViewModel(applica
                         _uiState.value.entries.clear()
                         withContext(Dispatchers.Main) {
                             _uiState.value.entries.addAll(entries)
+                        }
+                    }
+
+                    if (!uiState.value.didInitialScroll) {
+                        val scrollTo = uiState.value.entries.indexOfFirst {
+                            val title = "<title>(.*?)</title>".toRegex()
+                                .find(it)?.groups?.get(1)?.value
+
+                            android.os.Build.VERSION.INCREMENTAL == title
+                        }
+
+                        if (scrollTo != -1) {
+                            _uiState.value.didInitialScroll = true
+                            scrollReleaseNotesLazyListTo(scrollTo)
                         }
                     }
                 } catch (e: SocketTimeoutException) {
