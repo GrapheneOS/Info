@@ -6,8 +6,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -34,11 +32,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -63,7 +59,6 @@ import app.grapheneos.info.ui.donate.cryptocurrency.ZcashScreen
 import app.grapheneos.info.ui.releasenotes.ReleaseNotesScreen
 import app.grapheneos.info.ui.releasenotes.ReleaseNotesViewModel
 import kotlinx.coroutines.launch
-import kotlin.math.absoluteValue
 
 enum class InfoAppScreens(@StringRes val title: Int) {
     ReleaseNotes(title = R.string.release_notes),
@@ -108,7 +103,7 @@ fun InfoApp() {
         currentScreen
     }
 
-    val topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val topAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
         modifier = Modifier
@@ -132,17 +127,6 @@ fun InfoApp() {
                         }
                     }
                 },
-                windowInsets =
-                WindowInsets(
-                    top = ((16f + TopAppBarDefaults.windowInsets.asPaddingValues()
-                        .calculateTopPadding().value) * ((topAppBarScrollBehavior.state.heightOffset / topAppBarScrollBehavior.state.heightOffsetLimit) - 1f).absoluteValue).dp,
-                    bottom = ((16f + TopAppBarDefaults.windowInsets.asPaddingValues()
-                        .calculateBottomPadding().value) * ((topAppBarScrollBehavior.state.heightOffset / topAppBarScrollBehavior.state.heightOffsetLimit) - 1f).absoluteValue).dp,
-                    left = TopAppBarDefaults.windowInsets.asPaddingValues()
-                        .calculateLeftPadding(LocalLayoutDirection.current),
-                    right = TopAppBarDefaults.windowInsets.asPaddingValues()
-                        .calculateRightPadding(LocalLayoutDirection.current)
-                ),
                 scrollBehavior = topAppBarScrollBehavior
             )
         },
@@ -259,7 +243,6 @@ fun InfoApp() {
                 route = InfoAppScreens.Donate.name,
                 startDestination = InfoAppScreens.DonateStart.name,
                 enterTransition = {
-                    topAppBarScrollBehavior.state.heightOffset = 0f
                     if (getInitialStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
                         slideIn { IntOffset(it.width, 0) }
                     } else if (getInitialStateNavBarRoute(initialState) == InfoAppScreens.Community) {
