@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             val httpCacheSize = (10 * 1024 * 1024).toLong() // 10 MiB
             HttpResponseCache.install(httpCacheDir, httpCacheSize)
         } catch (e: IOException) {
-            Log.e(TAG, "HTTP response cache installation failed: $e")
+            Log.e(TAG, "HTTP response cache installation failed", e)
         }
 
         setContent {

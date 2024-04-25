@@ -54,31 +54,31 @@ class ReleaseNotesViewModel(application: Application) : AndroidViewModel(applica
                         }
                     }
                 } catch (e: SocketTimeoutException) {
-                    val errorMessage = "Socket Timeout Exception: $e"
-                    Log.e(TAG, errorMessage)
+                    val errorMessage = "Socket Timeout Exception"
+                    Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
-                        showSnackbarError(errorMessage)
+                        showSnackbarError("$errorMessage: $e")
                     }
                 } catch (e: IOException) {
-                    val errorMessage = "Failed to retrieve latest release notes: $e"
-                    Log.e(TAG, errorMessage)
+                    val errorMessage = "Failed to retrieve latest release notes"
+                    Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
-                        showSnackbarError(errorMessage)
+                        showSnackbarError("$errorMessage: $e")
                     }
                 } catch (e: UnknownServiceException) {
-                    val errorMessage = "Unknown Service Exception: $e"
-                    Log.e(TAG, "Unknown Service Exception: $e")
+                    val errorMessage = "Unknown Service Exception"
+                    Log.e(TAG, "Unknown Service Exception", e)
                     viewModelScope.launch {
-                        showSnackbarError(errorMessage)
+                        showSnackbarError("$errorMessage: $e")
                     }
                 } finally {
                     connection.disconnect()
                 }
             } catch (e: IOException) {
-                val errorMessage = "Failed to create HttpsURLConnection: $e"
-                Log.e(TAG, errorMessage)
+                val errorMessage = "Failed to create HttpsURLConnection"
+                Log.e(TAG, errorMessage, e)
                 viewModelScope.launch {
-                    showSnackbarError(errorMessage)
+                    showSnackbarError("$errorMessage: $e")
                 }
             }
         }
