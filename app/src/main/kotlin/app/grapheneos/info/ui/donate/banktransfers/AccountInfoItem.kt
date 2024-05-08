@@ -70,30 +70,19 @@ fun AccountInfoItem(
 private fun AccountInfoItemPreview() {
     MaterialTheme {
         AccountInfoItem(
-            title = "EU/SEPA (EUR)"
+            title = "Title"
         ) {
             AccountInfoItemEntry(
                 term = "Account holder",
-                description = "GrapheneOS Foundation"
+                description = "Example"
             )
             AccountInfoItemEntry(
-                term = "IBAN",
-                description = "BE20 9677 1140 7056"
+                term = "Special Numbers",
+                description = "39438293483924"
             )
             AccountInfoItemEntry(
-                term = "BIC",
-                description = "TRWIBEB1XXX"
-            )
-            AccountInfoItemEntry(
-                term = "Bank name",
-                description = "Wise Europe SA"
-            )
-            AccountInfoItemEntry(
-                term = "Wise and Bank address",
-                description = "Rue du Trône 100, 3rd floor\n" +
-                        "Brussels\n" +
-                        "1050\n" +
-                        "Belgium"
+                term = "Etc",
+                description = "another description"
             )
         }
     }

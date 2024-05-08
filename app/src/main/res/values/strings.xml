@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Info</string>
     <string name="release_notes">Release Notes</string>
     <string name="community">Community</string>
@@ -13,4 +13,144 @@
     <string name="ethereum">Ethereum</string>
     <string name="cardano">Cardano</string>
     <string name="litecoin">Litecoin</string>
+    <string name="local_bank_transfer_to_wise">Local Bank Transfer to Wise</string>
+    <string name="eu_sepa_eur">EU/SEPA (EUR)</string>
+    <string name="account_holder">Account holder</string>
+    <string name="grapheneos_foundation">GrapheneOS Foundation</string>
+    <string name="iban">IBAN</string>
+    <string name="eu_sepa_eur_iban">BE20 9677 1140 7056</string>
+    <string name="bic">BIC</string>
+    <string name="eu_sepa_eur_bic" tools:ignore="Typos">TRWIBEB1XXX</string>
+    <string name="bank_name">Bank name</string>
+    <string name="eu_sepa_eur_bank_name">Wise Europe SA</string>
+    <string name="wise_and_bank_address">Wise and Bank address</string>
+    <string name="eu_sepa_eur_wise_and_bank_address">Rue du Trône 100, 3rd floor\nBrussels\n1050\nBelgium</string>
+    <string name="uk_gbp">UK (GBP)</string>
+    <string name="account_number">Account number</string>
+    <string name="uk_gbp_account_number">49883070</string>
+    <string name="uk_gbp_bic" tools:ignore="Typos">TRWIBEB1XXX</string>
+    <string name="uk_gbp_iban">GB68 TRWI 2314 7049 8830 70</string>
+    <string name="sort_code">Sort code</string>
+    <string name="uk_gbp_sort_code" tools:ignore="TypographyDashes">23-14-70</string>
+    <string name="uk_gbp_bank_name">Wise Payments Limited</string>
+    <string name="uk_gbp_wise_and_bank_address">56 Shoreditch High Street\nLondon\nE1 6JJ\nUnited Kingdom</string>
+    <string name="us_usd">US (USD)</string>
+    <string name="us_usd_account_number">8313560023</string>
+    <string name="routing_number">Routing number</string>
+    <string name="us_usd_routing_number">026073150</string>
+    <string name="account_type">Account type</string>
+    <string name="checking">Checking</string>
+    <string name="wise_address">Wise address</string>
+    <string name="us_usd_wise_address">30 W. 26th Street, Sixth Floor\nNew York NY\n10010\nUnited States</string>
+    <string name="us_usd_bank_name">Community Federal Savings Bank</string>
+    <string name="bank_address">Bank address</string>
+    <string name="us_usd_bank_address" tools:ignore="TypographyDashes">89-16 Jamaica Ave\nWoodhaven NY\n11421\nUnited States</string>
+    <string name="australia_aud">Australia (AUD)</string>
+    <string name="australia_aud_account_number">213524417</string>
+    <string name="bsb_code">BSB code</string>
+    <string name="australia_aud_bsb_code" tools:ignore="TypographyDashes">774-001</string>
+    <string name="australia_aud_bank_name">Wise Australia Pty Ltd</string>
+    <string name="australia_aud_wise_address">Suite 1, Level 11, 66 Goulburn Street\nSydney\n2000\nAustralia</string>
+    <string name="new_zealand_nzd">New Zealand (NZD)</string>
+    <string name="new_zealand_nzd_account_number" tools:ignore="TypographyDashes">04-2021-0151878-36</string>
+    <string name="new_zealand_nzd_wise_address">56 Shoreditch High Street\nLondon\nE1 6JJ\nUnited Kingdom</string>
+    <string name="new_zealand_nzd_bank_name">JPMorgan Chase</string>
+    <string name="new_zealand_nzd_bank_address">Head Office, Pwc Tower\nAuckland\n1010\nNew Zealand</string>
+    <string name="canada_cad">Canada (CAD)</string>
+    <string name="canada_cad_account_number">200110745303</string>
+    <string name="transit_number">Transit number</string>
+    <string name="canada_cad_transit_number">16001</string>
+    <string name="institution_number">Institution number</string>
+    <string name="canada_cad_institution_number">621</string>
+    <string name="canada_cad_wise_address">99 Bank Street, Suite 1420\nOttawa ON\nK1P 1H4\nCanada</string>
+    <string name="canada_cad_bank_name">Peoples Trust</string>
+    <string name="canada_cad_bank_address">595 Burrard Street\nVancouver BC\nV7X 1L7\nCanada</string>
+    <string name="hungary_huf">Hungary (HUF)</string>
+    <string name="hungary_huf_account_number" tools:ignore="TypographyDashes">12600016-11020392-99827322</string>
+    <string name="hungary_huf_bank_name">Wise Europe SA</string>
+    <string name="hungary_huf_wise_and_bank_address">Rue du Trône 100, 3rd floor\nBrussels\n1050\nBelgium</string>
+    <string name="turkey_try">Turkey (TRY)</string>
+    <string name="turkey_try_iban">TR43 0010 3000 0000 0057 4294 70</string>
+    <string name="turkey_try_wise_address">56 Shoreditch High Street, London, E1 6JJ, United Kingdom</string>
+    <string name="turkey_try_bank_name">Fibabanka A.Ş.</string>
+    <string name="turkey_try_bank_address">Büyükdere Cad. 129, Esentepe Mah., Sisli</string>
+    <string name="interac_e_transfer">Interac e-Transfer</string>
+    <string name="interac_e_transfer_info_part_1">"If you have a Canadian bank account, you can send Canadian dollar
+        donations to the non-profit GrapheneOS Foundation via Interac e-Transfer to "
+    </string>
+    <string name="contact_grapheneos_org">contact@grapheneos.org</string>
+    <string name="interac_e_transfer_info_part_2">. The email address has Interac e-Transfer Autodeposit support enabled
+        so no security question is necessary. If your bank doesn\'t support Autodeposit, set the answer to the security
+        question to GrapheneOS.
+    </string>
+    <string name="navigate_up_button_description">Navigate up</string>
+    <string name="donate_start_info_part_1">GrapheneOS is an open source project supported via donations from
+        individuals, companies and other organizations.
+    </string>
+    <string name="donate_start_info_part_2">Donations are used for paying developers, purchasing hardware
+        (workstations, test devices, debugging cables/boards, etc.), paying for infrastructure (domains,
+        virtual/dedicated servers) and paying legal fees.
+    </string>
+    <string name="donate_the_way_you_want">Donate the way you want</string>
+    <string name="donate_start_info_part_3">GrapheneOS offers the following ways to donate.\nChoose the one you
+        prefer.
+    </string>
+    <string name="hiring_footer_part_1">"Contribute in other ways?\nCheck out our "</string>
+    <string name="https_grapheneos_org_hiring">https://grapheneos.org/hiring</string>
+    <string name="hiring_footer_part_2">hiring page</string>
+    <string name="hiring_footer_part_3">.</string>
+    <string name="chat">Chat</string>
+    <string name="community_screen_chat_rooms_description">Our chat rooms are bridged across Discord, Telegram and Matrix so
+        you can choose your preferred platform.
+    </string>
+    <string name="discord">Discord</string>
+    <string name="discord_invite_link">https://discord.com/invite/grapheneos</string>
+    <string name="telegram">Telegram</string>
+    <string name="telegram_invite_link">https://t.me/GrapheneOS</string>
+    <string name="matrix">Matrix</string>
+    <string name="matrix_invite_link">https://matrix.to/#/%23community:grapheneos.org</string>
+    <string name="forum">Forum</string>
+    <string name="forum_description">We have an official forum for longer form posts, which is publicly accessible and
+        easier to search.
+    </string>
+    <string name="grapheneos_discussion_forum">GrapheneOS Discussion Forum</string>
+    <string name="grapheneos_forum_link">https://discuss.grapheneos.org</string>
+    <string name="social_media">Social Media</string>
+    <string name="social_media_accounts_description">The project\'s official social media accounts are used for official
+        announcements.
+    </string>
+    <string name="twitter">Twitter</string>
+    <string name="twitter_account_link">https://twitter.com/GrapheneOS</string>
+    <string name="mastodon">Mastodon</string>
+    <string name="mastadon_account_link">https://grapheneos.social/@GrapheneOS</string>
+    <string name="bluesky">Bluesky</string>
+    <string name="bluesky_account_link">https://bsky.app/profile/grapheneos.org</string>
+    <string name="github_sponsors_link">https://github.com/sponsors/thestinger</string>
+    <string name="github_sponsors_description_part_1">"GrapheneOS can be sponsored with recurring or one-time donations
+        via credit cards through "
+    </string>
+    <string name="github_sponsors_description_part_2">. There are standard tiers from $5 to $5,000 or you can donate a
+        custom amount.
+    </string>
+    <string name="paypal_info_description_part_1">PayPal can be used to make one-time, monthly or yearly donations to the
+        non-profit GrapheneOS Foundation.
+    </string>
+    <string name="paypal_info_description_part_2">If possible, use the donation link for your currency. If it\'s not listed,
+        please use the CAD donation link.
+    </string>
+    <string name="donation_links">Donation links</string>
+    <string name="canadian_dollar_cad">Canadian Dollar (CAD)</string>
+    <string name="canadian_dollar_cad_paypal_link">https://www.paypal.com/donate/?hosted_button_id=T8KRPYKU5QVNE</string>
+    <string name="united_states_dollar_usd">United States dollar (USD)</string>
+    <string name="united_states_dollar_usd_paypal_link">https://www.paypal.com/donate/?hosted_button_id=2S2BP8V4E7PXU
+    </string>
+    <string name="euro_eur">Euro (EUR)</string>
+    <string name="euro_eur_paypal_link">https://www.paypal.com/donate/?hosted_button_id=5SNPWEDS53HW4</string>
+    <string name="british_pound_gbp">British pound (GBP)</string>
+    <string name="british_pound_gbp_paypal_link">https://www.paypal.com/donate/?hosted_button_id=N498QNB7NPKU8</string>
+    <string name="paypal_fee_description">PayPal charges a base fee of 30 cents and 2.9% of the donation amount within
+        Canada. There\'s an additional 0.8% fee for donations from the US and 1% for other countries. Currency
+        conversion adds an additional 4% fee as opposed to the usual PayPal conversion fee of 3%.
+    </string>
+    <string name="link_card_item_on_click_label">open link</string>
 </resources>

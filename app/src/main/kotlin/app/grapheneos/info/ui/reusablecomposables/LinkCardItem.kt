@@ -16,8 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import app.grapheneos.info.R
 
 @Composable
 fun LinkCardItem(painter: Painter, name: String, tint: Boolean, link: String) {
@@ -25,7 +27,7 @@ fun LinkCardItem(painter: Painter, name: String, tint: Boolean, link: String) {
 
     ElevatedCard(
         Modifier.clickable(
-            onClickLabel = "open link",
+            onClickLabel = stringResource(R.string.link_card_item_on_click_label),
             role = Role.Button,
             onClick = { localUriHandler.openUri(link) }
         )
@@ -56,7 +58,7 @@ fun LinkCardItem(imageVector: ImageVector, name: String, tint: Boolean, link: St
 
     ElevatedCard(
         Modifier.clickable(
-            onClickLabel = "open link",
+            onClickLabel = stringResource(R.string.link_card_item_on_click_label),
             role = Role.Button,
             onClick = { localUriHandler.openUri(link) }
         )

@@ -7,12 +7,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
+import app.grapheneos.info.R
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 
 @Composable
@@ -23,272 +25,242 @@ fun BankTransfersScreen() {
     ) {
         item {
             Text(
-                "Local Bank Transfer to Wise",
+                stringResource(R.string.local_bank_transfer_to_wise),
                 modifier = Modifier.padding(top = 16.dp),
                 style = MaterialTheme.typography.titleLarge
             )
         }
         item {
             AccountInfoItem(
-                title = "EU/SEPA (EUR)"
+                title = stringResource(R.string.eu_sepa_eur)
             ) {
                 AccountInfoItemEntry(
-                    term = "Account holder",
-                    description = "GrapheneOS Foundation"
+                    term = stringResource(R.string.account_holder),
+                    description = stringResource(R.string.grapheneos_foundation)
                 )
                 AccountInfoItemEntry(
-                    term = "IBAN",
-                    description = "BE20 9677 1140 7056"
+                    term = stringResource(R.string.iban),
+                    description = stringResource(R.string.eu_sepa_eur_iban)
                 )
                 AccountInfoItemEntry(
-                    term = "BIC",
-                    description = "TRWIBEB1XXX"
+                    term = stringResource(R.string.bic),
+                    description = stringResource(R.string.eu_sepa_eur_bic)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank name",
-                    description = "Wise Europe SA"
+                    term = stringResource(R.string.bank_name),
+                    description = stringResource(R.string.eu_sepa_eur_bank_name)
                 )
                 AccountInfoItemEntry(
-                    term = "Wise and Bank address",
-                    description = "Rue du Trône 100, 3rd floor\n" +
-                            "Brussels\n" +
-                            "1050\n" +
-                            "Belgium"
+                    term = stringResource(R.string.wise_and_bank_address),
+                    description = stringResource(R.string.eu_sepa_eur_wise_and_bank_address)
                 )
             }
         }
         item {
             AccountInfoItem(
-                title = "UK (GBP)"
+                title = stringResource(R.string.uk_gbp)
             ) {
                 AccountInfoItemEntry(
-                    term = "Account holder",
-                    description = "GrapheneOS Foundation"
+                    term = stringResource(R.string.account_holder),
+                    description = stringResource(R.string.grapheneos_foundation)
                 )
                 AccountInfoItemEntry(
-                    term = "Account number",
-                    description = "49883070"
+                    term = stringResource(R.string.account_number),
+                    description = stringResource(R.string.uk_gbp_account_number)
                 )
                 AccountInfoItemEntry(
-                    term = "BIC",
-                    description = "TRWIBEB1XXX"
+                    term = stringResource(R.string.bic),
+                    description = stringResource(R.string.uk_gbp_bic)
                 )
                 AccountInfoItemEntry(
-                    term = "IBAN",
-                    description = "GB68 TRWI 2314 7049 8830 70"
+                    term = stringResource(R.string.iban),
+                    description = stringResource(R.string.uk_gbp_iban)
                 )
                 AccountInfoItemEntry(
-                    term = "Sort code",
-                    description = "23-14-70"
+                    term = stringResource(R.string.sort_code),
+                    description = stringResource(R.string.uk_gbp_sort_code)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank name",
-                    description = "Wise Payments Limited"
+                    term = stringResource(R.string.bank_name),
+                    description = stringResource(R.string.uk_gbp_bank_name)
                 )
                 AccountInfoItemEntry(
-                    term = "Wise and Bank address",
-                    description = "56 Shoreditch High Street\n" +
-                            "London\n" +
-                            "E1 6JJ\n" +
-                            "United Kingdom"
+                    term = stringResource(R.string.wise_and_bank_address),
+                    description = stringResource(R.string.uk_gbp_wise_and_bank_address)
                 )
             }
         }
         item {
             AccountInfoItem(
-                title = "US (USD)"
+                title = stringResource(R.string.us_usd)
             ) {
                 AccountInfoItemEntry(
-                    term = "Account holder",
-                    description = "GrapheneOS Foundation"
+                    term = stringResource(R.string.account_holder),
+                    description = stringResource(R.string.grapheneos_foundation)
                 )
                 AccountInfoItemEntry(
-                    term = "Account number",
-                    description = "8313560023"
+                    term = stringResource(R.string.account_number),
+                    description = stringResource(R.string.us_usd_account_number)
                 )
                 AccountInfoItemEntry(
-                    term = "Routing number",
-                    description = "026073150"
+                    term = stringResource(R.string.routing_number),
+                    description = stringResource(R.string.us_usd_routing_number)
                 )
                 AccountInfoItemEntry(
-                    term = "Account type",
-                    description = "Checking"
+                    term = stringResource(R.string.account_type),
+                    description = stringResource(R.string.checking)
                 )
                 AccountInfoItemEntry(
-                    term = "Wise address",
-                    description = "30 W. 26th Street, Sixth Floor\n" +
-                            "New York NY\n" +
-                            "10010\n" +
-                            "United States"
+                    term = stringResource(R.string.wise_address),
+                    description = stringResource(R.string.us_usd_wise_address)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank name",
-                    description = "Community Federal Savings Bank"
+                    term = stringResource(R.string.bank_name),
+                    description = stringResource(R.string.us_usd_bank_name)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank address",
-                    description = "89-16 Jamaica Ave\n" +
-                            "Woodhaven NY\n" +
-                            "11421\n" +
-                            "United States"
+                    term = stringResource(R.string.bank_address),
+                    description = stringResource(R.string.us_usd_bank_address)
                 )
             }
         }
         item {
             AccountInfoItem(
-                title = "Australia (AUD)"
+                title = stringResource(R.string.australia_aud)
             ) {
                 AccountInfoItemEntry(
-                    term = "Account holder",
-                    description = "GrapheneOS Foundation"
+                    term = stringResource(R.string.account_holder),
+                    description = stringResource(R.string.grapheneos_foundation)
                 )
                 AccountInfoItemEntry(
-                    term = "Account number",
-                    description = "213524417"
+                    term = stringResource(R.string.account_number),
+                    description = stringResource(R.string.australia_aud_account_number)
                 )
                 AccountInfoItemEntry(
-                    term = "BSB code",
-                    description = "774-001"
+                    term = stringResource(R.string.bsb_code),
+                    description = stringResource(R.string.australia_aud_bsb_code)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank name",
-                    description = "Wise Australia Pty Ltd"
+                    term = stringResource(R.string.bank_name),
+                    description = stringResource(R.string.australia_aud_bank_name)
                 )
                 AccountInfoItemEntry(
-                    term = "Wise address",
-                    description = "Suite 1, Level 11, 66 Goulburn Street\n" +
-                            "Sydney\n" +
-                            "2000\n" +
-                            "Australia"
+                    term = stringResource(R.string.wise_address),
+                    description = stringResource(R.string.australia_aud_wise_address)
                 )
             }
         }
         item {
             AccountInfoItem(
-                title = "New Zealand (NZD)"
+                title = stringResource(R.string.new_zealand_nzd)
             ) {
                 AccountInfoItemEntry(
-                    term = "Account holder",
-                    description = "GrapheneOS Foundation"
+                    term = stringResource(R.string.account_holder),
+                    description = stringResource(R.string.grapheneos_foundation)
                 )
                 AccountInfoItemEntry(
-                    term = "Account number",
-                    description = "04-2021-0151878-36"
+                    term = stringResource(R.string.account_number),
+                    description = stringResource(R.string.new_zealand_nzd_account_number)
                 )
                 AccountInfoItemEntry(
-                    term = "Wise address",
-                    description = "56 Shoreditch High Street\n" +
-                            "London\n" +
-                            "E1 6JJ\n" +
-                            "United Kingdom"
+                    term = stringResource(R.string.wise_address),
+                    description = stringResource(R.string.new_zealand_nzd_wise_address)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank name",
-                    description = "JPMorgan Chase"
+                    term = stringResource(R.string.bank_name),
+                    description = stringResource(R.string.new_zealand_nzd_bank_name)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank address",
-                    description = "Head Office, Pwc Tower\n" +
-                            "Auckland\n" +
-                            "1010\n" +
-                            "New Zealand"
+                    term = stringResource(R.string.bank_address),
+                    description = stringResource(R.string.new_zealand_nzd_bank_address)
                 )
             }
         }
         item {
             AccountInfoItem(
-                title = "Canada (CAD)"
+                title = stringResource(R.string.canada_cad)
             ) {
                 AccountInfoItemEntry(
-                    term = "Account holder",
-                    description = "GrapheneOS Foundation"
+                    term = stringResource(R.string.account_holder),
+                    description = stringResource(R.string.grapheneos_foundation)
                 )
                 AccountInfoItemEntry(
-                    term = "Account number",
-                    description = "200110745303"
+                    term = stringResource(R.string.account_number),
+                    description = stringResource(R.string.canada_cad_account_number)
                 )
                 AccountInfoItemEntry(
-                    term = "Transit number",
-                    description = "16001"
+                    term = stringResource(R.string.transit_number),
+                    description = stringResource(R.string.canada_cad_transit_number)
                 )
                 AccountInfoItemEntry(
-                    term = "Institution number",
-                    description = "621"
+                    term = stringResource(R.string.institution_number),
+                    description = stringResource(R.string.canada_cad_institution_number)
                 )
                 AccountInfoItemEntry(
-                    term = "Wise address",
-                    description = "99 Bank Street, Suite 1420\n" +
-                            "Ottawa ON\n" +
-                            "K1P 1H4\n" +
-                            "Canada"
+                    term = stringResource(R.string.wise_address),
+                    description = stringResource(R.string.canada_cad_wise_address)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank name",
-                    description = "Peoples Trust"
+                    term = stringResource(R.string.bank_name),
+                    description = stringResource(R.string.canada_cad_bank_name)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank address",
-                    description = "595 Burrard Street\n" +
-                            "Vancouver BC\n" +
-                            "V7X 1L7\n" +
-                            "Canada"
+                    term = stringResource(R.string.bank_address),
+                    description = stringResource(R.string.canada_cad_bank_address)
                 )
             }
         }
         item {
             AccountInfoItem(
-                title = "Hungary (HUF)"
+                title = stringResource(R.string.hungary_huf)
             ) {
                 AccountInfoItemEntry(
-                    term = "Account holder",
-                    description = "GrapheneOS Foundation"
+                    term = stringResource(R.string.account_holder),
+                    description = stringResource(R.string.grapheneos_foundation)
                 )
                 AccountInfoItemEntry(
-                    term = "Account number",
-                    description = "12600016-11020392-99827322"
+                    term = stringResource(R.string.account_number),
+                    description = stringResource(R.string.hungary_huf_account_number)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank name",
-                    description = "Wise Europe SA"
+                    term = stringResource(R.string.bank_name),
+                    description = stringResource(R.string.hungary_huf_bank_name)
                 )
                 AccountInfoItemEntry(
-                    term = "Wise and Bank address",
-                    description = "Rue du Trône 100, 3rd floor\n" +
-                            "Brussels\n" +
-                            "1050\n" +
-                            "Belgium"
+                    term = stringResource(R.string.wise_and_bank_address),
+                    description = stringResource(R.string.hungary_huf_wise_and_bank_address)
                 )
             }
         }
         item {
             AccountInfoItem(
-                title = "Turkey (TRY)"
+                title = stringResource(R.string.turkey_try)
             ) {
                 AccountInfoItemEntry(
-                    term = "Account holder",
-                    description = "GrapheneOS Foundation"
+                    term = stringResource(R.string.account_holder),
+                    description = stringResource(R.string.grapheneos_foundation)
                 )
                 AccountInfoItemEntry(
-                    term = "IBAN",
-                    description = "TR43 0010 3000 0000 0057 4294 70"
+                    term = stringResource(R.string.iban),
+                    description = stringResource(R.string.turkey_try_iban)
                 )
                 AccountInfoItemEntry(
-                    term = "Wise address",
-                    description = "56 Shoreditch High Street, London, E1 6JJ, United Kingdom"
+                    term = stringResource(R.string.wise_address),
+                    description = stringResource(R.string.turkey_try_wise_address)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank name",
-                    description = "Fibabanka A.Ş."
+                    term = stringResource(R.string.bank_name),
+                    description = stringResource(R.string.turkey_try_bank_name)
                 )
                 AccountInfoItemEntry(
-                    term = "Bank address",
-                    description = "Büyükdere Cad. 129, Esentepe Mah., Sisli"
+                    term = stringResource(R.string.bank_address),
+                    description = stringResource(R.string.turkey_try_bank_address)
                 )
             }
         }
         item {
             Text(
-                "Interac e-Transfer",
+                stringResource(R.string.interac_e_transfer),
                 modifier = Modifier.padding(top = 16.dp),
                 style = MaterialTheme.typography.titleLarge
             )
@@ -296,15 +268,15 @@ fun BankTransfersScreen() {
         item {
             Text(
                 buildAnnotatedString {
-                    append("If you have a Canadian bank account, you can send Canadian dollar donations to the non-profit GrapheneOS Foundation via Interac e-Transfer to ")
+                    append(stringResource(R.string.interac_e_transfer_info_part_1))
 
                     pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
 
-                    append("contact@grapheneos.org")
+                    append(stringResource(R.string.contact_grapheneos_org))
 
                     pop()
 
-                    append(". The email address has Interac e-Transfer Autodeposit support enabled so no security question is necessary. If your bank doesn't support Autodeposit, set the answer to the security question to GrapheneOS.")
+                    append(stringResource(R.string.interac_e_transfer_info_part_2))
                 }
             )
         }

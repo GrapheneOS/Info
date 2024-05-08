@@ -39,20 +39,20 @@ fun DonateStartScreen(
             .fillMaxSize(),
     ) {
         item {
-            Text("GrapheneOS is an open source project supported via donations from individuals, companies and other organizations.")
+            Text(stringResource(R.string.donate_start_info_part_1))
         }
         item {
-            Text("Donations are used for paying developers, purchasing hardware (workstations, test devices, debugging cables/boards, etc.), paying for infrastructure (domains, virtual/dedicated servers) and paying legal fees.")
+            Text(stringResource(R.string.donate_start_info_part_2))
         }
         item {
             Text(
-                "Donate the way you want",
+                stringResource(R.string.donate_the_way_you_want),
                 modifier = Modifier.padding(top = 16.dp),
                 style = MaterialTheme.typography.titleLarge
             )
         }
         item {
-            Text("GrapheneOS offers the following ways to donate.\nChoose the one you prefer.")
+            Text(stringResource(R.string.donate_start_info_part_3))
         }
         item {
             ScreenNavCardItem(
@@ -89,21 +89,20 @@ fun DonateStartScreen(
         item {
             val localUriHandler = LocalUriHandler.current
             val annotatedString = buildAnnotatedString {
-                append("Contribute in other ways?\n")
-                append("Check out our ")
+                append(stringResource(R.string.hiring_footer_part_1))
 
-                val hiringUrl = "https://grapheneos.org/hiring"
+                val hiringUrl = stringResource(R.string.https_grapheneos_org_hiring)
                 pushUrlAnnotation(UrlAnnotation(hiringUrl))
                 pushStringAnnotation("URL", hiringUrl)
                 pushStyle(SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold))
 
-                append("hiring page")
+                append(stringResource(R.string.hiring_footer_part_2))
 
                 pop()
                 pop()
                 pop()
 
-                append(".")
+                append(stringResource(R.string.hiring_footer_part_3))
             }
 
             Row(

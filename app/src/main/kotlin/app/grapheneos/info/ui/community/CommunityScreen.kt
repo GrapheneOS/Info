@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
@@ -24,89 +25,89 @@ fun CommunityScreen() {
     ) {
         item {
             Text(
-                "Chat",
+                stringResource(R.string.chat),
                 style = typography.titleLarge
             )
         }
         item {
-            Text("Our chat rooms are bridged across Discord, Telegram and Matrix so you can choose your preferred platform.")
+            Text(stringResource(R.string.community_screen_chat_rooms_description))
         }
         item {
             LinkCardItem(
                 painterResource(id = R.drawable.discord_logo),
-                "Discord",
+                stringResource(R.string.discord),
                 true,
-                "https://discord.com/invite/grapheneos"
+                stringResource(R.string.discord_invite_link)
             )
         }
         item {
             LinkCardItem(
                 painterResource(id = R.drawable.telegram_logo),
-                "Telegram",
+                stringResource(R.string.telegram),
                 true,
-                "https://t.me/GrapheneOS"
+                stringResource(R.string.telegram_invite_link)
             )
         }
         item {
             LinkCardItem(
                 painterResource(id = R.drawable.matrix_logo),
-                "Matrix",
+                stringResource(R.string.matrix),
                 true,
-                "https://matrix.to/#/%23community:grapheneos.org"
+                stringResource(R.string.matrix_invite_link)
             )
         }
         item {
             Text(
-                "Forum",
+                stringResource(R.string.forum),
                 modifier = Modifier.padding(top = 16.dp),
                 style = typography.titleLarge
             )
         }
         item {
-            Text("We have an official forum for longer form posts, which is publicly accessible and easier to search.")
+            Text(stringResource(R.string.forum_description))
         }
         item {
             LinkCardItem(
                 painterResource(id = R.drawable.grapheneos_logo),
-                "GrapheneOS Discussion Forum",
+                stringResource(R.string.grapheneos_discussion_forum),
                 true,
-                "https://discuss.grapheneos.org"
+                stringResource(R.string.grapheneos_forum_link)
             )
         }
         item {
             Text(
-                "Social Media",
+                stringResource(R.string.social_media),
                 modifier = Modifier.padding(top = 16.dp),
                 style = typography.titleLarge
             )
         }
         item {
             Text(
-                "The project's official social media accounts are used for official announcements."
+                stringResource(R.string.social_media_accounts_description)
             )
         }
         item {
             LinkCardItem(
                 painterResource(id = R.drawable.x_logo),
-                "Twitter",
+                stringResource(R.string.twitter),
                 true,
-                "https://twitter.com/GrapheneOS"
+                stringResource(R.string.twitter_account_link)
             )
         }
         item {
             LinkCardItem(
                 painterResource(id = R.drawable.mastodon_logo),
-                "Mastodon",
+                stringResource(R.string.mastodon),
                 true,
-                "https://grapheneos.social/@GrapheneOS"
+                stringResource(R.string.mastadon_account_link)
             )
         }
         item {
             LinkCardItem(
                 painterResource(id = R.drawable.bluesky_logo),
-                "Bluesky",
+                stringResource(R.string.bluesky),
                 true,
-                "https://bsky.app/profile/grapheneos.org"
+                stringResource(R.string.bluesky_account_link)
             )
         }
     }

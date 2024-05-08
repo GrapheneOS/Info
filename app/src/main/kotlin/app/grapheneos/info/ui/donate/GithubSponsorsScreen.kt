@@ -23,7 +23,7 @@ import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun GithubSponsorsScreen() {
-    val githubSponsorsUrl = "https://github.com/sponsors/thestinger"
+    val githubSponsorsUrl = stringResource(R.string.github_sponsors_link)
 
     ScreenLazyColumn(
         modifier = Modifier
@@ -33,19 +33,19 @@ fun GithubSponsorsScreen() {
             val localUriHandler = LocalUriHandler.current
 
             val annotatedString = buildAnnotatedString {
-                append("GrapheneOS can be sponsored with recurring or one-time donations via credit cards through ")
+                append(stringResource(R.string.github_sponsors_description_part_1))
 
                 pushUrlAnnotation(UrlAnnotation(githubSponsorsUrl))
                 pushStringAnnotation("URL", githubSponsorsUrl)
                 pushStyle(SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold))
 
-                append("GitHub Sponsors")
+                append(stringResource(R.string.github_sponsors))
 
                 pop()
                 pop()
                 pop()
 
-                append(". There are standard tiers from \$5 to \$5,000 or you can donate a custom amount.")
+                append(stringResource(R.string.github_sponsors_description_part_2))
             }
 
             ClickableText(

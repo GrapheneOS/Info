@@ -122,7 +122,7 @@ fun InfoApp() {
                         IconButton(onClick = { navController.navigateUp() }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Navigate up"
+                                contentDescription = stringResource(R.string.navigate_up_button_description)
                             )
                         }
                     }
