@@ -9,8 +9,8 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.UrlAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,7 +35,7 @@ fun GithubSponsorsScreen() {
             val annotatedString = buildAnnotatedString {
                 append(stringResource(R.string.github_sponsors_description_part_1))
 
-                pushUrlAnnotation(UrlAnnotation(githubSponsorsUrl))
+                pushLink(LinkAnnotation.Url(githubSponsorsUrl))
                 pushStringAnnotation("URL", githubSponsorsUrl)
                 pushStyle(SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold))
 

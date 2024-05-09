@@ -33,8 +33,8 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.UrlAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -96,7 +96,7 @@ fun AddressInfoItem(
             }
 
             val annotatedString = buildAnnotatedString {
-                pushUrlAnnotation(UrlAnnotation(addressUrl))
+                pushLink(LinkAnnotation.Url(addressUrl))
                 pushStringAnnotation("URL", addressUrl)
                 pushStyle(SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold))
 

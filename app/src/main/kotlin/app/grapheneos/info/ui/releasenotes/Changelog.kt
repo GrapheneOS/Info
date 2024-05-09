@@ -15,9 +15,9 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.UrlAnnotation
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
@@ -78,7 +78,7 @@ private fun NodeToComposable(
         when (attribute.nodeName) {
             "href" -> {
                 builder.apply {
-                    pushUrlAnnotation(UrlAnnotation(attribute.nodeValue))
+                    pushLink(LinkAnnotation.Url(attribute.nodeValue))
                     pushStringAnnotation("URL", attribute.nodeValue)
                     pushStyle(SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold))
                 }
