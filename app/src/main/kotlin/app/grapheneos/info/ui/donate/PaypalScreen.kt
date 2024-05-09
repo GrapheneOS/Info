@@ -43,7 +43,7 @@ fun PaypalScreen() {
                 Icons.Filled.AttachMoney,
                 name = stringResource(R.string.canadian_dollar_cad),
                 tint = true,
-                link = stringResource(R.string.canadian_dollar_cad_paypal_link)
+                link = "https://www.paypal.com/donate/?hosted_button_id=T8KRPYKU5QVNE"
             )
         }
         item {
@@ -51,7 +51,7 @@ fun PaypalScreen() {
                 Icons.Filled.AttachMoney,
                 name = stringResource(R.string.united_states_dollar_usd),
                 tint = true,
-                link = stringResource(R.string.united_states_dollar_usd_paypal_link)
+                link = "https://www.paypal.com/donate/?hosted_button_id=2S2BP8V4E7PXU"
             )
         }
         item {
@@ -59,7 +59,7 @@ fun PaypalScreen() {
                 Icons.Filled.Euro,
                 name = stringResource(R.string.euro_eur),
                 tint = true,
-                link = stringResource(R.string.euro_eur_paypal_link)
+                link = "https://www.paypal.com/donate/?hosted_button_id=5SNPWEDS53HW4"
             )
         }
         item {
@@ -67,7 +67,7 @@ fun PaypalScreen() {
                 Icons.Filled.CurrencyPound,
                 name = stringResource(R.string.british_pound_gbp),
                 tint = true,
-                link = stringResource(R.string.british_pound_gbp_paypal_link)
+                link = "https://www.paypal.com/donate/?hosted_button_id=N498QNB7NPKU8"
             )
         }
         item {

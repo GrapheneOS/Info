@@ -89,4 +89,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.compose.material:material-icons-extended")
     debugImplementation("androidx.compose.ui:ui-tooling")
+
+    // temporarily use alpha until 1.7.0 releases with AnnotatedString.Companion.fromHtml
+    implementation("androidx.compose.ui:ui-text:1.7.0-alpha08")
 }

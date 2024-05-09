@@ -23,7 +23,7 @@ import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun GithubSponsorsScreen() {
-    val githubSponsorsUrl = stringResource(R.string.github_sponsors_link)
+    val githubSponsorsUrl = "https://github.com/sponsors/thestinger"
 
     ScreenLazyColumn(
         modifier = Modifier

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -91,7 +92,7 @@ fun DonateStartScreen(
             val annotatedString = buildAnnotatedString {
                 append(stringResource(R.string.hiring_footer_part_1))
 
-                val hiringUrl = stringResource(R.string.https_grapheneos_org_hiring)
+                val hiringUrl = "https://grapheneos.org/hiring"
                 pushUrlAnnotation(UrlAnnotation(hiringUrl))
                 pushStringAnnotation("URL", hiringUrl)
                 pushStyle(SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold))

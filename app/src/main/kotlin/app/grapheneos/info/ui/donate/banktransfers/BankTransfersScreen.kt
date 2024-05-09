@@ -8,9 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
@@ -266,19 +265,7 @@ fun BankTransfersScreen() {
             )
         }
         item {
-            Text(
-                buildAnnotatedString {
-                    append(stringResource(R.string.interac_e_transfer_info_part_1))
-
-                    pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
-
-                    append(stringResource(R.string.contact_grapheneos_org))
-
-                    pop()
-
-                    append(stringResource(R.string.interac_e_transfer_info_part_2))
-                }
-            )
+            Text(AnnotatedString.Companion.fromHtml(stringResource(R.string.interac_e_transfer_info)))
         }
     }
 }

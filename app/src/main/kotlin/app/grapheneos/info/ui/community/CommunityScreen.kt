@@ -37,7 +37,7 @@ fun CommunityScreen() {
                 painterResource(id = R.drawable.discord_logo),
                 stringResource(R.string.discord),
                 true,
-                stringResource(R.string.discord_invite_link)
+                "https://discord.com/invite/grapheneos"
             )
         }
         item {
@@ -45,7 +45,7 @@ fun CommunityScreen() {
                 painterResource(id = R.drawable.telegram_logo),
                 stringResource(R.string.telegram),
                 true,
-                stringResource(R.string.telegram_invite_link)
+                "https://t.me/GrapheneOS"
             )
         }
         item {
@@ -53,7 +53,7 @@ fun CommunityScreen() {
                 painterResource(id = R.drawable.matrix_logo),
                 stringResource(R.string.matrix),
                 true,
-                stringResource(R.string.matrix_invite_link)
+                "https://matrix.to/#/%23community:grapheneos.org"
             )
         }
         item {
@@ -71,7 +71,7 @@ fun CommunityScreen() {
                 painterResource(id = R.drawable.grapheneos_logo),
                 stringResource(R.string.grapheneos_discussion_forum),
                 true,
-                stringResource(R.string.grapheneos_forum_link)
+                "https://discuss.grapheneos.org"
             )
         }
         item {
@@ -91,7 +91,7 @@ fun CommunityScreen() {
                 painterResource(id = R.drawable.x_logo),
                 stringResource(R.string.twitter),
                 true,
-                stringResource(R.string.twitter_account_link)
+                "https://twitter.com/GrapheneOS"
             )
         }
         item {
@@ -99,7 +99,7 @@ fun CommunityScreen() {
                 painterResource(id = R.drawable.mastodon_logo),
                 stringResource(R.string.mastodon),
                 true,
-                stringResource(R.string.mastadon_account_link)
+                "https://grapheneos.social/@GrapheneOS"
             )
         }
         item {
@@ -107,7 +107,7 @@ fun CommunityScreen() {
                 painterResource(id = R.drawable.bluesky_logo),
                 stringResource(R.string.bluesky),
                 true,
-                stringResource(R.string.bluesky_account_link)
+                "https://bsky.app/profile/grapheneos.org"
             )
         }
     }
