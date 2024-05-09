@@ -3,6 +3,7 @@ package app.grapheneos.info.ui.donate.banktransfers
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -265,7 +266,9 @@ fun BankTransfersScreen() {
             )
         }
         item {
-            Text(AnnotatedString.Companion.fromHtml(stringResource(R.string.interac_e_transfer_info)))
+            SelectionContainer {
+                Text(AnnotatedString.Companion.fromHtml(stringResource(R.string.interac_e_transfer_info)))
+            }
         }
     }
 }
