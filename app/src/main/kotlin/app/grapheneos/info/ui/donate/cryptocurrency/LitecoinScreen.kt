@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import app.grapheneos.info.R
@@ -20,20 +21,20 @@ fun LitecoinScreen(
             .fillMaxSize(),
     ) {
         item {
-            Text("Litecoin can be used to make donations to the non-profit GrapheneOS Foundation.")
+            Text(stringResource(R.string.litecoin_info))
         }
         item {
             AddressInfoItem(
-                title = "Litecoin",
+                title = stringResource(R.string.litecoin),
                 qrCodePainterResourceId = R.drawable.donate_litecoin_qr_code,
-                qrCodeContentDescription = "Litecoin donation QR code",
+                qrCodeContentDescription = stringResource(R.string.litecoin_qr_code_description),
                 addressUrl = "litecoin:ltc1qzssmqueth6zjzr95rkluy5xdx9q4lk8vyrvea9?label=GrapheneOS%20Foundation&message=Donation%20to%20GrapheneOS%20Foundation",
                 address = "ltc1qzssmqueth6zjzr95rkluy5xdx9q4lk8vyrvea9",
                 showSnackbarError = showSnackbarError
             )
         }
         item {
-            Text("We recommend using the lowest fee tier recommended by your wallet since the transaction taking hours or even a couple days is fine. An even lower custom fee isn't recommended unless you're going to monitor it and bump the fee with RBF.")
+            Text(stringResource(R.string.litecoin_fee_notice))
         }
     }
 }

@@ -136,4 +136,53 @@
         conversion adds an additional 4% fee as opposed to the usual PayPal conversion fee of 3%.
     </string>
     <string name="link_card_item_on_click_label">open link</string>
+    <string name="bitcoin_info">Bitcoin can be used to make donations to the non-profit GrapheneOS Foundation.</string>
+    <string name="bech32_segwit">Bech32 (Segwit)</string>
+    <string name="bech32_segwit_qr_code_description">Bitcoin donation QR code</string>
+    <string name="bech32m_taproot">Bech32m (Taproot)</string>
+    <string name="bech32m_taproot_qr_code_description">Bitcoin Taproot donation QR code</string>
+    <string name="bip47_payment_code_stealth_address">BIP47 payment code (stealth address)</string>
+    <string name="bip47_payment_code_stealth_address_qr_code_description">Bitcoin BIP47 payment code QR code</string>
+    <string name="bitcoin_fee_notice">We recommend using the lowest fee tier recommended by your wallet since the
+        transaction taking hours or even a couple days is fine. An even lower custom fee isn\'t recommended unless
+        you\'re going to monitor it and bump the fee with RBF.
+    </string>
+    <string name="qr_code_on_click_label">enlarge QR code</string>
+    <string name="share">Share</string>
+    <string name="ok">OK</string>
+    <string name="image_enlarged">%1$s (enlarged)</string>
+    <string name="activity_not_found_for_donation_address_snackbar_error">Couldn\'t find an app to open donation address
+        with!
+    </string>
+    <string name="cardano_info">Cardano can be used to make donations to the non-profit GrapheneOS Foundation.</string>
+    <string name="cardano_qr_code_description">Cardano donation QR code</string>
+    <string name="cardano_handle_notice">
+        <![CDATA[We own the &lt;i>$grapheneos&lt;/i> handle with this address so you can also send to the handle.]]></string>
+    <string name="cardano_token_donation_notice">We aren\'t looking for donations of tokens, only Cardano itself.
+    </string>
+    <string name="etherium_info">Ethereum can be used to make donations to the non-profit GrapheneOS Foundation.
+    </string>
+    <string name="ethereum_qr_code_description">Ethereum donation QR code</string>
+    <string name="etherium_token_donation_notice">We aren\'t looking for donations of tokens, only Ethereum itself.
+    </string>
+    <string name="litecoin_info">Litecoin can be used to make donations to the non-profit GrapheneOS Foundation.
+    </string>
+    <string name="litecoin_qr_code_description">Litecoin donation QR code</string>
+    <string name="litecoin_fee_notice">We recommend using the lowest fee tier recommended by your wallet since the
+        transaction taking hours or even a couple days is fine. An even lower custom fee isn\'t recommended unless
+        you\'re going to monitor it and bump the fee with RBF.
+    </string>
+    <string name="monero_info">Monero can be used to make donations to the non-profit GrapheneOS Foundation.</string>
+    <string name="monero_qr_code_description">Monero donation QR code</string>
+    <string name="monero_fee_notice">We recommend using the lowest fee level since it will still be quick.</string>
+    <string name="zcash_info">Zcash can be used to make donations to the non-profit GrapheneOS Foundation.</string>
+    <string name="zcash_transparent">Zcash (transparent)</string>
+    <string name="zcash_transparent_qr_code_description">Transparent Zcash donation QR code</string>
+    <string name="update_release_notes_socket_timeout_exception_snackbar_message">Socket Timeout Exception</string>
+    <string name="update_release_notes_io_exception_snackbar_message">Failed to retrieve latest release notes</string>
+    <string name="update_release_notes_unknown_service_exception_snackbar_message">Unknown Service Exception</string>
+    <string name="update_release_notes_failed_to_create_httpsurlconnection_snackbar_message">Failed to create
+        HttpsURLConnection
+    </string>
+    <string name="screen_nav_card_item_on_click_label">open screen</string>
 </resources>

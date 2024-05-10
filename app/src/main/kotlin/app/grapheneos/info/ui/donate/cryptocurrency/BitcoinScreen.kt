@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
@@ -28,13 +29,13 @@ fun BitcoinScreen(
             .fillMaxSize(),
     ) {
         item {
-            Text("Bitcoin can be used to make donations to the non-profit GrapheneOS Foundation.")
+            Text(stringResource(R.string.bitcoin_info))
         }
         item {
             AddressInfoItem(
-                title = "Bech32 (Segwit)",
+                title = stringResource(R.string.bech32_segwit),
                 qrCodePainterResourceId = R.drawable.donate_bitcoin_qr_code,
-                qrCodeContentDescription = "Bitcoin donation QR code",
+                qrCodeContentDescription = stringResource(R.string.bech32_segwit_qr_code_description),
                 addressUrl = "bitcoin:bc1q9qw3g8tdxf3dugkv2z8cahd3axehph0mhsqk96?label=GrapheneOS%20Foundation&message=Donation%20to%20GrapheneOS%20Foundation",
                 address = "bc1q9qw3g8tdxf3dugkv2z8cahd3axehph0mhsqk96",
                 showSnackbarError = showSnackbarError,
@@ -42,9 +43,9 @@ fun BitcoinScreen(
         }
         item {
             AddressInfoItem(
-                title = "Bech32m (Taproot)",
+                title = stringResource(R.string.bech32m_taproot),
                 qrCodePainterResourceId = R.drawable.donate_bitcoin_taproot_qr_code,
-                qrCodeContentDescription = "Bitcoin Taproot donation QR code",
+                qrCodeContentDescription = stringResource(R.string.bech32m_taproot_qr_code_description),
                 addressUrl = "bitcoin:bc1prqf5hks5dnd4j87wxw3djn20559yhj7wvvcv6fqxpwlg96udkzgqtamhry?label=GrapheneOS%20Foundation&message=Donation%20to%20GrapheneOS%20Foundation",
                 address = "bc1prqf5hks5dnd4j87wxw3djn20559yhj7wvvcv6fqxpwlg96udkzgqtamhry",
                 showSnackbarError = showSnackbarError
@@ -52,9 +53,9 @@ fun BitcoinScreen(
         }
         item {
             AddressInfoItem(
-                title = "BIP47 payment code (stealth address)",
+                title = stringResource(R.string.bip47_payment_code_stealth_address),
                 qrCodePainterResourceId = R.drawable.donate_bitcoin_bip47_qr_code,
-                qrCodeContentDescription = "Bitcoin BIP47 payment code QR code",
+                qrCodeContentDescription = stringResource(R.string.bip47_payment_code_stealth_address_qr_code_description),
                 addressUrl = "bitcoin:PM8TJKmhJNQX6UTFagyuBk8UGmwKM6yDovEokpHBscPgP3Ac7WdK5zaQKh5XLSawyxiGYZS2a7HkAoeL6oHg7Ahn1VXX888yRG4PwF1dojouPtW7tEHT",
                 address = "PM8TJKmhJNQX6UTFagyuBk8UGmwKM6yDovEokpHBscPgP3Ac7WdK5zaQKh5XLSawyxiGYZS2a7HkAoeL6oHg7Ahn1VXX888yRG4PwF1dojouPtW7tEHT",
                 showSnackbarError = showSnackbarError
@@ -81,7 +82,7 @@ fun BitcoinScreen(
             }
         }
         item {
-            Text("We recommend using the lowest fee tier recommended by your wallet since the transaction taking hours or even a couple days is fine. An even lower custom fee isn't recommended unless you're going to monitor it and bump the fee with RBF.")
+            Text(stringResource(R.string.bitcoin_fee_notice))
         }
     }
 }

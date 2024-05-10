@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.LinkAnnotation
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
+import app.grapheneos.info.R
 import app.grapheneos.info.ui.reusablecomposables.ClickableText
 
 @OptIn(ExperimentalTextApi::class)
@@ -58,6 +60,8 @@ fun AddressInfoItem(
     var showAlertDialog by rememberSaveable { mutableStateOf(false) }
 
     val context = LocalContext.current
+
+    val activityNotFoundForDonationAddressSnackbarErrorMessage = stringResource(R.string.activity_not_found_for_donation_address_snackbar_error)
 
     ElevatedCard(Modifier.fillMaxWidth()) {
         Column(
@@ -86,7 +90,7 @@ fun AddressInfoItem(
                         .size(200.dp)
                         .align(Alignment.Center)
                         .clickable(
-                            onClickLabel = "enlarge image",
+                            onClickLabel = stringResource(R.string.qr_code_on_click_label),
                             role = Role.Image
                         ) {
                             showAlertDialog = true
@@ -116,7 +120,7 @@ fun AddressInfoItem(
                             try {
                                 localUriHandler.openUri(annotation.item)
                             } catch (e: ActivityNotFoundException) {
-                                showSnackbarError("Couldn't find an app to open donation address with!")
+                                showSnackbarError(activityNotFoundForDonationAddressSnackbarErrorMessage)
                             }
                         }
                 },
@@ -135,7 +139,7 @@ fun AddressInfoItem(
                     ContextCompat.startActivity(context, shareIntent, ActivityOptionsCompat.makeBasic().toBundle())
                 }
             ) {
-                Icon(Icons.Filled.Share, contentDescription = "Share")
+                Icon(Icons.Filled.Share, contentDescription = stringResource(R.string.share))
             }
             bottomContent()
         }
@@ -146,7 +150,7 @@ fun AddressInfoItem(
                     TextButton(
                         onClick = { showAlertDialog = false }
                     ) {
-                        Text("OK")
+                        Text(stringResource(R.string.ok))
                     }
                 },
                 text = {
@@ -157,7 +161,7 @@ fun AddressInfoItem(
                     ) {
                         Icon(
                             painter = painterResource(id = qrCodePainterResourceId),
-                            contentDescription = "$qrCodeContentDescription (enlarged)",
+                            contentDescription = stringResource(R.string.image_enlarged, qrCodeContentDescription),
                             modifier = Modifier
                                 .aspectRatio(1.0f)
                                 .align(Alignment.Center),

@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import app.grapheneos.info.R
@@ -20,13 +21,13 @@ fun ZcashScreen(
             .fillMaxSize(),
     ) {
         item {
-            Text("Zcash can be used to make donations to the non-profit GrapheneOS Foundation.")
+            Text(stringResource(R.string.zcash_info))
         }
         item {
             AddressInfoItem(
-                title = "Zcash (transparent)",
+                title = stringResource(R.string.zcash_transparent),
                 qrCodePainterResourceId = R.drawable.donate_zcash_transparent_qr_code,
-                qrCodeContentDescription = "Transparent Zcash donation QR code",
+                qrCodeContentDescription = stringResource(R.string.zcash_transparent_qr_code_description),
                 addressUrl = "zcash:t1SJABjX8rqgzqgrzLW5dUw7ikSDZ2snD8A?label=GrapheneOS%20Foundation&message=Donation%20to%20GrapheneOS%20Foundation",
                 address = "t1SJABjX8rqgzqgrzLW5dUw7ikSDZ2snD8A",
                 showSnackbarError = showSnackbarError

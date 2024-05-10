@@ -1,9 +1,11 @@
 package app.grapheneos.info.ui.releasenotes
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.grapheneos.info.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +20,10 @@ import javax.net.ssl.HttpsURLConnection
 
 const val TAG = "ReleaseNotesViewModel"
 
-class ReleaseNotesViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+class ReleaseNotesViewModel(
+    private val application: Application,
+    savedStateHandle: SavedStateHandle
+) : AndroidViewModel(application) {
 
     private val _uiState = MutableStateFlow(ReleaseNotesUiState(savedStateHandle))
     val uiState: StateFlow<ReleaseNotesUiState> = _uiState.asStateFlow()
@@ -69,20 +74,23 @@ class ReleaseNotesViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
                         }
                     }
                 } catch (e: SocketTimeoutException) {
-                    val errorMessage = "Socket Timeout Exception"
+                    val errorMessage =
+                        application.getString(R.string.update_release_notes_socket_timeout_exception_snackbar_message)
                     Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
                         showSnackbarError("$errorMessage: $e")
                     }
                 } catch (e: IOException) {
-                    val errorMessage = "Failed to retrieve latest release notes"
+                    val errorMessage =
+                        application.getString(R.string.update_release_notes_io_exception_snackbar_message)
                     Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
                         showSnackbarError("$errorMessage: $e")
                     }
                 } catch (e: UnknownServiceException) {
-                    val errorMessage = "Unknown Service Exception"
-                    Log.e(TAG, "Unknown Service Exception", e)
+                    val errorMessage =
+                        application.getString(R.string.update_release_notes_unknown_service_exception_snackbar_message)
+                    Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
                         showSnackbarError("$errorMessage: $e")
                     }
@@ -90,7 +98,8 @@ class ReleaseNotesViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
                     connection.disconnect()
                 }
             } catch (e: IOException) {
-                val errorMessage = "Failed to create HttpsURLConnection"
+                val errorMessage =
+                    application.getString(R.string.update_release_notes_failed_to_create_httpsurlconnection_snackbar_message)
                 Log.e(TAG, errorMessage, e)
                 viewModelScope.launch {
                     showSnackbarError("$errorMessage: $e")

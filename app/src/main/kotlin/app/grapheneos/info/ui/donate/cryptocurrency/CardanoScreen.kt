@@ -7,10 +7,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import app.grapheneos.info.R
@@ -25,13 +25,13 @@ fun CardanoScreen(
             .fillMaxSize(),
     ) {
         item {
-            Text("Cardano can be used to make donations to the non-profit GrapheneOS Foundation.")
+            Text(stringResource(R.string.cardano_info))
         }
         item {
             AddressInfoItem(
-                title = "Cardano",
+                title = stringResource(R.string.cardano),
                 qrCodePainterResourceId = R.drawable.donate_cardano_qr_code,
-                qrCodeContentDescription = "Cardano donation QR code",
+                qrCodeContentDescription = stringResource(R.string.cardano_qr_code_description),
                 addressUrl = "web+cardano:addr1q9v89vfwyfssveug5zf2w7leafz8ethq490gvq0ghag883atfnucytpnq2t38dj7cnyngs6ne05cdwu9gseevgmt3ggq2a2wt6",
                 address = "addr1q9v89vfwyfssveug5zf2w7leafz8ethq490gvq0ghag883atfnucytpnq2t38dj7cnyngs6ne05cdwu9gseevgmt3ggq2a2wt6",
                 showSnackbarError = showSnackbarError
@@ -40,23 +40,13 @@ fun CardanoScreen(
         item {
             SelectionContainer {
                 Text(
-                    buildAnnotatedString {
-                        append("We own the ")
-
-                        pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
-
-                        append("\$grapheneos")
-
-                        pop()
-
-                        append(" handle with this address so you can also send to the handle.")
-                    }
+                    AnnotatedString.Companion.fromHtml(stringResource(R.string.cardano_handle_notice))
                 )
             }
         }
         item {
             Text(
-                "We aren't looking for donations of tokens, only Cardano itself.",
+                stringResource(R.string.cardano_token_donation_notice),
                 fontWeight = FontWeight.Bold
             )
         }

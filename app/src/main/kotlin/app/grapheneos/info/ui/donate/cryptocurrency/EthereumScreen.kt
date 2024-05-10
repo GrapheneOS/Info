@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
@@ -21,13 +22,13 @@ fun EthereumScreen(
             .fillMaxSize(),
     ) {
         item {
-            Text("Ethereum can be used to make donations to the non-profit GrapheneOS Foundation.")
+            Text(stringResource(R.string.etherium_info))
         }
         item {
             AddressInfoItem(
-                title = "Ethereum",
+                title = stringResource(R.string.ethereum),
                 qrCodePainterResourceId = R.drawable.donate_ethereum_qr_code,
-                qrCodeContentDescription = "Ethereum donation QR code",
+                qrCodeContentDescription = stringResource(R.string.ethereum_qr_code_description),
                 addressUrl = "ethereum:0xC822A62E5Ab443E0001f30cEB9B2336D0524fC61",
                 address = "0xC822A62E5Ab443E0001f30cEB9B2336D0524fC61",
                 showSnackbarError = showSnackbarError
@@ -35,7 +36,7 @@ fun EthereumScreen(
         }
         item {
             Text(
-                "We aren't looking for donations of tokens, only Ethereum itself.",
+                stringResource(R.string.etherium_token_donation_notice),
                 fontWeight = FontWeight.Bold
             )
         }

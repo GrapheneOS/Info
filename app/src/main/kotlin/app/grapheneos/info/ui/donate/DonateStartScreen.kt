@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -26,7 +25,6 @@ import app.grapheneos.info.ui.reusablecomposables.ClickableText
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 import app.grapheneos.info.ui.reusablecomposables.ScreenNavCardItem
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun DonateStartScreen(
     onNavigateToGithubSponsorsScreen: () -> Unit,
