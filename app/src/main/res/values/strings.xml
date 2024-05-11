@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Info</string>
     <string name="release_notes">Release Notes</string>
     <string name="community">Community</string>
@@ -144,4 +144,5 @@
         HttpsURLConnection
     </string>
     <string name="screen_nav_card_item_on_click_label">open screen</string>
+    <string name="account_info_item_copy_term">Copy %1$s</string>
 </resources>
