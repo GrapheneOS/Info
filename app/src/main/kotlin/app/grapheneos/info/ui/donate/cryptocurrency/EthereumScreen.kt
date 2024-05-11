@@ -26,7 +26,7 @@ fun EthereumScreen(
         }
         item {
             AddressInfoItem(
-                title = stringResource(R.string.ethereum),
+                title = "Ethereum",
                 qrCodePainterResourceId = R.drawable.donate_ethereum_qr_code,
                 qrCodeContentDescription = stringResource(R.string.ethereum_qr_code_description),
                 addressUrl = "ethereum:0xC822A62E5Ab443E0001f30cEB9B2336D0524fC61",

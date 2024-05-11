@@ -29,7 +29,7 @@ fun CardanoScreen(
         }
         item {
             AddressInfoItem(
-                title = stringResource(R.string.cardano),
+                title = "Cardano",
                 qrCodePainterResourceId = R.drawable.donate_cardano_qr_code,
                 qrCodeContentDescription = stringResource(R.string.cardano_qr_code_description),
                 addressUrl = "web+cardano:addr1q9v89vfwyfssveug5zf2w7leafz8ethq490gvq0ghag883atfnucytpnq2t38dj7cnyngs6ne05cdwu9gseevgmt3ggq2a2wt6",

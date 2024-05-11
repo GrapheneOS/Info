@@ -33,7 +33,7 @@ fun BitcoinScreen(
         }
         item {
             AddressInfoItem(
-                title = stringResource(R.string.bech32_segwit),
+                title = "Bech32 (Segwit)",
                 qrCodePainterResourceId = R.drawable.donate_bitcoin_qr_code,
                 qrCodeContentDescription = stringResource(R.string.bech32_segwit_qr_code_description),
                 addressUrl = "bitcoin:bc1q9qw3g8tdxf3dugkv2z8cahd3axehph0mhsqk96?label=GrapheneOS%20Foundation&message=Donation%20to%20GrapheneOS%20Foundation",
@@ -43,7 +43,7 @@ fun BitcoinScreen(
         }
         item {
             AddressInfoItem(
-                title = stringResource(R.string.bech32m_taproot),
+                title = "Bech32m (Taproot)",
                 qrCodePainterResourceId = R.drawable.donate_bitcoin_taproot_qr_code,
                 qrCodeContentDescription = stringResource(R.string.bech32m_taproot_qr_code_description),
                 addressUrl = "bitcoin:bc1prqf5hks5dnd4j87wxw3djn20559yhj7wvvcv6fqxpwlg96udkzgqtamhry?label=GrapheneOS%20Foundation&message=Donation%20to%20GrapheneOS%20Foundation",
@@ -53,7 +53,7 @@ fun BitcoinScreen(
         }
         item {
             AddressInfoItem(
-                title = stringResource(R.string.bip47_payment_code_stealth_address),
+                title = "BIP47 payment code (stealth address)",
                 qrCodePainterResourceId = R.drawable.donate_bitcoin_bip47_qr_code,
                 qrCodeContentDescription = stringResource(R.string.bip47_payment_code_stealth_address_qr_code_description),
                 addressUrl = "bitcoin:PM8TJKmhJNQX6UTFagyuBk8UGmwKM6yDovEokpHBscPgP3Ac7WdK5zaQKh5XLSawyxiGYZS2a7HkAoeL6oHg7Ahn1VXX888yRG4PwF1dojouPtW7tEHT",

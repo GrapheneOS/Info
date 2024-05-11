@@ -18,62 +18,25 @@
     <string name="account_holder">Account holder</string>
     <string name="grapheneos_foundation">GrapheneOS Foundation</string>
     <string name="iban">IBAN</string>
-    <string name="eu_sepa_eur_iban">BE20 9677 1140 7056</string>
-    <string name="bic">BIC</string>
-    <string name="eu_sepa_eur_bic" tools:ignore="Typos">TRWIBEB1XXX</string>
     <string name="bank_name">Bank name</string>
-    <string name="eu_sepa_eur_bank_name">Wise Europe SA</string>
     <string name="wise_and_bank_address">Wise and Bank address</string>
-    <string name="eu_sepa_eur_wise_and_bank_address">Rue du Trône 100, 3rd floor\nBrussels\n1050\nBelgium</string>
     <string name="uk_gbp">UK (GBP)</string>
     <string name="account_number">Account number</string>
-    <string name="uk_gbp_account_number">49883070</string>
-    <string name="uk_gbp_bic" tools:ignore="Typos">TRWIBEB1XXX</string>
-    <string name="uk_gbp_iban">GB68 TRWI 2314 7049 8830 70</string>
     <string name="sort_code">Sort code</string>
-    <string name="uk_gbp_sort_code" tools:ignore="TypographyDashes">23-14-70</string>
-    <string name="uk_gbp_bank_name">Wise Payments Limited</string>
-    <string name="uk_gbp_wise_and_bank_address">56 Shoreditch High Street\nLondon\nE1 6JJ\nUnited Kingdom</string>
     <string name="us_usd">US (USD)</string>
-    <string name="us_usd_account_number">8313560023</string>
     <string name="routing_number">Routing number</string>
-    <string name="us_usd_routing_number">026073150</string>
     <string name="account_type">Account type</string>
     <string name="checking">Checking</string>
     <string name="wise_address">Wise address</string>
-    <string name="us_usd_wise_address">30 W. 26th Street, Sixth Floor\nNew York NY\n10010\nUnited States</string>
-    <string name="us_usd_bank_name">Community Federal Savings Bank</string>
     <string name="bank_address">Bank address</string>
-    <string name="us_usd_bank_address" tools:ignore="TypographyDashes">89-16 Jamaica Ave\nWoodhaven NY\n11421\nUnited States</string>
     <string name="australia_aud">Australia (AUD)</string>
-    <string name="australia_aud_account_number">213524417</string>
     <string name="bsb_code">BSB code</string>
-    <string name="australia_aud_bsb_code" tools:ignore="TypographyDashes">774-001</string>
-    <string name="australia_aud_bank_name">Wise Australia Pty Ltd</string>
-    <string name="australia_aud_wise_address">Suite 1, Level 11, 66 Goulburn Street\nSydney\n2000\nAustralia</string>
     <string name="new_zealand_nzd">New Zealand (NZD)</string>
-    <string name="new_zealand_nzd_account_number" tools:ignore="TypographyDashes">04-2021-0151878-36</string>
-    <string name="new_zealand_nzd_wise_address">56 Shoreditch High Street\nLondon\nE1 6JJ\nUnited Kingdom</string>
-    <string name="new_zealand_nzd_bank_name">JPMorgan Chase</string>
-    <string name="new_zealand_nzd_bank_address">Head Office, Pwc Tower\nAuckland\n1010\nNew Zealand</string>
     <string name="canada_cad">Canada (CAD)</string>
-    <string name="canada_cad_account_number">200110745303</string>
     <string name="transit_number">Transit number</string>
-    <string name="canada_cad_transit_number">16001</string>
     <string name="institution_number">Institution number</string>
-    <string name="canada_cad_institution_number">621</string>
-    <string name="canada_cad_wise_address">99 Bank Street, Suite 1420\nOttawa ON\nK1P 1H4\nCanada</string>
-    <string name="canada_cad_bank_name">Peoples Trust</string>
-    <string name="canada_cad_bank_address">595 Burrard Street\nVancouver BC\nV7X 1L7\nCanada</string>
     <string name="hungary_huf">Hungary (HUF)</string>
-    <string name="hungary_huf_account_number" tools:ignore="TypographyDashes">12600016-11020392-99827322</string>
-    <string name="hungary_huf_bank_name">Wise Europe SA</string>
-    <string name="hungary_huf_wise_and_bank_address">Rue du Trône 100, 3rd floor\nBrussels\n1050\nBelgium</string>
     <string name="turkey_try">Turkey (TRY)</string>
-    <string name="turkey_try_iban">TR43 0010 3000 0000 0057 4294 70</string>
-    <string name="turkey_try_wise_address">56 Shoreditch High Street, London, E1 6JJ, United Kingdom</string>
-    <string name="turkey_try_bank_name">Fibabanka A.Ş.</string>
-    <string name="turkey_try_bank_address">Büyükdere Cad. 129, Esentepe Mah., Sisli</string>
     <string name="interac_e_transfer">Interac e-Transfer</string>
     <string name="interac_e_transfer_info">If you have a Canadian bank account, you can send Canadian dollar
         donations to the non-profit GrapheneOS Foundation via Interac e-Transfer to &lt;i>contact@grapheneos.org&lt;/i>. The email address has Interac e-Transfer Autodeposit support enabled
@@ -137,11 +100,8 @@
     </string>
     <string name="link_card_item_on_click_label">open link</string>
     <string name="bitcoin_info">Bitcoin can be used to make donations to the non-profit GrapheneOS Foundation.</string>
-    <string name="bech32_segwit">Bech32 (Segwit)</string>
     <string name="bech32_segwit_qr_code_description">Bitcoin donation QR code</string>
-    <string name="bech32m_taproot">Bech32m (Taproot)</string>
     <string name="bech32m_taproot_qr_code_description">Bitcoin Taproot donation QR code</string>
-    <string name="bip47_payment_code_stealth_address">BIP47 payment code (stealth address)</string>
     <string name="bip47_payment_code_stealth_address_qr_code_description">Bitcoin BIP47 payment code QR code</string>
     <string name="bitcoin_fee_notice">We recommend using the lowest fee tier recommended by your wallet since the
         transaction taking hours or even a couple days is fine. An even lower custom fee isn\'t recommended unless
@@ -176,7 +136,6 @@
     <string name="monero_qr_code_description">Monero donation QR code</string>
     <string name="monero_fee_notice">We recommend using the lowest fee level since it will still be quick.</string>
     <string name="zcash_info">Zcash can be used to make donations to the non-profit GrapheneOS Foundation.</string>
-    <string name="zcash_transparent">Zcash (transparent)</string>
     <string name="zcash_transparent_qr_code_description">Transparent Zcash donation QR code</string>
     <string name="update_release_notes_socket_timeout_exception_snackbar_message">Socket Timeout Exception</string>
     <string name="update_release_notes_io_exception_snackbar_message">Failed to retrieve latest release notes</string>

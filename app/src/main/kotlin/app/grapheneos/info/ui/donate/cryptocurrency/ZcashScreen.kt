@@ -25,7 +25,7 @@ fun ZcashScreen(
         }
         item {
             AddressInfoItem(
-                title = stringResource(R.string.zcash_transparent),
+                title = "Zcash (transparent)",
                 qrCodePainterResourceId = R.drawable.donate_zcash_transparent_qr_code,
                 qrCodeContentDescription = stringResource(R.string.zcash_transparent_qr_code_description),
                 addressUrl = "zcash:t1SJABjX8rqgzqgrzLW5dUw7ikSDZ2snD8A?label=GrapheneOS%20Foundation&message=Donation%20to%20GrapheneOS%20Foundation",
