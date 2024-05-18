@@ -28,10 +28,20 @@ class ReleaseNotesViewModel(
     private val _uiState = MutableStateFlow(ReleaseNotesUiState(savedStateHandle))
     val uiState: StateFlow<ReleaseNotesUiState> = _uiState.asStateFlow()
 
+    init {
+        updateReleaseNotes(
+            useCaches = true,
+            showSnackbarError = {},
+            scrollReleaseNotesLazyListTo = {},
+            countAsInitialScroll = false,
+        )
+    }
+
     fun updateReleaseNotes(
         useCaches: Boolean,
         showSnackbarError: suspend (message: String) -> Unit,
         scrollReleaseNotesLazyListTo: (scrollTo: Int) -> Unit,
+        countAsInitialScroll: Boolean = true,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -54,13 +64,13 @@ class ReleaseNotesViewModel(
 
                     // Only update if there are changes to the number of changelogs
                     if ((entries.count() - uiState.value.entries.size) != 0) {
-                        _uiState.value.entries.clear()
                         withContext(Dispatchers.Main) {
+                            _uiState.value.entries.clear()
                             _uiState.value.entries.addAll(entries)
                         }
                     }
 
-                    if (!uiState.value.didInitialScroll) {
+                    if (countAsInitialScroll && !uiState.value.didInitialScroll) {
                         val scrollTo = uiState.value.entries.indexOfFirst {
                             val title = "<title>(.*?)</title>".toRegex()
                                 .find(it)?.groups?.get(1)?.value

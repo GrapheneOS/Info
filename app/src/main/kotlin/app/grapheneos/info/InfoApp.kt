@@ -44,6 +44,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import app.grapheneos.info.preferences.PreferencesViewModel
 import app.grapheneos.info.ui.community.CommunityScreen
 import app.grapheneos.info.ui.donate.DonateStartScreen
 import app.grapheneos.info.ui.donate.GithubSponsorsScreen
@@ -80,6 +81,12 @@ enum class InfoAppScreens(@StringRes val title: Int) {
     DonateBankTransfers(title = R.string.bank_transfers)
 }
 
+val navBarScreens = listOf(
+    InfoAppScreens.ReleaseNotes,
+    InfoAppScreens.Community,
+    InfoAppScreens.Donate
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfoApp() {
@@ -87,7 +94,13 @@ fun InfoApp() {
 
     val backStackEntry by navController.currentBackStackEntryAsState()
 
-    val currentScreen = InfoAppScreens.valueOf(backStackEntry?.destination?.route ?: InfoAppScreens.ReleaseNotes.name)
+    val preferencesViewModel: PreferencesViewModel = viewModel()
+
+    val preferencesUiState by preferencesViewModel.uiState.collectAsState()
+
+    val startDestination = preferencesUiState.startDestination.second.value
+
+    val currentScreen = InfoAppScreens.valueOf(backStackEntry?.destination?.route ?: startDestination)
 
     val releaseNotesViewModel: ReleaseNotesViewModel = viewModel()
 
@@ -136,24 +149,26 @@ fun InfoApp() {
         },
         bottomBar = {
             NavigationBar {
-                listOf(
-                    InfoAppScreens.ReleaseNotes,
-                    InfoAppScreens.Community,
-                    InfoAppScreens.Donate
-                ).forEach { bottomBarScreen ->
+                navBarScreens.forEach { navBarScreen ->
                     NavigationBarItem(
-                        selected = bottomBarScreen == navBarSelected,
+                        selected = navBarScreen == navBarSelected,
                         onClick = {
-                            navController.navigate(bottomBarScreen.name) {
+                            navController.navigate(navBarScreen.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                                    saveState = false
                                 }
                                 launchSingleTop = true
-                                restoreState = true
+                                restoreState = false
+                            }
+                            navBarScreen.let {
+                                preferencesViewModel.setPreference(
+                                    preferencesUiState.startDestination.first,
+                                    it.name
+                                )
                             }
                         },
                         icon = {
-                            when (bottomBarScreen) {
+                            when (navBarScreen) {
                                 InfoAppScreens.ReleaseNotes -> Icon(
                                     painter = painterResource(id = R.drawable.outline_newsmode),
                                     contentDescription = null
@@ -172,7 +187,7 @@ fun InfoApp() {
                                 else -> {}
                             }
                         },
-                        label = { Text(text = stringResource(id = bottomBarScreen.title)) }
+                        label = { Text(text = stringResource(id = navBarScreen.title)) }
                     )
                 }
             }
@@ -183,7 +198,7 @@ fun InfoApp() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = InfoAppScreens.ReleaseNotes.name,
+            startDestination = startDestination,
             modifier = Modifier.padding(innerPadding),
             enterTransition = {
                 slideIn { IntOffset(it.width, 0) } + fadeIn()
@@ -205,6 +220,16 @@ fun InfoApp() {
                 },
                 exitTransition = {
                     slideOut { IntOffset(-it.width, 0) } + fadeOut()
+                },
+                popEnterTransition = {
+                    if (getStateNavBarRoute(initialState) == InfoAppScreens.Donate) {
+                        slideIn { IntOffset(-it.width, 0) }
+                    } else {
+                        slideIn { IntOffset(-it.width, 0) }
+                    } + fadeIn()
+                },
+                popExitTransition = {
+                    slideOut { IntOffset(it.width, 0) } + fadeOut()
                 }
             ) {
                 ReleaseNotesScreen(
@@ -230,23 +255,35 @@ fun InfoApp() {
             composable(
                 route = InfoAppScreens.Community.name,
                 enterTransition = {
-                    if (getInitialStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
+                    if (getStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
                         slideIn { IntOffset(it.width, 0) }
-                    } else if (getInitialStateNavBarRoute(initialState) == InfoAppScreens.Donate) {
+                    } else if (getStateNavBarRoute(initialState) == InfoAppScreens.Donate) {
                         slideIn { IntOffset(-it.width, 0) }
                     } else {
-                        slideIn { IntOffset(it.width, 0) }
+                        slideIn { IntOffset(-it.width, 0) }
                     } + fadeIn()
                 },
                 exitTransition = {
-                    if (getTargetStateNavBarRoute(targetState) == InfoAppScreens.ReleaseNotes) {
+                    if (getStateNavBarRoute(targetState) == InfoAppScreens.ReleaseNotes) {
                         slideOut { IntOffset(it.width, 0) }
-                    } else if (getTargetStateNavBarRoute(targetState) == InfoAppScreens.Donate) {
+                    } else if (getStateNavBarRoute(targetState) == InfoAppScreens.Donate) {
                         slideOut { IntOffset(-it.width, 0) }
                     } else {
-                        slideOut { IntOffset(it.width, 0) }
+                        slideOut { IntOffset(-it.width, 0) }
                     } + fadeOut()
                 },
+                popEnterTransition = {
+                    if (getStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
+                        slideIn { IntOffset(it.width, 0) }
+                    } else if (getStateNavBarRoute(initialState) == InfoAppScreens.Donate) {
+                        slideIn { IntOffset(-it.width, 0) }
+                    } else {
+                        slideIn { IntOffset(-it.width, 0) }
+                    } + fadeIn()
+                },
+                popExitTransition = {
+                    slideOut { IntOffset(it.width, 0) } + fadeOut()
+                }
             ) {
                 CommunityScreen()
             }
@@ -254,27 +291,27 @@ fun InfoApp() {
                 route = InfoAppScreens.Donate.name,
                 startDestination = InfoAppScreens.DonateStart.name,
                 enterTransition = {
-                    if (getInitialStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
+                    if (getStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
                         slideIn { IntOffset(it.width, 0) }
-                    } else if (getInitialStateNavBarRoute(initialState) == InfoAppScreens.Community) {
+                    } else if (getStateNavBarRoute(initialState) == InfoAppScreens.Community) {
                         slideIn { IntOffset(it.width, 0) }
                     } else {
                         slideIn { IntOffset(it.width, 0) }
                     } + fadeIn()
                 },
                 exitTransition = {
-                    if (getTargetStateNavBarRoute(targetState) == InfoAppScreens.ReleaseNotes) {
+                    if (getStateNavBarRoute(targetState) == InfoAppScreens.ReleaseNotes) {
                         slideOut { IntOffset(it.width, 0) }
-                    } else if (getTargetStateNavBarRoute(targetState) == InfoAppScreens.Community) {
+                    } else if (getStateNavBarRoute(targetState) == InfoAppScreens.Community) {
                         slideOut { IntOffset(it.width, 0) }
                     } else {
                         slideOut { IntOffset(-it.width, 0) }
                     } + fadeOut()
                 },
                 popEnterTransition = {
-                    if (getInitialStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
+                    if (getStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
                         slideIn { IntOffset(it.width, 0) }
-                    } else if (getInitialStateNavBarRoute(initialState) == InfoAppScreens.Community) {
+                    } else if (getStateNavBarRoute(initialState) == InfoAppScreens.Community) {
                         slideIn { IntOffset(it.width, 0) }
                     } else {
                         slideIn { IntOffset(-it.width, 0) }
@@ -401,22 +438,11 @@ fun InfoApp() {
     }
 }
 
-fun getTargetStateNavBarRoute(targetState: NavBackStackEntry): InfoAppScreens {
-    return if (targetState.destination.route?.startsWith("Donate") == true) {
-        InfoAppScreens.Donate
-    } else {
-        InfoAppScreens.entries.find {
-            it.name == targetState.destination.route
-        } ?: InfoAppScreens.ReleaseNotes
+fun getStateNavBarRoute(state: NavBackStackEntry): InfoAppScreens? {
+    navBarScreens.forEach { navBarScreen ->
+        if (state.destination.route?.startsWith(navBarScreen.name) == true) {
+            return navBarScreen
+        }
     }
-}
-
-fun getInitialStateNavBarRoute(initialState: NavBackStackEntry): InfoAppScreens {
-    return if (initialState.destination.route?.startsWith("Donate") == true) {
-        InfoAppScreens.Donate
-    } else {
-        InfoAppScreens.entries.find {
-            it.name == initialState.destination.route
-        } ?: InfoAppScreens.ReleaseNotes
-    }
+    return null
 }
