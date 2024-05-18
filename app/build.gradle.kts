@@ -42,7 +42,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     androidResources {
         generateLocaleConfig = true
@@ -76,10 +76,10 @@ android {
 dependencies {
 
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("androidx.lifecycle:lifecycle-process:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-process:2.8.0")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     implementation(platform("androidx.compose:compose-bom:2024.05.00"))
@@ -91,6 +91,6 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     debugImplementation("androidx.compose.ui:ui-tooling")
 
-    // temporarily use alpha until 1.7.0 releases with AnnotatedString.Companion.fromHtml
-    implementation("androidx.compose.ui:ui-text:1.7.0-alpha08")
+    // temporarily use beta until 1.7.0 stable releases with AnnotatedString.Companion.fromHtml
+    implementation("androidx.compose.ui:ui-text:1.7.0-beta01")
 }
