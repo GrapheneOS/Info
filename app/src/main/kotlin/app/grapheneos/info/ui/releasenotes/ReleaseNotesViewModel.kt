@@ -60,20 +60,26 @@ class ReleaseNotesViewModel(
 
                     val responseText = String(connection.inputStream.readBytes())
 
-                    val entries = "<entry>(.*?)</entry>".toRegex().findAll(responseText).map { it.groups[1]!!.value }
+                    val newEntries = "<entry>(.*?)</entry>".toRegex().findAll(responseText).map { it.groups[1]!!.value }.map { entry ->
+                        Pair("<id>(.*?)</id>".toRegex().find(entry)?.groups?.get(1)?.value ?: entry.hashCode().toString(), entry)
+                    }.toMap()
 
                     // Only update if there are changes to the number of changelogs
-                    if ((entries.count() - uiState.value.entries.size) != 0) {
+                    if ((newEntries.count() - uiState.value.entries.size) != 0) {
                         withContext(Dispatchers.Main) {
-                            _uiState.value.entries.clear()
-                            _uiState.value.entries.addAll(entries)
+                            _uiState.value.entries.filterKeys {
+                                !newEntries.keys.contains(it)
+                            }.forEach {
+                                _uiState.value.entries.remove(it.key)
+                            }
+                            _uiState.value.entries.putAll(newEntries)
                         }
                     }
 
                     if (countAsInitialScroll && !uiState.value.didInitialScroll) {
-                        val scrollTo = uiState.value.entries.indexOfFirst {
+                        val scrollTo = uiState.value.entries.entries.indexOfFirst { entry ->
                             val title = "<title>(.*?)</title>".toRegex()
-                                .find(it)?.groups?.get(1)?.value
+                                .find(entry.value)?.groups?.get(1)?.value
 
                             android.os.Build.VERSION.INCREMENTAL == title
                         }

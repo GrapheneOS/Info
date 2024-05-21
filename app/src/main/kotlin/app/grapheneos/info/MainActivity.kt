@@ -6,9 +6,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.viewmodel.compose.viewModel
+import app.grapheneos.info.preferences.PreferencesViewModel
 import app.grapheneos.info.ui.theme.InfoTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,8 +26,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val preferencesViewModel: PreferencesViewModel = viewModel()
+
+            val preferencesUiState by preferencesViewModel.uiState.collectAsState()
+
             InfoTheme {
-                InfoApp()
+                /** Wait for preferences to load before loading the app to avoid race conditions */
+                if (preferencesUiState.isPreferencesLoaded.value) {
+                    InfoApp()
+                }
             }
         }
     }

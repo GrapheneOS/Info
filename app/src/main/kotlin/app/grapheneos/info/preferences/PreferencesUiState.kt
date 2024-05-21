@@ -9,7 +9,10 @@ import app.grapheneos.info.InfoAppScreens
 /** Preference pairs.
  *  The first is the preference key, while the second is the default value. */
 data class PreferencesUiState(
-    /** Start destination of NavHost **/
+    /** Whether the preferences are loaded. **/
+    val isPreferencesLoaded: MutableState<Boolean> = mutableStateOf(false),
+
+    /** Start destination of NavHost. **/
     val startDestination: Pair<Preferences.Key<String>, MutableState<String>> = Pair(
         stringPreferencesKey("START_DESTINATION"),
         mutableStateOf(InfoAppScreens.Community.name),

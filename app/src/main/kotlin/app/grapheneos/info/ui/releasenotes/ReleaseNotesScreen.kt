@@ -26,7 +26,7 @@ import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReleaseNotesScreen(
-    entries: List<String>,
+    entries: List<Pair<String, String>>,
     updateReleaseNotes: (useCaches: Boolean) -> Unit,
     lazyListState: LazyListState,
 ) {
@@ -68,12 +68,12 @@ fun ReleaseNotesScreen(
             if (!state.isRefreshing) {
                 items(
                     items = entries,
-                    key = { "<id>(.*?)</id>".toRegex().find(it)?.groups?.get(1)?.value ?: it.hashCode() }) {
+                    key = { it.first }) {
                     Changelog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 16.dp),
-                        it
+                        it.second
                     )
                 }
             }

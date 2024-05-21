@@ -38,6 +38,7 @@ class PreferencesViewModel(private val application: Application) : AndroidViewMo
 
                 _uiState.update {
                     PreferencesUiState(
+                        isPreferencesLoaded = mutableStateOf(true),
                         startDestination = getPreferencePair(uiState.value.startDestination)
                     )
                 }

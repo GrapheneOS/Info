@@ -1,6 +1,10 @@
 package app.grapheneos.info
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -26,24 +30,33 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
 import app.grapheneos.info.preferences.PreferencesViewModel
 import app.grapheneos.info.ui.community.CommunityScreen
 import app.grapheneos.info.ui.donate.DonateStartScreen
@@ -89,7 +102,9 @@ val navBarScreens = listOf(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InfoApp() {
+fun InfoApp(
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+) {
     val navController = rememberNavController()
 
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -98,9 +113,32 @@ fun InfoApp() {
 
     val preferencesUiState by preferencesViewModel.uiState.collectAsState()
 
-    val startDestination = preferencesUiState.startDestination.second.value
+    /**
+     * Gets the initial value from preferencesUiState.initialStartDestination.second
+     * but doesn't change when it changes until ON_STOP
+     * so the user doesn't get a wierd animation every time they navigate through the bottom navigation bar.
+     */
+    var startDestination by rememberSaveable { preferencesUiState.startDestination.second }
 
     val currentScreen = InfoAppScreens.valueOf(backStackEntry?.destination?.route ?: startDestination)
+
+    val navBarSelected = navBarScreens.find {
+        currentScreen.name.startsWith(it.name)
+    }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) {
+                startDestination = preferencesUiState.startDestination.second.value
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 
     val releaseNotesViewModel: ReleaseNotesViewModel = viewModel()
 
@@ -113,12 +151,6 @@ fun InfoApp() {
     val snackbarHostState = remember { SnackbarHostState() }
 
     val snackbarCoroutine = rememberCoroutineScope()
-
-    val navBarSelected = if (currentScreen.name.startsWith("Donate")) {
-        InfoAppScreens.Donate
-    } else {
-        currentScreen
-    }
 
     val topAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -155,10 +187,10 @@ fun InfoApp() {
                         onClick = {
                             navController.navigate(navBarScreen.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = false
+                                    saveState = true
                                 }
                                 launchSingleTop = true
-                                restoreState = false
+                                restoreState = true
                             }
                             navBarScreen.let {
                                 preferencesViewModel.setPreference(
@@ -200,40 +232,12 @@ fun InfoApp() {
             navController = navController,
             startDestination = startDestination,
             modifier = Modifier.padding(innerPadding),
-            enterTransition = {
-                slideIn { IntOffset(it.width, 0) } + fadeIn()
-            },
-            exitTransition = {
-                slideOut { IntOffset(-it.width, 0) } + fadeOut()
-            },
-            popEnterTransition = {
-                slideIn { IntOffset(-it.width, 0) } + fadeIn()
-            },
-            popExitTransition = {
-                slideOut { IntOffset(it.width, 0) } + fadeOut()
-            }
         ) {
-            composable(
-                route = InfoAppScreens.ReleaseNotes.name,
-                enterTransition = {
-                    slideIn { IntOffset(-it.width, 0) } + fadeIn()
-                },
-                exitTransition = {
-                    slideOut { IntOffset(-it.width, 0) } + fadeOut()
-                },
-                popEnterTransition = {
-                    if (getStateNavBarRoute(initialState) == InfoAppScreens.Donate) {
-                        slideIn { IntOffset(-it.width, 0) }
-                    } else {
-                        slideIn { IntOffset(-it.width, 0) }
-                    } + fadeIn()
-                },
-                popExitTransition = {
-                    slideOut { IntOffset(it.width, 0) } + fadeOut()
-                }
+            composableWithDefaultSlideTransitions(
+                route = InfoAppScreens.ReleaseNotes,
             ) {
                 ReleaseNotesScreen(
-                    releaseNotesUiState.value.entries,
+                    releaseNotesUiState.value.entries.toSortedMap().toList().asReversed(),
                     { useCaches ->
                         releaseNotesViewModel.updateReleaseNotes(
                             useCaches = useCaches,
@@ -252,77 +256,17 @@ fun InfoApp() {
                     releaseNotesLazyListState,
                 )
             }
-            composable(
-                route = InfoAppScreens.Community.name,
-                enterTransition = {
-                    if (getStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
-                        slideIn { IntOffset(it.width, 0) }
-                    } else if (getStateNavBarRoute(initialState) == InfoAppScreens.Donate) {
-                        slideIn { IntOffset(-it.width, 0) }
-                    } else {
-                        slideIn { IntOffset(-it.width, 0) }
-                    } + fadeIn()
-                },
-                exitTransition = {
-                    if (getStateNavBarRoute(targetState) == InfoAppScreens.ReleaseNotes) {
-                        slideOut { IntOffset(it.width, 0) }
-                    } else if (getStateNavBarRoute(targetState) == InfoAppScreens.Donate) {
-                        slideOut { IntOffset(-it.width, 0) }
-                    } else {
-                        slideOut { IntOffset(-it.width, 0) }
-                    } + fadeOut()
-                },
-                popEnterTransition = {
-                    if (getStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
-                        slideIn { IntOffset(it.width, 0) }
-                    } else if (getStateNavBarRoute(initialState) == InfoAppScreens.Donate) {
-                        slideIn { IntOffset(-it.width, 0) }
-                    } else {
-                        slideIn { IntOffset(-it.width, 0) }
-                    } + fadeIn()
-                },
-                popExitTransition = {
-                    slideOut { IntOffset(it.width, 0) } + fadeOut()
-                }
+            composableWithDefaultSlideTransitions(
+                route = InfoAppScreens.Community,
             ) {
                 CommunityScreen()
             }
-            navigation(
-                route = InfoAppScreens.Donate.name,
+            navigationWithDefaultSlideTransitions(
+                route = InfoAppScreens.Donate,
                 startDestination = InfoAppScreens.DonateStart.name,
-                enterTransition = {
-                    if (getStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
-                        slideIn { IntOffset(it.width, 0) }
-                    } else if (getStateNavBarRoute(initialState) == InfoAppScreens.Community) {
-                        slideIn { IntOffset(it.width, 0) }
-                    } else {
-                        slideIn { IntOffset(it.width, 0) }
-                    } + fadeIn()
-                },
-                exitTransition = {
-                    if (getStateNavBarRoute(targetState) == InfoAppScreens.ReleaseNotes) {
-                        slideOut { IntOffset(it.width, 0) }
-                    } else if (getStateNavBarRoute(targetState) == InfoAppScreens.Community) {
-                        slideOut { IntOffset(it.width, 0) }
-                    } else {
-                        slideOut { IntOffset(-it.width, 0) }
-                    } + fadeOut()
-                },
-                popEnterTransition = {
-                    if (getStateNavBarRoute(initialState) == InfoAppScreens.ReleaseNotes) {
-                        slideIn { IntOffset(it.width, 0) }
-                    } else if (getStateNavBarRoute(initialState) == InfoAppScreens.Community) {
-                        slideIn { IntOffset(it.width, 0) }
-                    } else {
-                        slideIn { IntOffset(-it.width, 0) }
-                    } + fadeIn()
-                },
-                popExitTransition = {
-                    slideOut { IntOffset(it.width, 0) } + fadeOut()
-                }
             ) {
-                composable(
-                    route = InfoAppScreens.DonateStart.name,
+                composableWithDefaultSlideTransitions(
+                    route = InfoAppScreens.DonateStart,
                 ) {
                     DonateStartScreen(
                         onNavigateToGithubSponsorsScreen = {
@@ -339,17 +283,17 @@ fun InfoApp() {
                         }
                     )
                 }
-                composable(
-                    route = InfoAppScreens.DonateGithubSponsors.name,
+                composableWithDefaultSlideTransitions(
+                    route = InfoAppScreens.DonateGithubSponsors,
                 ) {
                     GithubSponsorsScreen()
                 }
-                navigation(
-                    route = InfoAppScreens.DonateCryptocurrencies.name,
+                navigationWithDefaultSlideTransitions(
+                    route = InfoAppScreens.DonateCryptocurrencies,
                     startDestination = InfoAppScreens.DonateCryptocurrenciesStart.name
                 ) {
-                    composable(
-                        route = InfoAppScreens.DonateCryptocurrenciesStart.name,
+                    composableWithDefaultSlideTransitions(
+                        route = InfoAppScreens.DonateCryptocurrenciesStart,
                     ) {
                         DonateCryptoCurrencyStartScreen(
                             onNavigateToBitcoinScreen = {
@@ -372,7 +316,7 @@ fun InfoApp() {
                             }
                         )
                     }
-                    composable(route = InfoAppScreens.DonateCryptocurrenciesBitcoin.name) {
+                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesBitcoin) {
                         BitcoinScreen(
                             showSnackbarError = {
                                 snackbarCoroutine.launch {
@@ -381,7 +325,7 @@ fun InfoApp() {
                             },
                         )
                     }
-                    composable(route = InfoAppScreens.DonateCryptocurrenciesMonero.name) {
+                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesMonero) {
                         MoneroScreen(
                             showSnackbarError = {
                                 snackbarCoroutine.launch {
@@ -390,7 +334,7 @@ fun InfoApp() {
                             }
                         )
                     }
-                    composable(route = InfoAppScreens.DonateCryptocurrenciesZcash.name) {
+                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesZcash) {
                         ZcashScreen(
                             showSnackbarError = {
                                 snackbarCoroutine.launch {
@@ -399,7 +343,7 @@ fun InfoApp() {
                             }
                         )
                     }
-                    composable(route = InfoAppScreens.DonateCryptocurrenciesEthereum.name) {
+                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesEthereum) {
                         EthereumScreen(
                             showSnackbarError = {
                                 snackbarCoroutine.launch {
@@ -408,7 +352,7 @@ fun InfoApp() {
                             }
                         )
                     }
-                    composable(route = InfoAppScreens.DonateCryptocurrenciesCardano.name) {
+                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesCardano) {
                         CardanoScreen(
                             showSnackbarError = {
                                 snackbarCoroutine.launch {
@@ -417,7 +361,7 @@ fun InfoApp() {
                             }
                         )
                     }
-                    composable(route = InfoAppScreens.DonateCryptocurrenciesLitecoin.name) {
+                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesLitecoin) {
                         LitecoinScreen(
                             showSnackbarError = {
                                 snackbarCoroutine.launch {
@@ -427,10 +371,10 @@ fun InfoApp() {
                         )
                     }
                 }
-                composable(route = InfoAppScreens.DonatePaypal.name) {
+                composableWithDefaultSlideTransitions(route = InfoAppScreens.DonatePaypal) {
                     PaypalScreen()
                 }
-                composable(route = InfoAppScreens.DonateBankTransfers.name) {
+                composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateBankTransfers) {
                     BankTransfersScreen()
                 }
             }
@@ -439,10 +383,146 @@ fun InfoApp() {
 }
 
 fun getStateNavBarRoute(state: NavBackStackEntry): InfoAppScreens? {
-    navBarScreens.forEach { navBarScreen ->
-        if (state.destination.route?.startsWith(navBarScreen.name) == true) {
-            return navBarScreen
-        }
-    }
+    state.destination.route?.let { return InfoAppScreens.valueOf(it) }
     return null
+}
+
+fun getEnterTransition(initialState: NavBackStackEntry, targetState: NavBackStackEntry): EnterTransition {
+    val initialNavBarRoute = getStateNavBarRoute(initialState)
+    val targetNavBarRoute = getStateNavBarRoute(targetState)
+
+    return if ((initialNavBarRoute != null) && (targetNavBarRoute != null)) {
+        slideIn {
+            IntOffset(
+                if (initialNavBarRoute.ordinal > targetNavBarRoute.ordinal) {
+                    -it.width
+                } else {
+                    it.width
+                },
+                0
+            )
+        } + fadeIn()
+    } else {
+        EnterTransition.None
+    }
+}
+
+fun getExitTransition(initialState: NavBackStackEntry, targetState: NavBackStackEntry, reverseDirection: Boolean = false): ExitTransition {
+    val initialNavBarRoute = getStateNavBarRoute(initialState)
+    val targetNavBarRoute = getStateNavBarRoute(targetState)
+
+    return if ((initialNavBarRoute != null) && (targetNavBarRoute != null)) {
+        slideOut {
+            IntOffset(
+                if (initialNavBarRoute.ordinal > targetNavBarRoute.ordinal) {
+                    it.width
+                } else {
+                    -it.width
+                },
+                0
+            )
+        } + fadeOut()
+    } else {
+        ExitTransition.None
+    }
+}
+
+fun NavGraphBuilder.composableWithDefaultSlideTransitions(
+    route: InfoAppScreens,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    enterTransition: @JvmSuppressWildcards() (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
+    exitTransition: @JvmSuppressWildcards() (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
+    popEnterTransition: @JvmSuppressWildcards() (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
+    popExitTransition: @JvmSuppressWildcards() (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
+    content: @Composable() (AnimatedContentScope.(NavBackStackEntry) -> Unit)
+) {
+    composable(
+        route.name,
+        arguments,
+        deepLinks,
+        if (enterTransition == null) {
+            {
+                getEnterTransition(initialState, targetState)
+            }
+        } else {
+            null
+        },
+        if (exitTransition == null) {
+            {
+                getExitTransition(initialState, targetState)
+            }
+        } else {
+            null
+        },
+        if (popEnterTransition == null) {
+            {
+                getEnterTransition(initialState, targetState)
+            }
+        } else {
+            null
+        },
+        if (popExitTransition == null) {
+            {
+                getExitTransition(initialState, targetState)
+            }
+        } else {
+            null
+        },
+        content
+    )
+}
+
+fun NavGraphBuilder.navigationWithDefaultSlideTransitions(
+    startDestination: String,
+    route: InfoAppScreens,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    enterTransition: @JvmSuppressWildcards() (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? =
+    null,
+    exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? =
+    null,
+    popEnterTransition: (
+    AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?
+    )? = enterTransition,
+    popExitTransition: (
+    AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?
+    )? = exitTransition,
+    builder: NavGraphBuilder.() -> Unit
+) {
+    navigation(
+        startDestination,
+        route.name,
+        arguments,
+        deepLinks,
+        if (enterTransition == null) {
+            {
+                getEnterTransition(initialState, targetState)
+            }
+        } else {
+            null
+        },
+        if (exitTransition == null) {
+            {
+                getExitTransition(initialState, targetState)
+            }
+        } else {
+            null
+        },
+        if (popEnterTransition == null) {
+            {
+                getEnterTransition(initialState, targetState)
+            }
+        } else {
+            null
+        },
+        if (popExitTransition == null) {
+            {
+                getExitTransition(initialState, targetState)
+            }
+        } else {
+            null
+        },
+        builder
+    )
 }
