@@ -238,7 +238,7 @@ fun InfoApp(
             ) {
                 ReleaseNotesScreen(
                     releaseNotesUiState.value.entries.toSortedMap().toList().asReversed(),
-                    { useCaches ->
+                    { useCaches, onFinishedUpdating ->
                         releaseNotesViewModel.updateReleaseNotes(
                             useCaches = useCaches,
                             showSnackbarError = {
@@ -251,6 +251,7 @@ fun InfoApp(
                                     }
                                 }
                             },
+                            onFinishedUpdating = onFinishedUpdating,
                         )
                     },
                     releaseNotesLazyListState,

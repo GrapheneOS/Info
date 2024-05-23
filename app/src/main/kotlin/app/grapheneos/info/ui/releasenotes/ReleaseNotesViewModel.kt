@@ -34,6 +34,7 @@ class ReleaseNotesViewModel(
             showSnackbarError = {},
             scrollReleaseNotesLazyListTo = {},
             countAsInitialScroll = false,
+            onFinishedUpdating = {},
         )
     }
 
@@ -42,6 +43,7 @@ class ReleaseNotesViewModel(
         showSnackbarError: suspend (message: String) -> Unit,
         scrollReleaseNotesLazyListTo: (scrollTo: Int) -> Unit,
         countAsInitialScroll: Boolean = true,
+        onFinishedUpdating: () -> Unit = {},
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -77,11 +79,11 @@ class ReleaseNotesViewModel(
                     }
 
                     if (countAsInitialScroll && !uiState.value.didInitialScroll) {
-                        val scrollTo = uiState.value.entries.entries.indexOfFirst { entry ->
+                        val scrollTo = uiState.value.entries.toSortedMap().toList().asReversed().indexOfFirst { entry ->
                             val title = "<title>(.*?)</title>".toRegex()
-                                .find(entry.value)?.groups?.get(1)?.value
+                                .find(entry.second)?.groups?.get(1)?.value
 
-                            android.os.Build.VERSION.INCREMENTAL == title
+                            title == android.os.Build.VERSION.INCREMENTAL
                         }
 
                         if (scrollTo != -1) {
@@ -120,6 +122,8 @@ class ReleaseNotesViewModel(
                 viewModelScope.launch {
                     showSnackbarError("$errorMessage: $e")
                 }
+            } finally {
+                onFinishedUpdating()
             }
         }
     }

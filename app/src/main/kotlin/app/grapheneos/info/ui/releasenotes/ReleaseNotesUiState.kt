@@ -11,5 +11,6 @@ class ReleaseNotesUiState(savedStateHandle: SavedStateHandle) {
     var didInitialScroll: Boolean by savedStateHandle.saveable {
         mutableStateOf(false)
     }
+    /** Unsorted release notes, use .toSortedMap().toList().asReversible() to get them in the proper order. */
     val entries: MutableMap<String, String> = mutableStateMapOf()
 }

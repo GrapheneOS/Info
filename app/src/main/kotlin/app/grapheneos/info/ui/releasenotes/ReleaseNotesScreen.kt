@@ -27,7 +27,7 @@ import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 @Composable
 fun ReleaseNotesScreen(
     entries: List<Pair<String, String>>,
-    updateReleaseNotes: (useCaches: Boolean) -> Unit,
+    updateReleaseNotes: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
     lazyListState: LazyListState,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -35,7 +35,7 @@ fun ReleaseNotesScreen(
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_START) {
-                updateReleaseNotes(true)
+                updateReleaseNotes(true) {}
             }
         }
 
@@ -49,8 +49,9 @@ fun ReleaseNotesScreen(
     val state = rememberPullToRefreshState()
     if (state.isRefreshing) {
         LaunchedEffect(true) {
-            updateReleaseNotes(false)
-            state.endRefresh()
+            updateReleaseNotes(false) {
+                state.endRefresh()
+            }
         }
     }
 
