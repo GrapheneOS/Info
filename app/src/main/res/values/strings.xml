@@ -77,8 +77,8 @@
     <string name="twitter">Twitter</string>
     <string name="mastodon">Mastodon</string>
     <string name="bluesky">Bluesky</string>
-    <string name="github_sponsors_description_part_1">"GrapheneOS can be sponsored with recurring or one-time donations
-        via credit cards through "
+    <string name="github_sponsors_description_part_1">GrapheneOS can be sponsored with recurring or one-time donations
+        via credit cards through
     </string>
     <string name="github_sponsors_description_part_2">. There are standard tiers from $5 to $5,000 or you can donate a
         custom amount.

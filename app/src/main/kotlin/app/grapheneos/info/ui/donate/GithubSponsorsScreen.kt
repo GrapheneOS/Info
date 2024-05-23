@@ -33,6 +33,8 @@ fun GithubSponsorsScreen() {
             val annotatedString = buildAnnotatedString {
                 append(stringResource(R.string.github_sponsors_description_part_1))
 
+                append(" ")
+
                 pushLink(LinkAnnotation.Url(githubSponsorsUrl))
                 pushStringAnnotation("URL", githubSponsorsUrl)
                 pushStyle(SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold))
