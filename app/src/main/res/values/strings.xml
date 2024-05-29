@@ -117,7 +117,7 @@
     <string name="cardano_info">Cardano can be used to make donations to the non-profit GrapheneOS Foundation.</string>
     <string name="cardano_qr_code_description">Cardano donation QR code</string>
     <string name="cardano_handle_notice">
-        <![CDATA[We own the &lt;i>$grapheneos&lt;/i> handle with this address so you can also send to the handle.]]></string>
+        We own the &lt;i>$grapheneos&lt;/i> handle with this address so you can also send to the handle.></string>
     <string name="cardano_token_donation_notice">We aren\'t looking for donations of tokens, only Cardano itself.
     </string>
     <string name="etherium_info">Ethereum can be used to make donations to the non-profit GrapheneOS Foundation.
