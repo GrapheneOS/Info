@@ -119,7 +119,7 @@ fun AddressInfoItem(
                         ?.let { annotation ->
                             try {
                                 localUriHandler.openUri(annotation.item)
-                            } catch (e: ActivityNotFoundException) {
+                            } catch (e: IllegalArgumentException) {
                                 showSnackbarError(activityNotFoundForDonationAddressSnackbarErrorMessage)
                             }
                         }
