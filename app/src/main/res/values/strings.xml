@@ -94,7 +94,7 @@
     <string name="united_states_dollar_usd">United States dollar (USD)</string>
     <string name="euro_eur">Euro (EUR)</string>
     <string name="british_pound_gbp">British pound (GBP)</string>
-    <string name="paypal_fee_description">PayPal charges a base fee of 30 cents and 2.9% of the donation amount within
+    <string name="paypal_fee_description" formatted="false">PayPal charges a base fee of 30 cents and 2.9% of the donation amount within
         Canada. There\'s an additional 0.8% fee for donations from the US and 1% for other countries. Currency
         conversion adds an additional 4% fee as opposed to the usual PayPal conversion fee of 3%.
     </string>
