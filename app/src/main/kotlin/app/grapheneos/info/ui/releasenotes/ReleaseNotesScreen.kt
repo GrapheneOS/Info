@@ -66,17 +66,15 @@ fun ReleaseNotesScreen(
             state = lazyListState,
             verticalArrangement = Arrangement.Top
         ) {
-            if (!state.isRefreshing) {
-                items(
-                    items = entries,
-                    key = { it.first }) {
-                    Changelog(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp),
-                        it.second
-                    )
-                }
+            items(
+                items = entries,
+                key = { it.first }) {
+                Changelog(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    it.second
+                )
             }
         }
         if ((state.progress > 0.0) || (state.isRefreshing)) {
