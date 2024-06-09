@@ -408,7 +408,7 @@ fun getEnterTransition(initialState: NavBackStackEntry, targetState: NavBackStac
     }
 }
 
-fun getExitTransition(initialState: NavBackStackEntry, targetState: NavBackStackEntry, reverseDirection: Boolean = false): ExitTransition {
+fun getExitTransition(initialState: NavBackStackEntry, targetState: NavBackStackEntry): ExitTransition {
     val initialNavBarRoute = getStateNavBarRoute(initialState)
     val targetNavBarRoute = getStateNavBarRoute(targetState)
 
