@@ -62,8 +62,23 @@ class ReleaseNotesViewModel(
 
                     val responseText = String(connection.inputStream.readBytes())
 
-                    val newEntries = "<entry>(.*?)</entry>".toRegex().findAll(responseText).map { it.groups[1]!!.value }.map { entry ->
+                    var newEntries = "<entry>(.*?)</entry>".toRegex().findAll(responseText).map { it.groups[1]!!.value }.map { entry ->
                         Pair("<id>(.*?)</id>".toRegex().find(entry)?.groups?.get(1)?.value ?: entry.hashCode().toString(), entry)
+                    }.toMap()
+
+                    var currentOsChangelogIndex = newEntries.toSortedMap().toList().asReversed().indexOfFirst { entry ->
+                        val title = "<title>(.*?)</title>".toRegex()
+                            .find(entry.second)?.groups?.get(1)?.value
+
+                        title == android.os.Build.VERSION.INCREMENTAL
+                    }
+
+                    if (currentOsChangelogIndex == -1) {
+                        currentOsChangelogIndex = 0
+                    }
+
+                    newEntries = newEntries.toSortedMap().toList().asReversed().filterIndexed { index, _ ->
+                        index <= currentOsChangelogIndex + 3
                     }.toMap()
 
                     // Only update if there are changes to the number of changelogs
@@ -79,17 +94,8 @@ class ReleaseNotesViewModel(
                     }
 
                     if (countAsInitialScroll && !uiState.value.didInitialScroll) {
-                        val scrollTo = uiState.value.entries.toSortedMap().toList().asReversed().indexOfFirst { entry ->
-                            val title = "<title>(.*?)</title>".toRegex()
-                                .find(entry.second)?.groups?.get(1)?.value
-
-                            title == android.os.Build.VERSION.INCREMENTAL
-                        }
-
-                        if (scrollTo != -1) {
-                            _uiState.value.didInitialScroll = true
-                            scrollReleaseNotesLazyListTo(scrollTo)
-                        }
+                        _uiState.value.didInitialScroll = true
+                        scrollReleaseNotesLazyListTo(currentOsChangelogIndex)
                     }
                 } catch (e: SocketTimeoutException) {
                     val errorMessage =
