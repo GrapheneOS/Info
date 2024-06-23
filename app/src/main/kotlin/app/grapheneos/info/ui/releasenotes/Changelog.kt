@@ -67,10 +67,6 @@ private fun NodeToComposable(
 ) {
     val attributes = node.attributes
 
-    var modifier = modifier
-
-    var style = style
-
     // Push annotations and modify modifier and/or style
     for (a in 0 until attributes.length) {
         val attribute = attributes.item(a)
