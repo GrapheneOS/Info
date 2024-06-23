@@ -1,0 +1,21 @@
+<lint>
+    <!-- overly aggressive check -->
+    <issue id="VectorPath">
+        <ignore path="src/main/res/drawable/discord_logo.xml"/>
+        <ignore path="src/main/res/drawable/donate_bitcoin_bip47_qr_code.xml"/>
+        <ignore path="src/main/res/drawable/donate_bitcoin_qr_code.xml"/>
+        <ignore path="src/main/res/drawable/donate_bitcoin_taproot_qr_code.xml"/>
+        <ignore path="src/main/res/drawable/donate_cardano_qr_code.xml"/>
+        <ignore path="src/main/res/drawable/donate_ethereum_qr_code.xml"/>
+        <ignore path="src/main/res/drawable/donate_litecoin_qr_code.xml"/>
+        <ignore path="src/main/res/drawable/donate_monero_qr_code.xml"/>
+        <ignore path="src/main/res/drawable/donate_zcash_transparent_qr_code.xml"/>
+        <ignore path="src/main/res/drawable/github.xml"/>
+        <ignore path="src/main/res/drawable/grapheneos_logo.xml"/>
+        <ignore path="src/main/res/drawable/ic_launcher_foreground.xml"/>
+        <ignore path="src/main/res/drawable/litecoin.xml"/>
+        <ignore path="src/main/res/drawable/mastodon_logo.xml"/>
+        <ignore path="src/main/res/drawable/matrix_logo.xml"/>
+        <ignore path="src/main/res/drawable/telegram_logo.xml"/>
+    </issue>
+</lint>
