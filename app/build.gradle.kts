@@ -82,7 +82,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-process:2.8.2")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
-    implementation(platform("androidx.compose:compose-bom:2024.05.00"))
+    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -92,5 +92,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     // temporarily use beta until 1.7.0 stable releases with AnnotatedString.Companion.fromHtml
-    implementation("androidx.compose.ui:ui-text:1.7.0-beta02")
+    implementation("androidx.compose.ui:ui-text:1.7.0-beta03")
 }
