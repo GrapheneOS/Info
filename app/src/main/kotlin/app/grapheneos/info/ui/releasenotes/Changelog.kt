@@ -56,7 +56,6 @@ fun Changelog(modifier: Modifier = Modifier, entry: String) {
     }
 }
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 private fun NodeToComposable(
     node: Node,

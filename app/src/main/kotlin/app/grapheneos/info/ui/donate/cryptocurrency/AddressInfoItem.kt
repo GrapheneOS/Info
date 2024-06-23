@@ -44,7 +44,6 @@ import androidx.core.content.ContextCompat
 import app.grapheneos.info.R
 import app.grapheneos.info.ui.reusablecomposables.ClickableText
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun AddressInfoItem(
     title: String,
