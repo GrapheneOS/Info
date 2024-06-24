@@ -74,7 +74,7 @@
     <string name="social_media_accounts_description">The project\'s official social media accounts are used for official
         announcements.
     </string>
-    <string name="twitter">Twitter</string>
+    <string name="twitter">X</string>
     <string name="mastodon">Mastodon</string>
     <string name="bluesky">Bluesky</string>
     <string name="github_sponsors_description_part_1">GrapheneOS can be sponsored with recurring or one-time donations
