@@ -91,7 +91,7 @@ fun CommunityScreen() {
                 painterResource(id = R.drawable.x_logo),
                 stringResource(R.string.twitter),
                 true,
-                "https://twitter.com/GrapheneOS"
+                "https://x.com/GrapheneOS"
             )
         }
         item {
