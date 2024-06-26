@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.LinkAnnotation
@@ -143,7 +145,7 @@ private fun ParseChildren(
 
                         ClickableText(
                             text = annotatedString,
-                            modifier,
+                            modifier = modifier.semantics { heading() },
                             onClick = { offset ->
                                 annotatedString
                                     .getStringAnnotations("URL", offset, offset).firstOrNull()
