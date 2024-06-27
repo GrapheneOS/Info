@@ -188,6 +188,13 @@ fun InfoApp(
                     NavigationBarItem(
                         selected = navBarScreen == navBarSelected,
                         onClick = {
+                            if (navBarSelected != null) {
+                                navController.popBackStack(
+                                    navBarSelected.name,
+                                    inclusive = true,
+                                    saveState = true
+                                )
+                            }
                             navController.navigate(navBarScreen.name) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
