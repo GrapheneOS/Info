@@ -130,7 +130,9 @@ fun InfoApp(
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_STOP) {
+                val state = navController.saveState()
                 startDestination = preferencesUiState.startDestination.second.value
+                navController.restoreState(state)
             }
         }
 
