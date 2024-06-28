@@ -7,10 +7,13 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/.idea/deploymentTargetDropDown.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
+keystore.properties
+*.keystore
 local.properties
-/.idea/deploymentTargetDropDown.xml
+/releases
