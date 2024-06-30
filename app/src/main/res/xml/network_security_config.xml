@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false"/>
+    <domain-config>
+        <domain includeSubdomains="true">grapheneos.org</domain>
+        <!-- no expiry since the app is expected to be kept relatively up-to-date to use the services -->
+        <pin-set>
+            <!-- ISRG Root X1 -->
+            <pin digest="SHA-256">C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=</pin>
+
+            <!-- ISRG Root X2 -->
+            <pin digest="SHA-256">diGVwiVYbubAI3RW4hB9xU8e/CH2GnkuvVFZE8zmgzI=</pin>
+
+            <!-- ECDSA secp256r1 backup key -->
+            <pin digest="SHA-256">plxMUkaUYKzH2Pqc3qQA3lmLOf+CEuWFm0eQyws2ffM=</pin>
+
+            <!-- ECDSA secp384r1 backup key -->
+            <pin digest="SHA-256">2P1xn0w4b0/Lp7cjEaKemkpZrJ7riBBZCapnsQNR/PA=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>
