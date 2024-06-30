@@ -30,23 +30,17 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
@@ -103,9 +97,7 @@ val navBarScreens = listOf(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InfoApp(
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-) {
+fun InfoApp() {
     val navController = rememberNavController()
 
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -116,31 +108,15 @@ fun InfoApp(
 
     /**
      * Gets the initial value from preferencesUiState.initialStartDestination.second
-     * but doesn't change when it changes until ON_STOP
-     * so the user doesn't get a wierd animation every time they navigate through the bottom navigation bar.
+     * but doesn't change when it changes so the user doesn't get a weird animation
+     * every time they navigate through the bottom navigation bar.
      */
-    var startDestination by rememberSaveable { preferencesUiState.startDestination.second }
+    val startDestination by rememberSaveable { preferencesUiState.startDestination.second }
 
     val currentScreen = InfoAppScreens.valueOf(backStackEntry?.destination?.route ?: startDestination)
 
     val navBarSelected = navBarScreens.find {
         currentScreen.name.startsWith(it.name)
-    }
-
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP) {
-                val state = navController.saveState()
-                startDestination = preferencesUiState.startDestination.second.value
-                navController.restoreState(state)
-            }
-        }
-
-        lifecycleOwner.lifecycle.addObserver(observer)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
     }
 
     val releaseNotesViewModel: ReleaseNotesViewModel = viewModel()
