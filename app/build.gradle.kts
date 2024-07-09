@@ -1,5 +1,5 @@
 import java.io.FileInputStream
-import java.util.*
+import java.util.Properties
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val useKeystoreProperties = keystorePropertiesFile.canRead()
