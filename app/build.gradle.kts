@@ -109,5 +109,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     // temporarily use beta until 1.7.0 stable releases with AnnotatedString.Companion.fromHtml
-    implementation("androidx.compose.ui:ui-text:1.7.0-beta04")
+    implementation("androidx.compose.ui:ui-text:1.7.0-beta05")
 }
