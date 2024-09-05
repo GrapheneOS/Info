@@ -1,31 +1,35 @@
 package app.grapheneos.info.ui.releasenotes
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.VectorConverter
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,10 +42,14 @@ fun ReleaseNotesScreen(
 
     val localUriHandler = LocalUriHandler.current
 
+    val refreshCoroutineScope = rememberCoroutineScope()
+
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_START) {
-                updateReleaseNotes(true) {}
+                refreshCoroutineScope.launch {
+                    updateReleaseNotes(true) {}
+                }
             }
         }
 
@@ -52,19 +60,44 @@ fun ReleaseNotesScreen(
         }
     }
 
-    val state = rememberPullToRefreshState()
-    if (state.isRefreshing) {
-        LaunchedEffect(true) {
-            updateReleaseNotes(false) {
-                state.endRefresh()
+    var isRefreshing by remember { mutableStateOf(false) }
+
+    val state = remember {
+        object : PullToRefreshState {
+            private val anim = Animatable(0f, Float.VectorConverter)
+
+            override val distanceFraction
+                get() = anim.value
+
+            override suspend fun animateToThreshold() {
+                anim.animateTo(1f, spring())
+            }
+
+            override suspend fun animateToHidden() {
+                anim.animateTo(0f)
+            }
+
+            override suspend fun snapTo(targetValue: Float) {
+                anim.snapTo(targetValue)
             }
         }
     }
 
-    Box(
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            isRefreshing = true
+            updateReleaseNotes(false) {
+                isRefreshing = false
+
+                refreshCoroutineScope.launch {
+                    state.animateToHidden()
+                }
+            }
+        },
+        state = state,
         modifier = Modifier
             .fillMaxSize()
-            .nestedScroll(state.nestedScrollConnection)
     ) {
         ScreenLazyColumn(
             modifier = Modifier
@@ -93,14 +126,6 @@ fun ReleaseNotesScreen(
                     }
                 }
             }
-        }
-        if ((state.progress > 0.0) || (state.isRefreshing)) {
-            PullToRefreshContainer(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .statusBarsPadding(),
-                state = state
-            )
         }
     }
 }
