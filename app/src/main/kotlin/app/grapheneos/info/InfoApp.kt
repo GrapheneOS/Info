@@ -143,7 +143,6 @@ fun InfoApp() {
                 title = {
                     Text(
                         text = stringResource(id = currentScreen.title),
-                        style = typography.headlineMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
