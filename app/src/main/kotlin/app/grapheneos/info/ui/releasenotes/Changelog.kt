@@ -151,7 +151,7 @@ private fun ParseChildren(
                                         localUriHandler.openUri(annotation.item)
                                     }
                             },
-                            style = typography.headlineMedium,
+                            style = typography.titleLarge,
                         )
                     }
 
@@ -197,12 +197,12 @@ private fun ParseChildren(
                                     }
                             },
                             modifier = if (likelyHeading) {
-                                modifier.padding(top = 24.dp, bottom = 16.dp)
+                                modifier.padding(top = 16.dp, bottom = 12.dp)
                             } else {
                                 modifier.padding(top = 24.dp)
                             },
                             style = if (likelyHeading) {
-                                typography.titleLarge
+                                typography.titleMedium
                             } else {
                                 style
                             },
@@ -324,12 +324,12 @@ private fun ParseChildren(
                                     }
                             },
                             modifier = if (likelyHeading) {
-                                modifier.padding(top = 24.dp, bottom = 16.dp)
+                                modifier.padding(top = 16.dp, bottom = 12.dp)
                             } else {
                                 modifier.padding(vertical = 16.dp)
                             },
                             style = if (likelyHeading) {
-                                typography.titleLarge
+                                typography.titleMedium
                             } else {
                                 when (child.nodeName) {
                                     "h1" -> style.copy(
