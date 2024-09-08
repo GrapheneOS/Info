@@ -34,7 +34,7 @@ fun DonateCryptoCurrencyStartScreen(
         item {
             ScreenNavCardItem(
                 painter = painterResource(id = R.drawable.bitcoin),
-                name = stringResource(id = R.string.bitcoin)
+                title = stringResource(id = R.string.bitcoin)
             ) {
                 onNavigateToBitcoinScreen()
             }
@@ -42,7 +42,7 @@ fun DonateCryptoCurrencyStartScreen(
         item {
             ScreenNavCardItem(
                 painter = painterResource(id = R.drawable.monero),
-                name = stringResource(id = R.string.monero)
+                title = stringResource(id = R.string.monero)
             ) {
                 onNavigateToMoneroScreen()
             }
@@ -50,7 +50,7 @@ fun DonateCryptoCurrencyStartScreen(
         item {
             ScreenNavCardItem(
                 painter = painterResource(id = R.drawable.zcash),
-                name = stringResource(id = R.string.zcash)
+                title = stringResource(id = R.string.zcash)
             ) {
                 onNavigateToZcashScreen()
             }
@@ -58,7 +58,7 @@ fun DonateCryptoCurrencyStartScreen(
         item {
             ScreenNavCardItem(
                 painter = painterResource(id = R.drawable.ethereum),
-                name = stringResource(id = R.string.ethereum)
+                title = stringResource(id = R.string.ethereum)
             ) {
                 onNavigateToEthereumScreen()
             }
@@ -66,7 +66,7 @@ fun DonateCryptoCurrencyStartScreen(
         item {
             ScreenNavCardItem(
                 painter = painterResource(id = R.drawable.cardano),
-                name = stringResource(id = R.string.cardano)
+                title = stringResource(id = R.string.cardano)
             ) {
                 onNavigateToCardanoScreen()
             }
@@ -74,7 +74,7 @@ fun DonateCryptoCurrencyStartScreen(
         item {
             ScreenNavCardItem(
                 painter = painterResource(id = R.drawable.litecoin),
-                name = stringResource(id = R.string.litecoin)
+                title = stringResource(id = R.string.litecoin)
             ) {
                 onNavigateToLitecoinScreen()
             }
