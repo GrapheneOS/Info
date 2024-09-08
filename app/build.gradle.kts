@@ -30,7 +30,7 @@ android {
     namespace = "app.grapheneos.info"
     compileSdk = 34
     buildToolsVersion = "35.0.0"
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "27.1.12297006"
 
     defaultConfig {
         applicationId = "app.grapheneos.info"
