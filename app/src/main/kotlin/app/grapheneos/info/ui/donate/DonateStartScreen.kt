@@ -55,7 +55,7 @@ fun DonateStartScreen(
         item {
             ScreenNavCardItem(
                 painter = painterResource(id = R.drawable.github),
-                name = stringResource(id = R.string.github_sponsors)
+                title = stringResource(id = R.string.github_sponsors)
             ) {
                 onNavigateToGithubSponsorsScreen()
             }
@@ -63,7 +63,7 @@ fun DonateStartScreen(
         item {
             ScreenNavCardItem(
                 painter = painterResource(id = R.drawable.crypto),
-                name = stringResource(id = R.string.cryptocurrencies)
+                title = stringResource(id = R.string.cryptocurrencies)
             ) {
                 onNavigateToCryptocurrenciesScreen()
             }
@@ -71,7 +71,7 @@ fun DonateStartScreen(
         item {
             ScreenNavCardItem(
                 painter = painterResource(id = R.drawable.paypal),
-                name = stringResource(id = R.string.paypal)
+                title = stringResource(id = R.string.paypal)
             ) {
                 onNavigateToPayPalScreen()
             }
@@ -79,7 +79,7 @@ fun DonateStartScreen(
         item {
             ScreenNavCardItem(
                 painter = painterResource(id = R.drawable.bank),
-                name = stringResource(id = R.string.bank_transfers)
+                title = stringResource(id = R.string.bank_transfers)
             ) {
                 onNavigateToBankTransfersScreen()
             }

@@ -34,26 +34,23 @@ fun CommunityScreen() {
         }
         item {
             LinkCardItem(
-                painterResource(id = R.drawable.discord_logo),
-                stringResource(R.string.discord),
-                true,
-                "https://discord.com/invite/grapheneos"
+                painter = painterResource(id = R.drawable.discord_logo),
+                title = stringResource(R.string.discord),
+                link = "https://discord.com/invite/grapheneos"
             )
         }
         item {
             LinkCardItem(
-                painterResource(id = R.drawable.telegram_logo),
-                stringResource(R.string.telegram),
-                true,
-                "https://t.me/GrapheneOS"
+                painter = painterResource(id = R.drawable.telegram_logo),
+                title = stringResource(R.string.telegram),
+                link = "https://t.me/GrapheneOS"
             )
         }
         item {
             LinkCardItem(
-                painterResource(id = R.drawable.matrix_logo),
-                stringResource(R.string.matrix),
-                true,
-                "https://matrix.to/#/%23community:grapheneos.org"
+                painter = painterResource(id = R.drawable.matrix_logo),
+                title = stringResource(R.string.matrix),
+                link = "https://matrix.to/#/%23community:grapheneos.org"
             )
         }
         item {
@@ -68,10 +65,9 @@ fun CommunityScreen() {
         }
         item {
             LinkCardItem(
-                painterResource(id = R.drawable.grapheneos_logo),
-                stringResource(R.string.grapheneos_discussion_forum),
-                true,
-                "https://discuss.grapheneos.org"
+                painter = painterResource(id = R.drawable.grapheneos_logo),
+                title = stringResource(R.string.grapheneos_discussion_forum),
+                link = "https://discuss.grapheneos.org"
             )
         }
         item {
@@ -88,26 +84,23 @@ fun CommunityScreen() {
         }
         item {
             LinkCardItem(
-                painterResource(id = R.drawable.x_logo),
-                stringResource(R.string.twitter),
-                true,
-                "https://x.com/GrapheneOS"
+                painter = painterResource(id = R.drawable.x_logo),
+                title = stringResource(R.string.twitter),
+                link = "https://x.com/GrapheneOS"
             )
         }
         item {
             LinkCardItem(
-                painterResource(id = R.drawable.mastodon_logo),
-                stringResource(R.string.mastodon),
-                true,
-                "https://grapheneos.social/@GrapheneOS"
+                painter = painterResource(id = R.drawable.mastodon_logo),
+                title = stringResource(R.string.mastodon),
+                link = "https://grapheneos.social/@GrapheneOS"
             )
         }
         item {
             LinkCardItem(
-                painterResource(id = R.drawable.bluesky_logo),
-                stringResource(R.string.bluesky),
-                true,
-                "https://bsky.app/profile/grapheneos.org"
+                painter = painterResource(id = R.drawable.bluesky_logo),
+                title = stringResource(R.string.bluesky),
+                link = "https://bsky.app/profile/grapheneos.org"
             )
         }
     }

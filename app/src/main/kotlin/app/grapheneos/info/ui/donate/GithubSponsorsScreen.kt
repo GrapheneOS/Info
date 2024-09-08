@@ -62,8 +62,7 @@ fun GithubSponsorsScreen() {
         item {
             LinkCardItem(
                 painter = painterResource(id = R.drawable.github),
-                name = stringResource(id = R.string.github_sponsors),
-                tint = true,
+                title = stringResource(id = R.string.github_sponsors),
                 link = githubSponsorsUrl
             )
         }

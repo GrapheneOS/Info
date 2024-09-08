@@ -40,33 +40,29 @@ fun PaypalScreen() {
         }
         item {
             LinkCardItem(
-                Icons.Filled.AttachMoney,
-                name = stringResource(R.string.canadian_dollar_cad),
-                tint = true,
+                imageVector = Icons.Filled.AttachMoney,
+                title = stringResource(R.string.canadian_dollar_cad),
                 link = "https://www.paypal.com/donate/?hosted_button_id=T8KRPYKU5QVNE"
             )
         }
         item {
             LinkCardItem(
-                Icons.Filled.AttachMoney,
-                name = stringResource(R.string.united_states_dollar_usd),
-                tint = true,
+                imageVector = Icons.Filled.AttachMoney,
+                title = stringResource(R.string.united_states_dollar_usd),
                 link = "https://www.paypal.com/donate/?hosted_button_id=2S2BP8V4E7PXU"
             )
         }
         item {
             LinkCardItem(
-                Icons.Filled.Euro,
-                name = stringResource(R.string.euro_eur),
-                tint = true,
+                imageVector = Icons.Filled.Euro,
+                title = stringResource(R.string.euro_eur),
                 link = "https://www.paypal.com/donate/?hosted_button_id=5SNPWEDS53HW4"
             )
         }
         item {
             LinkCardItem(
-                Icons.Filled.CurrencyPound,
-                name = stringResource(R.string.british_pound_gbp),
-                tint = true,
+                imageVector = Icons.Filled.CurrencyPound,
+                title = stringResource(R.string.british_pound_gbp),
                 link = "https://www.paypal.com/donate/?hosted_button_id=N498QNB7NPKU8"
             )
         }
