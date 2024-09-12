@@ -20,7 +20,7 @@ import app.grapheneos.info.ui.reusablecomposables.LinkCardItem
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 
 @Composable
-fun PaypalScreen() {
+fun PaypalScreen(showSnackbarError: (String) -> Unit) {
     ScreenLazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -42,28 +42,32 @@ fun PaypalScreen() {
             LinkCardItem(
                 imageVector = Icons.Filled.AttachMoney,
                 title = stringResource(R.string.canadian_dollar_cad),
-                link = "https://www.paypal.com/donate/?hosted_button_id=T8KRPYKU5QVNE"
+                link = "https://www.paypal.com/donate/?hosted_button_id=T8KRPYKU5QVNE",
+                showSnackbarError = showSnackbarError
             )
         }
         item {
             LinkCardItem(
                 imageVector = Icons.Filled.AttachMoney,
                 title = stringResource(R.string.united_states_dollar_usd),
-                link = "https://www.paypal.com/donate/?hosted_button_id=2S2BP8V4E7PXU"
+                link = "https://www.paypal.com/donate/?hosted_button_id=2S2BP8V4E7PXU",
+                showSnackbarError = showSnackbarError
             )
         }
         item {
             LinkCardItem(
                 imageVector = Icons.Filled.Euro,
                 title = stringResource(R.string.euro_eur),
-                link = "https://www.paypal.com/donate/?hosted_button_id=5SNPWEDS53HW4"
+                link = "https://www.paypal.com/donate/?hosted_button_id=5SNPWEDS53HW4",
+                showSnackbarError = showSnackbarError
             )
         }
         item {
             LinkCardItem(
                 imageVector = Icons.Filled.CurrencyPound,
                 title = stringResource(R.string.british_pound_gbp),
-                link = "https://www.paypal.com/donate/?hosted_button_id=N498QNB7NPKU8"
+                link = "https://www.paypal.com/donate/?hosted_button_id=N498QNB7NPKU8",
+                showSnackbarError = showSnackbarError
             )
         }
         item {
@@ -80,6 +84,6 @@ fun PaypalScreen() {
 @Composable
 private fun PaypalScreenPreview() {
     MaterialTheme {
-        PaypalScreen()
+        PaypalScreen({})
     }
 }

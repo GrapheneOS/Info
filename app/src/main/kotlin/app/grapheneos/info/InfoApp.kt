@@ -248,7 +248,13 @@ fun InfoApp() {
             composableWithDefaultSlideTransitions(
                 route = InfoAppScreens.Community,
             ) {
-                CommunityScreen()
+                CommunityScreen(
+                    showSnackbarError = {
+                        snackbarCoroutine.launch {
+                            snackbarHostState.showSnackbar(it)
+                        }
+                    },
+                )
             }
             navigationWithDefaultSlideTransitions(
                 route = InfoAppScreens.Donate,
@@ -275,7 +281,13 @@ fun InfoApp() {
                 composableWithDefaultSlideTransitions(
                     route = InfoAppScreens.DonateGithubSponsors,
                 ) {
-                    GithubSponsorsScreen()
+                    GithubSponsorsScreen(
+                        showSnackbarError = {
+                            snackbarCoroutine.launch {
+                                snackbarHostState.showSnackbar(it)
+                            }
+                        },
+                    )
                 }
                 navigationWithDefaultSlideTransitions(
                     route = InfoAppScreens.DonateCryptocurrencies,
@@ -361,7 +373,13 @@ fun InfoApp() {
                     }
                 }
                 composableWithDefaultSlideTransitions(route = InfoAppScreens.DonatePaypal) {
-                    PaypalScreen()
+                    PaypalScreen(
+                        showSnackbarError = {
+                            snackbarCoroutine.launch {
+                                snackbarHostState.showSnackbar(it)
+                            }
+                        }
+                    )
                 }
                 composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateBankTransfers) {
                     BankTransfersScreen()

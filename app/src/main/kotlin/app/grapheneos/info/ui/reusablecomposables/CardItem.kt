@@ -63,14 +63,26 @@ fun LinkCardItem(
     title: String,
     onClickLabel: String = stringResource(R.string.link_card_item_on_click_label),
     link: String,
+    showSnackbarError: (String) -> Unit
 ) {
     val localUriHandler = LocalUriHandler.current
+    val openUriIllegalArguementExceptionSnackbarError =
+        stringResource(R.string.link_card_item_open_uri_illegal_argument_exception_snackbar_error)
+
     CardItem(
         modifier = modifier,
         painter = painter,
         title = title,
         onClickLabel = onClickLabel,
-    ) { localUriHandler.openUri(link) }
+    ) {
+        try {
+            localUriHandler.openUri(link)
+        } catch (e: IllegalArgumentException) {
+            showSnackbarError(
+                openUriIllegalArguementExceptionSnackbarError
+            )
+        }
+    }
 }
 
 @Composable
@@ -78,13 +90,15 @@ fun LinkCardItem(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
     title: String,
-    link: String
+    link: String,
+    showSnackbarError: (String) -> Unit
 ) {
     LinkCardItem(
         modifier = modifier,
         painter = rememberVectorPainter(imageVector),
         title = title,
         link = link,
+        showSnackbarError = showSnackbarError
     )
 }
 

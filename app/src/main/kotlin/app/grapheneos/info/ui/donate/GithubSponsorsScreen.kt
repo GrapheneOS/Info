@@ -20,7 +20,7 @@ import app.grapheneos.info.ui.reusablecomposables.LinkCardItem
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 
 @Composable
-fun GithubSponsorsScreen() {
+fun GithubSponsorsScreen(showSnackbarError: (String) -> Unit) {
     val githubSponsorsUrl = "https://github.com/sponsors/thestinger"
 
     ScreenLazyColumn(
@@ -63,7 +63,8 @@ fun GithubSponsorsScreen() {
             LinkCardItem(
                 painter = painterResource(id = R.drawable.github),
                 title = stringResource(id = R.string.github_sponsors),
-                link = githubSponsorsUrl
+                link = githubSponsorsUrl,
+                showSnackbarError = showSnackbarError
             )
         }
     }
@@ -77,6 +78,6 @@ fun GithubSponsorsScreen() {
 @Composable
 private fun GithubSponsorsScreenPreview() {
     MaterialTheme {
-        GithubSponsorsScreen()
+        GithubSponsorsScreen({})
     }
 }
