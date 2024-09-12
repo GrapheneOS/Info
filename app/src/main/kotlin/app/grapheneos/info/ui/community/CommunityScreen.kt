@@ -20,7 +20,7 @@ import app.grapheneos.info.ui.reusablecomposables.LinkCardItem
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 
 @Composable
-fun CommunityScreen() {
+fun CommunityScreen(showSnackbarError: (String) -> Unit) {
     ScreenLazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -39,21 +39,24 @@ fun CommunityScreen() {
             LinkCardItem(
                 painter = painterResource(id = R.drawable.discord_logo),
                 title = stringResource(R.string.discord),
-                link = "https://discord.com/invite/grapheneos"
+                link = "https://discord.com/invite/grapheneos",
+                showSnackbarError = showSnackbarError
             )
         }
         item {
             LinkCardItem(
                 painter = painterResource(id = R.drawable.telegram_logo),
                 title = stringResource(R.string.telegram),
-                link = "https://t.me/GrapheneOS"
+                link = "https://t.me/GrapheneOS",
+                showSnackbarError = showSnackbarError
             )
         }
         item {
             LinkCardItem(
                 painter = painterResource(id = R.drawable.matrix_logo),
                 title = stringResource(R.string.matrix),
-                link = "https://matrix.to/#/%23community:grapheneos.org"
+                link = "https://matrix.to/#/%23community:grapheneos.org",
+                showSnackbarError = showSnackbarError
             )
         }
         item {
@@ -72,7 +75,8 @@ fun CommunityScreen() {
             LinkCardItem(
                 painter = painterResource(id = R.drawable.grapheneos_logo),
                 title = stringResource(R.string.grapheneos_discussion_forum),
-                link = "https://discuss.grapheneos.org"
+                link = "https://discuss.grapheneos.org",
+                showSnackbarError = showSnackbarError
             )
         }
         item {
@@ -93,21 +97,24 @@ fun CommunityScreen() {
             LinkCardItem(
                 painter = painterResource(id = R.drawable.x_logo),
                 title = stringResource(R.string.twitter),
-                link = "https://x.com/GrapheneOS"
+                link = "https://x.com/GrapheneOS",
+                showSnackbarError = showSnackbarError
             )
         }
         item {
             LinkCardItem(
                 painter = painterResource(id = R.drawable.mastodon_logo),
                 title = stringResource(R.string.mastodon),
-                link = "https://grapheneos.social/@GrapheneOS"
+                link = "https://grapheneos.social/@GrapheneOS",
+                showSnackbarError = showSnackbarError
             )
         }
         item {
             LinkCardItem(
                 painter = painterResource(id = R.drawable.bluesky_logo),
                 title = stringResource(R.string.bluesky),
-                link = "https://bsky.app/profile/grapheneos.org"
+                link = "https://bsky.app/profile/grapheneos.org",
+                showSnackbarError = showSnackbarError
             )
         }
     }
@@ -121,6 +128,6 @@ fun CommunityScreen() {
 @Composable
 private fun CommunityScreenPreview() {
     MaterialTheme {
-        CommunityScreen()
+        CommunityScreen({})
     }
 }
