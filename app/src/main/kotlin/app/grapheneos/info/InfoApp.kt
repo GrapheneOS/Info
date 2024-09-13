@@ -16,11 +16,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Forum
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -38,6 +38,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -134,6 +135,11 @@ fun InfoApp() {
 
     val topAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
+    val localUriHandler = LocalUriHandler.current
+
+    val openUriIllegalArguementExceptionSnackbarError =
+        stringResource(R.string.link_card_item_open_uri_illegal_argument_exception_snackbar_error)
+
     Scaffold(
         modifier = Modifier
             .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
@@ -153,6 +159,26 @@ fun InfoApp() {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = stringResource(R.string.navigate_up_button_description)
+                            )
+                        }
+                    }
+                },
+                actions = {
+                    if (navBarSelected == InfoAppScreens.ReleaseNotes) {
+                        IconButton(
+                            onClick = {
+                                try {
+                                    localUriHandler.openUri("https://grapheneos.org/releases#about-the-releases")
+                                } catch (e: IllegalArgumentException) {
+                                    snackbarCoroutine.launch {
+                                        snackbarHostState.showSnackbar(openUriIllegalArguementExceptionSnackbarError)
+                                    }
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Info,
+                                contentDescription = stringResource(R.string.release_notes_top_bar_info_button_content_description)
                             )
                         }
                     }
