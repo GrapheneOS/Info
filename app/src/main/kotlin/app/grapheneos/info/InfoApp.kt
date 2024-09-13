@@ -138,7 +138,7 @@ fun InfoApp() {
     val localUriHandler = LocalUriHandler.current
 
     val openUriIllegalArguementExceptionSnackbarError =
-        stringResource(R.string.link_card_item_open_uri_illegal_argument_exception_snackbar_error)
+        stringResource(R.string.browser_link_illegal_argument_exception_snackbar_error)
 
     Scaffold(
         modifier = Modifier
