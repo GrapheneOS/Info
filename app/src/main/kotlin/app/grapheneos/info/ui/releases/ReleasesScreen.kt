@@ -69,19 +69,32 @@ fun ReleasesScreen(
         }
     }
 
-    var isRefreshing by rememberSaveable { mutableStateOf(false) }
+    var isChangelogRefreshing by rememberSaveable { mutableStateOf(false) }
+    var isReleaseStatesRefreshing by rememberSaveable { mutableStateOf(false) }
 
     val state = rememberPullToRefreshState()
 
     PullToRefreshBox(
-        isRefreshing = isRefreshing,
+        isRefreshing = isChangelogRefreshing || isReleaseStatesRefreshing,
         onRefresh = {
-            isRefreshing = true
+            isChangelogRefreshing = true
+            isReleaseStatesRefreshing = true
             updateChangelog(false) {
-                isRefreshing = false
+                isChangelogRefreshing = false
 
-                refreshCoroutineScope.launch {
-                    state.animateToHidden()
+                if (!isReleaseStatesRefreshing) {
+                    refreshCoroutineScope.launch {
+                        state.animateToHidden()
+                    }
+                }
+            }
+            updateReleaseStates(false) {
+                isReleaseStatesRefreshing = false
+
+                if (!isChangelogRefreshing) {
+                    refreshCoroutineScope.launch {
+                        state.animateToHidden()
+                    }
                 }
             }
         },
@@ -97,11 +110,13 @@ fun ReleasesScreen(
             verticalArrangement = Arrangement.Top
         ) {
             item {
-                ReleaseState(
-                    releaseStates,
+                Row (
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp))
+                        .padding(vertical = 16.dp)
+                ) {
+                    ReleaseState(releaseStates)
+                }
             }
             items(
                 items = entries,

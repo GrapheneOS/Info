@@ -144,8 +144,6 @@ class ReleasesViewModel(
                 } finally {
                     connection.disconnect()
                 }
-
-
             } catch (e: IOException) {
                 val errorMessage =
                     application.getString(R.string.update_changelog_failed_to_create_httpsurlconnection_snackbar_message)
@@ -158,7 +156,7 @@ class ReleasesViewModel(
             }
         }
     }
-    
+
     fun updateReleaseStates(
         useCaches: Boolean,
         showSnackbarError: suspend (message: String) -> Unit,
@@ -168,24 +166,22 @@ class ReleasesViewModel(
         val releasePhases = arrayOf("stable", "beta", "alpha")
         for (releasePhase in releasePhases) {
             viewModelScope.launch(Dispatchers.IO) {
-
                 try {
                     val url = URL("https://releases.grapheneos.org/$board-$releasePhase")
                     val connection = url.openConnection() as HttpsURLConnection
 
                     connection.apply {
+                        sslSocketFactory = tlsSocketFactory
                         connectTimeout = 10_000
                         readTimeout = 30_000
                     }
 
                     try {
-
                         connection.useCaches = useCaches
 
                         connection.connect()
 
                         val responseText = String(connection.inputStream.readBytes())
-
                         Log.e(TAG, responseText);
 
                         withContext(Dispatchers.Main) {
@@ -193,7 +189,6 @@ class ReleasesViewModel(
                         }
 
                         connection.disconnect()
-
                     } catch (e: SocketTimeoutException) {
                         val errorMessage =
                             application.getString(R.string.update_release_states_socket_timeout_exception_snackbar_message)
@@ -218,8 +213,6 @@ class ReleasesViewModel(
                     } finally {
                         connection.disconnect()
                     }
-
-
                 } catch (e: IOException) {
                     val errorMessage =
                         application.getString(R.string.update_release_states_failed_to_create_httpsurlconnection_snackbar_message)
