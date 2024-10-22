@@ -35,7 +35,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun ReleaseNotesScreen(
     entries: List<Pair<String, String>>,
+    releaseStates: List<Pair<String, String>>,
     updateReleaseNotes: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
+    updateReleaseStates: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
     lazyListState: LazyListState,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -49,6 +51,7 @@ fun ReleaseNotesScreen(
             if (event == Lifecycle.Event.ON_START) {
                 refreshCoroutineScope.launch {
                     updateReleaseNotes(true) {}
+                    updateReleaseStates(true) {}
                 }
             }
         }
@@ -105,6 +108,13 @@ fun ReleaseNotesScreen(
             state = lazyListState,
             verticalArrangement = Arrangement.Top
         ) {
+            item {
+                ReleaseState(
+                    releaseStates,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp))
+            }
             items(
                 items = entries,
                 key = { it.first }) {

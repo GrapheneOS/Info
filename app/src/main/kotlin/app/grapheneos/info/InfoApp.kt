@@ -252,6 +252,7 @@ fun InfoApp() {
             ) {
                 ReleaseNotesScreen(
                     releaseNotesUiState.value.entries.toSortedMap().toList().asReversed(),
+                    releaseNotesUiState.value.releaseStates.toSortedMap().toList(),
                     { useCaches, onFinishedUpdating ->
                         releaseNotesViewModel.updateReleaseNotes(
                             useCaches = useCaches,
@@ -264,6 +265,15 @@ fun InfoApp() {
                                         releaseNotesLazyListState.animateScrollToItem(it)
                                     }
                                 }
+                            },
+                            onFinishedUpdating = onFinishedUpdating,
+                        )
+                    },
+                    { useCaches, onFinishedUpdating ->
+                        releaseNotesViewModel.updateReleaseStates(
+                            useCaches = useCaches,
+                            showSnackbarError = {
+                                snackbarHostState.showSnackbar(it)
                             },
                             onFinishedUpdating = onFinishedUpdating,
                         )
