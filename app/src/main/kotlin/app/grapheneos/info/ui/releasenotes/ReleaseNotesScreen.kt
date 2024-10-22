@@ -109,11 +109,7 @@ fun ReleaseNotesScreen(
             verticalArrangement = Arrangement.Top
         ) {
             item {
-                ReleaseState(
-                    releaseStates,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp))
+                ReleaseState(releaseStates)
             }
             items(
                 items = entries,

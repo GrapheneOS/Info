@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import app.grapheneos.info.R
 
 @Composable
-fun ReleaseState(releaseStates: List<Pair<String, String>>, modifier: Modifier = Modifier) {
+fun ReleaseState(releaseStates: List<Pair<String, String>>) {
 
     Row(
         modifier = Modifier
