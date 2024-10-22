@@ -37,7 +37,9 @@ fun ReleasesScreen(
     modifier: Modifier = Modifier,
     showSnackbarError: (String) -> Unit,
     entries: List<Pair<String, String>>,
+    releaseStates: List<Pair<String, String>>,
     updateChangelog: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
+    updateReleaseStates: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
     changelogLazyListState: LazyListState,
     additionalContentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -55,6 +57,7 @@ fun ReleasesScreen(
             if (event == Lifecycle.Event.ON_START) {
                 refreshCoroutineScope.launch {
                     updateChangelog(true) {}
+                    updateReleaseStates(true) {}
                 }
             }
         }
@@ -93,6 +96,13 @@ fun ReleasesScreen(
             additionalContentPadding = additionalContentPadding,
             verticalArrangement = Arrangement.Top
         ) {
+            item {
+                ReleaseState(
+                    releaseStates,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp))
+            }
             items(
                 items = entries,
                 key = { it.first }) {

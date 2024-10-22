@@ -38,6 +38,11 @@ class ReleasesViewModel(
             countAsInitialScroll = false,
             onFinishedUpdating = {},
         )
+        updateReleaseStates(
+            useCaches = true,
+            showSnackbarError = {},
+            onFinishedUpdating = {},
+        )
     }
 
     fun updateChangelog(
@@ -139,6 +144,8 @@ class ReleasesViewModel(
                 } finally {
                     connection.disconnect()
                 }
+
+
             } catch (e: IOException) {
                 val errorMessage =
                     application.getString(R.string.update_changelog_failed_to_create_httpsurlconnection_snackbar_message)
@@ -148,6 +155,81 @@ class ReleasesViewModel(
                 }
             } finally {
                 onFinishedUpdating()
+            }
+        }
+    }
+    
+    fun updateReleaseStates(
+        useCaches: Boolean,
+        showSnackbarError: suspend (message: String) -> Unit,
+        onFinishedUpdating: () -> Unit = {},
+    ) {
+        var board = android.os.Build.BOARD
+        val releasePhases = arrayOf("stable", "beta", "alpha")
+        for (releasePhase in releasePhases) {
+            viewModelScope.launch(Dispatchers.IO) {
+
+                try {
+                    val url = URL("https://releases.grapheneos.org/$board-$releasePhase")
+                    val connection = url.openConnection() as HttpsURLConnection
+
+                    connection.apply {
+                        connectTimeout = 10_000
+                        readTimeout = 30_000
+                    }
+
+                    try {
+
+                        connection.useCaches = useCaches
+
+                        connection.connect()
+
+                        val responseText = String(connection.inputStream.readBytes())
+
+                        Log.e(TAG, responseText);
+
+                        withContext(Dispatchers.Main) {
+                            _uiState.value.releaseStates[releasePhase] = responseText.split(" ")[0]
+                        }
+
+                        connection.disconnect()
+
+                    } catch (e: SocketTimeoutException) {
+                        val errorMessage =
+                            application.getString(R.string.update_release_states_socket_timeout_exception_snackbar_message)
+                        Log.e(TAG, errorMessage, e)
+                        viewModelScope.launch {
+                            showSnackbarError("$errorMessage: $e")
+                        }
+                    } catch (e: IOException) {
+                        val errorMessage =
+                            application.getString(R.string.update_release_states_io_exception_snackbar_message)
+                        Log.e(TAG, errorMessage, e)
+                        viewModelScope.launch {
+                            showSnackbarError("$errorMessage: $e")
+                        }
+                    } catch (e: UnknownServiceException) {
+                        val errorMessage =
+                            application.getString(R.string.update_release_states_unknown_service_exception_snackbar_message)
+                        Log.e(TAG, errorMessage, e)
+                        viewModelScope.launch {
+                            showSnackbarError("$errorMessage: $e")
+                        }
+                    } finally {
+                        connection.disconnect()
+                    }
+
+
+                } catch (e: IOException) {
+                    val errorMessage =
+                        application.getString(R.string.update_release_states_failed_to_create_httpsurlconnection_snackbar_message)
+                    Log.e(TAG, errorMessage, e)
+                    viewModelScope.launch {
+                        showSnackbarError("$errorMessage: $e")
+                    }
+                } finally {
+                    onFinishedUpdating()
+                }
             }
         }
     }
