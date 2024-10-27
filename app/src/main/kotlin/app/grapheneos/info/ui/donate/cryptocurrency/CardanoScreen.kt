@@ -1,6 +1,7 @@
 package app.grapheneos.info.ui.donate.cryptocurrency
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
@@ -13,16 +14,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
+import androidx.compose.ui.unit.dp
 import app.grapheneos.info.R
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 
 @Composable
 fun CardanoScreen(
-    showSnackbarError: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    showSnackbarError: (String) -> Unit = {},
+    additionalContentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     ScreenLazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
+        additionalContentPadding = additionalContentPadding
     ) {
         item {
             Text(stringResource(R.string.cardano_info))
@@ -61,6 +66,6 @@ fun CardanoScreen(
 @Composable
 private fun CardanoScreenPreview() {
     MaterialTheme {
-        CardanoScreen({})
+        CardanoScreen()
     }
 }

@@ -1,6 +1,7 @@
 package app.grapheneos.info.ui.donate
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -20,10 +21,15 @@ import app.grapheneos.info.ui.reusablecomposables.LinkCardItem
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 
 @Composable
-fun PaypalScreen(showSnackbarError: (String) -> Unit) {
+fun PaypalScreen(
+    modifier: Modifier = Modifier,
+    showSnackbarError: (String) -> Unit = {},
+    additionalContentPadding: PaddingValues = PaddingValues(0.dp)
+) {
     ScreenLazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
+        additionalContentPadding = additionalContentPadding
     ) {
         item {
             Text(stringResource(R.string.paypal_info_description_part_1))
@@ -84,6 +90,6 @@ fun PaypalScreen(showSnackbarError: (String) -> Unit) {
 @Composable
 private fun PaypalScreenPreview() {
     MaterialTheme {
-        PaypalScreen({})
+        PaypalScreen()
     }
 }

@@ -1,6 +1,7 @@
 package app.grapheneos.info.ui.donate.banktransfers
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -18,10 +19,14 @@ import app.grapheneos.info.R
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 
 @Composable
-fun BankTransfersScreen() {
+fun BankTransfersScreen(
+    modifier: Modifier = Modifier,
+    additionalContentPadding: PaddingValues = PaddingValues(0.dp)
+) {
     ScreenLazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
+        additionalContentPadding = additionalContentPadding
     ) {
         item {
             Text(
