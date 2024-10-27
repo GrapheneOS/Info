@@ -2,6 +2,7 @@ package app.grapheneos.info.ui.donate
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,14 +30,17 @@ import app.grapheneos.info.ui.reusablecomposables.ScreenNavCardItem
 
 @Composable
 fun DonateStartScreen(
-    onNavigateToGithubSponsorsScreen: () -> Unit,
-    onNavigateToCryptocurrenciesScreen: () -> Unit,
-    onNavigateToPayPalScreen: () -> Unit,
-    onNavigateToBankTransfersScreen: () -> Unit,
+    modifier: Modifier = Modifier,
+    onNavigateToGithubSponsorsScreen: () -> Unit = {},
+    onNavigateToCryptocurrenciesScreen: () -> Unit = {},
+    onNavigateToPayPalScreen: () -> Unit = {},
+    onNavigateToBankTransfersScreen: () -> Unit = {},
+    additionalContentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     ScreenLazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
+        additionalContentPadding = additionalContentPadding
     ) {
         item {
             Text(stringResource(R.string.donate_start_info_part_1))
@@ -135,6 +139,6 @@ fun DonateStartScreen(
 @Composable
 private fun DonateScreenPreview() {
     MaterialTheme {
-        DonateStartScreen({}, {}, {}, {})
+        DonateStartScreen()
     }
 }

@@ -2,6 +2,7 @@ package app.grapheneos.info.ui.donate.cryptocurrency
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,16 +18,20 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
+import androidx.compose.ui.unit.dp
 import app.grapheneos.info.R
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 
 @Composable
 fun BitcoinScreen(
-    showSnackbarError: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    showSnackbarError: (String) -> Unit = {},
+    additionalContentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     ScreenLazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
+        additionalContentPadding = additionalContentPadding
     ) {
         item {
             Text(stringResource(R.string.bitcoin_info))
@@ -95,6 +100,6 @@ fun BitcoinScreen(
 @Composable
 private fun BitcoinScreenPreview() {
     MaterialTheme {
-        BitcoinScreen({})
+        BitcoinScreen()
     }
 }

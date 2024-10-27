@@ -1,6 +1,7 @@
 package app.grapheneos.info.ui.community
 
 import android.content.res.Configuration.UI_MODE_NIGHT_UNDEFINED
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -20,10 +21,15 @@ import app.grapheneos.info.ui.reusablecomposables.LinkCardItem
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 
 @Composable
-fun CommunityScreen(showSnackbarError: (String) -> Unit) {
+fun CommunityScreen(
+    modifier: Modifier = Modifier,
+    showSnackbarError: (String) -> Unit = {},
+    additionalContentPadding: PaddingValues = PaddingValues(0.dp)
+) {
     ScreenLazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
+        additionalContentPadding = additionalContentPadding
     ) {
         item {
             Text(
@@ -128,6 +134,6 @@ fun CommunityScreen(showSnackbarError: (String) -> Unit) {
 @Composable
 private fun CommunityScreenPreview() {
     MaterialTheme {
-        CommunityScreen({})
+        CommunityScreen()
     }
 }

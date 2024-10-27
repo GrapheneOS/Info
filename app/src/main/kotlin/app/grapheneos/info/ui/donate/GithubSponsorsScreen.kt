@@ -1,6 +1,7 @@
 package app.grapheneos.info.ui.donate
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -14,18 +15,24 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
+import androidx.compose.ui.unit.dp
 import app.grapheneos.info.R
 import app.grapheneos.info.ui.reusablecomposables.ClickableText
 import app.grapheneos.info.ui.reusablecomposables.LinkCardItem
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 
 @Composable
-fun GithubSponsorsScreen(showSnackbarError: (String) -> Unit) {
+fun GithubSponsorsScreen(
+    modifier: Modifier = Modifier,
+    showSnackbarError: (String) -> Unit = {},
+    additionalContentPadding: PaddingValues = PaddingValues(0.dp)
+) {
     val githubSponsorsUrl = "https://github.com/sponsors/thestinger"
 
     ScreenLazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
+        additionalContentPadding = additionalContentPadding
     ) {
         item {
             val localUriHandler = LocalUriHandler.current
@@ -78,6 +85,6 @@ fun GithubSponsorsScreen(showSnackbarError: (String) -> Unit) {
 @Composable
 private fun GithubSponsorsScreenPreview() {
     MaterialTheme {
-        GithubSponsorsScreen({})
+        GithubSponsorsScreen()
     }
 }

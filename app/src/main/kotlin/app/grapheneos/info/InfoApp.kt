@@ -11,6 +11,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -42,11 +46,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
@@ -148,6 +154,8 @@ fun InfoApp() {
     val navigationSuiteType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
         currentWindowAdaptiveInfo()
     )
+
+    val layoutDirection = LocalLayoutDirection.current
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
@@ -267,15 +275,18 @@ fun InfoApp() {
             NavHost(
                 navController = navController,
                 startDestination = startDestination,
-                modifier = Modifier.padding(innerPadding),
             ) {
                 composableWithDefaultSlideTransitions(
                     route = InfoAppScreens.ReleaseNotes,
                     navigationSuiteType = navigationSuiteType,
                 ) {
                     ReleaseNotesScreen(
-                        releaseNotesUiState.value.entries.toSortedMap().toList().asReversed(),
-                        { useCaches, onFinishedUpdating ->
+                        modifier = Modifier
+                            .padding(top = innerPadding.calculateTopPadding())
+                            .consumeWindowInsets(innerPadding),
+                        entries =
+                            releaseNotesUiState.value.entries.toSortedMap().toList().asReversed(),
+                        updateReleaseNotes = { useCaches, onFinishedUpdating ->
                             releaseNotesViewModel.updateReleaseNotes(
                                 useCaches = useCaches,
                                 showSnackbarError = {
@@ -291,7 +302,13 @@ fun InfoApp() {
                                 onFinishedUpdating = onFinishedUpdating,
                             )
                         },
-                        releaseNotesLazyListState,
+                        lazyListState = releaseNotesLazyListState,
+                        additionalContentPadding = PaddingValues(
+                            start = innerPadding.calculateStartPadding(layoutDirection),
+                            top = 0.dp,
+                            end = innerPadding.calculateEndPadding(layoutDirection),
+                            bottom = innerPadding.calculateBottomPadding()
+                        )
                     )
                 }
                 composableWithDefaultSlideTransitions(
@@ -299,11 +316,13 @@ fun InfoApp() {
                     navigationSuiteType = navigationSuiteType,
                 ) {
                     CommunityScreen(
+                        modifier = Modifier.consumeWindowInsets(innerPadding),
                         showSnackbarError = {
                             snackbarCoroutine.launch {
                                 snackbarHostState.showSnackbar(it)
                             }
                         },
+                        additionalContentPadding = innerPadding
                     )
                 }
                 navigationWithDefaultSlideTransitions(
@@ -316,6 +335,7 @@ fun InfoApp() {
                         navigationSuiteType = navigationSuiteType,
                     ) {
                         DonateStartScreen(
+                            modifier = Modifier.consumeWindowInsets(innerPadding),
                             onNavigateToGithubSponsorsScreen = {
                                 navController.navigate(InfoAppScreens.DonateGithubSponsors.name)
                             },
@@ -327,7 +347,8 @@ fun InfoApp() {
                             },
                             onNavigateToBankTransfersScreen = {
                                 navController.navigate(InfoAppScreens.DonateBankTransfers.name)
-                            }
+                            },
+                            additionalContentPadding = innerPadding
                         )
                     }
                     composableWithDefaultSlideTransitions(
@@ -335,11 +356,13 @@ fun InfoApp() {
                         navigationSuiteType = navigationSuiteType,
                     ) {
                         GithubSponsorsScreen(
+                            modifier = Modifier.consumeWindowInsets(innerPadding),
                             showSnackbarError = {
                                 snackbarCoroutine.launch {
                                     snackbarHostState.showSnackbar(it)
                                 }
                             },
+                            additionalContentPadding = innerPadding
                         )
                     }
                     navigationWithDefaultSlideTransitions(
@@ -352,6 +375,7 @@ fun InfoApp() {
                             navigationSuiteType = navigationSuiteType,
                         ) {
                             DonateCryptoCurrencyStartScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
                                 onNavigateToBitcoinScreen = {
                                     navController.navigate(InfoAppScreens.DonateCryptocurrenciesBitcoin.name)
                                 },
@@ -369,7 +393,8 @@ fun InfoApp() {
                                 },
                                 onNavigateToLitecoinScreen = {
                                     navController.navigate(InfoAppScreens.DonateCryptocurrenciesLitecoin.name)
-                                }
+                                },
+                                additionalContentPadding = innerPadding
                             )
                         }
                         composableWithDefaultSlideTransitions(
@@ -377,11 +402,13 @@ fun InfoApp() {
                             navigationSuiteType = navigationSuiteType,
                         ) {
                             BitcoinScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
                                 showSnackbarError = {
                                     snackbarCoroutine.launch {
                                         snackbarHostState.showSnackbar(it)
                                     }
                                 },
+                                additionalContentPadding = innerPadding
                             )
                         }
                         composableWithDefaultSlideTransitions(
@@ -389,11 +416,13 @@ fun InfoApp() {
                             navigationSuiteType = navigationSuiteType,
                         ) {
                             MoneroScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
                                 showSnackbarError = {
                                     snackbarCoroutine.launch {
                                         snackbarHostState.showSnackbar(it)
                                     }
-                                }
+                                },
+                                additionalContentPadding = innerPadding
                             )
                         }
                         composableWithDefaultSlideTransitions(
@@ -401,11 +430,13 @@ fun InfoApp() {
                             navigationSuiteType = navigationSuiteType,
                         ) {
                             ZcashScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
                                 showSnackbarError = {
                                     snackbarCoroutine.launch {
                                         snackbarHostState.showSnackbar(it)
                                     }
-                                }
+                                },
+                                additionalContentPadding = innerPadding
                             )
                         }
                         composableWithDefaultSlideTransitions(
@@ -413,11 +444,13 @@ fun InfoApp() {
                             navigationSuiteType = navigationSuiteType,
                         ) {
                             EthereumScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
                                 showSnackbarError = {
                                     snackbarCoroutine.launch {
                                         snackbarHostState.showSnackbar(it)
                                     }
-                                }
+                                },
+                                additionalContentPadding = innerPadding
                             )
                         }
                         composableWithDefaultSlideTransitions(
@@ -425,11 +458,13 @@ fun InfoApp() {
                             navigationSuiteType = navigationSuiteType,
                         ) {
                             CardanoScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
                                 showSnackbarError = {
                                     snackbarCoroutine.launch {
                                         snackbarHostState.showSnackbar(it)
                                     }
-                                }
+                                },
+                                additionalContentPadding = innerPadding
                             )
                         }
                         composableWithDefaultSlideTransitions(
@@ -437,11 +472,13 @@ fun InfoApp() {
                             navigationSuiteType = navigationSuiteType,
                         ) {
                             LitecoinScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
                                 showSnackbarError = {
                                     snackbarCoroutine.launch {
                                         snackbarHostState.showSnackbar(it)
                                     }
-                                }
+                                },
+                                additionalContentPadding = innerPadding
                             )
                         }
                     }
@@ -450,18 +487,23 @@ fun InfoApp() {
                         navigationSuiteType = navigationSuiteType,
                     ) {
                         PaypalScreen(
+                            modifier = Modifier.consumeWindowInsets(innerPadding),
                             showSnackbarError = {
                                 snackbarCoroutine.launch {
                                     snackbarHostState.showSnackbar(it)
                                 }
-                            }
+                            },
+                            additionalContentPadding = innerPadding
                         )
                     }
                     composableWithDefaultSlideTransitions(
                         route = InfoAppScreens.DonateBankTransfers,
                         navigationSuiteType = navigationSuiteType,
                     ) {
-                        BankTransfersScreen()
+                        BankTransfersScreen(
+                            modifier = Modifier.consumeWindowInsets(innerPadding),
+                            additionalContentPadding = innerPadding
+                        )
                     }
                 }
             }

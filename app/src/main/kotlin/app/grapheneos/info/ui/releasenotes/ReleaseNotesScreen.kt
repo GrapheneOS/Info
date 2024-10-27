@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,9 +35,11 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReleaseNotesScreen(
+    modifier: Modifier = Modifier,
     entries: List<Pair<String, String>>,
     updateReleaseNotes: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
     lazyListState: LazyListState,
+    additionalContentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -96,13 +99,14 @@ fun ReleaseNotesScreen(
             }
         },
         state = state,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         ScreenLazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
             state = lazyListState,
+            additionalContentPadding = additionalContentPadding,
             verticalArrangement = Arrangement.Top
         ) {
             items(

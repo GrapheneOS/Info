@@ -1,10 +1,8 @@
 package app.grapheneos.info.ui.donate.cryptocurrency
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,22 +12,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
 import app.grapheneos.info.R
+import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 import app.grapheneos.info.ui.reusablecomposables.ScreenNavCardItem
 
 @Composable
 fun DonateCryptoCurrencyStartScreen(
-    onNavigateToBitcoinScreen: () -> Unit,
-    onNavigateToMoneroScreen: () -> Unit,
-    onNavigateToZcashScreen: () -> Unit,
-    onNavigateToEthereumScreen: () -> Unit,
-    onNavigateToCardanoScreen: () -> Unit,
-    onNavigateToLitecoinScreen: () -> Unit,
+    modifier: Modifier = Modifier,
+    onNavigateToBitcoinScreen: () -> Unit = {},
+    onNavigateToMoneroScreen: () -> Unit = {},
+    onNavigateToZcashScreen: () -> Unit = {},
+    onNavigateToEthereumScreen: () -> Unit = {},
+    onNavigateToCardanoScreen: () -> Unit = {},
+    onNavigateToLitecoinScreen: () -> Unit = {},
+    additionalContentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    LazyColumn(
-        modifier = Modifier
+    ScreenLazyColumn(
+        modifier = modifier
             .fillMaxSize(),
-        contentPadding = PaddingValues(bottom = 16.dp, start = 16.dp, end = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        additionalContentPadding = additionalContentPadding
     ) {
         item {
             ScreenNavCardItem(
@@ -90,6 +90,6 @@ fun DonateCryptoCurrencyStartScreen(
 @Composable
 private fun DonateCryptoCurrencyStartScreenPreview() {
     MaterialTheme {
-        DonateCryptoCurrencyStartScreen({}, {}, {}, {}, {}, {})
+        DonateCryptoCurrencyStartScreen()
     }
 }
