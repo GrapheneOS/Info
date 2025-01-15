@@ -38,7 +38,6 @@ android {
         targetSdk = 35
         versionCode = 6
         versionName = versionCode.toString()
-        resourceConfigurations.add("en")
 
         vectorDrawables {
             useSupportLibrary = true
@@ -66,6 +65,7 @@ android {
 
     androidResources {
         generateLocaleConfig = true
+        localeFilters += listOf("en")
     }
 
     buildTypes {
