@@ -17,6 +17,7 @@ import java.net.SocketTimeoutException
 import java.net.URL
 import java.net.UnknownServiceException
 import javax.net.ssl.HttpsURLConnection
+import org.grapheneos.tls.ModernTLSSocketFactory
 
 const val TAG = "ReleaseNotesViewModel"
 
@@ -25,6 +26,7 @@ class ReleaseNotesViewModel(
     savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
 
+    private val tlsSocketFactory = ModernTLSSocketFactory()
     private val _uiState = MutableStateFlow(ReleaseNotesUiState(savedStateHandle))
     val uiState: StateFlow<ReleaseNotesUiState> = _uiState.asStateFlow()
 
@@ -51,6 +53,7 @@ class ReleaseNotesViewModel(
                 val connection = url.openConnection() as HttpsURLConnection
 
                 connection.apply {
+                    sslSocketFactory = tlsSocketFactory
                     connectTimeout = 10_000
                     readTimeout = 30_000
                 }
