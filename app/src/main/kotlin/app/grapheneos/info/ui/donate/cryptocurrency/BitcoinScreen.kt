@@ -86,9 +86,6 @@ fun BitcoinScreen(
                 }
             }
         }
-        item {
-            Text(stringResource(R.string.bitcoin_fee_notice))
-        }
     }
 }
 

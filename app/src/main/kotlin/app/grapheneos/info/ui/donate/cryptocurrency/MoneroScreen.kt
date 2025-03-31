@@ -38,9 +38,6 @@ fun MoneroScreen(
                 showSnackbarError = showSnackbarError
             )
         }
-        item {
-            Text(stringResource(R.string.monero_fee_notice))
-        }
     }
 }
 
