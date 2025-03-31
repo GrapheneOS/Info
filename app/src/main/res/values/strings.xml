@@ -103,10 +103,6 @@
     <string name="bech32_segwit_qr_code_description">Bitcoin donation QR code</string>
     <string name="bech32m_taproot_qr_code_description">Bitcoin Taproot donation QR code</string>
     <string name="bip47_payment_code_stealth_address_qr_code_description">Bitcoin BIP47 payment code QR code</string>
-    <string name="bitcoin_fee_notice">We recommend using the lowest fee tier recommended by your wallet since the
-        transaction taking hours or even a couple days is fine. An even lower custom fee isn\'t recommended unless
-        you\'re going to monitor it and bump the fee with RBF.
-    </string>
     <string name="qr_code_on_click_label">enlarge QR code</string>
     <string name="share">Share</string>
     <string name="ok">OK</string>
@@ -128,13 +124,8 @@
     <string name="litecoin_info">Litecoin can be used to make donations to the non-profit GrapheneOS Foundation.
     </string>
     <string name="litecoin_qr_code_description">Litecoin donation QR code</string>
-    <string name="litecoin_fee_notice">We recommend using the lowest fee tier recommended by your wallet since the
-        transaction taking hours or even a couple days is fine. An even lower custom fee isn\'t recommended unless
-        you\'re going to monitor it and bump the fee with RBF.
-    </string>
     <string name="monero_info">Monero can be used to make donations to the non-profit GrapheneOS Foundation.</string>
     <string name="monero_qr_code_description">Monero donation QR code</string>
-    <string name="monero_fee_notice">We recommend using the lowest fee level since it will still be quick.</string>
     <string name="zcash_info">Zcash can be used to make donations to the non-profit GrapheneOS Foundation.</string>
     <string name="zcash_transparent_qr_code_description">Transparent Zcash donation QR code</string>
     <string name="update_release_notes_socket_timeout_exception_snackbar_message">Socket Timeout Exception</string>

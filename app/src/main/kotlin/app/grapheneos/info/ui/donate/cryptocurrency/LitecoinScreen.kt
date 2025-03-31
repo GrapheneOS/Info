@@ -38,9 +38,6 @@ fun LitecoinScreen(
                 showSnackbarError = showSnackbarError
             )
         }
-        item {
-            Text(stringResource(R.string.litecoin_fee_notice))
-        }
     }
 }
 
