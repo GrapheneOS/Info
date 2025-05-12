@@ -4,8 +4,11 @@ import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
@@ -31,19 +34,31 @@ fun ScreenLazyColumn(
     layoutDirection: LayoutDirection = LocalLayoutDirection.current,
     content: LazyListScope.() -> Unit
 ) {
+    val displayCutout = WindowInsets.displayCutout.asPaddingValues()
+    val startPadding = displayCutout.calculateStartPadding(layoutDirection)
+    val endPadding = displayCutout.calculateEndPadding(layoutDirection)
+    val contentPadding = PaddingValues(
+        start = contentPadding.calculateStartPadding(layoutDirection)
+                + additionalContentPadding.calculateStartPadding(layoutDirection),
+        top = contentPadding.calculateTopPadding()
+                + additionalContentPadding.calculateTopPadding(),
+        end = contentPadding.calculateEndPadding(layoutDirection)
+                + additionalContentPadding.calculateEndPadding(layoutDirection),
+        bottom = contentPadding.calculateBottomPadding()
+                + additionalContentPadding.calculateBottomPadding()
+    ).let {
+        PaddingValues(
+            start = startPadding.coerceAtLeast(it.calculateStartPadding(layoutDirection)),
+            top = it.calculateTopPadding(),
+            end = endPadding.coerceAtLeast(it.calculateEndPadding(layoutDirection)),
+            bottom = it.calculateBottomPadding()
+        )
+    }
+
     LazyColumn(
         modifier = modifier,
         state = state,
-        contentPadding = PaddingValues(
-            start = contentPadding.calculateStartPadding(layoutDirection)
-                    + additionalContentPadding.calculateStartPadding(layoutDirection),
-            top = contentPadding.calculateTopPadding()
-                    + additionalContentPadding.calculateTopPadding(),
-            end = contentPadding.calculateEndPadding(layoutDirection)
-                    + additionalContentPadding.calculateEndPadding(layoutDirection),
-            bottom = contentPadding.calculateBottomPadding()
-                    + additionalContentPadding.calculateBottomPadding()
-        ),
+        contentPadding = contentPadding,
         reverseLayout = reverseLayout,
         verticalArrangement = verticalArrangement,
         horizontalAlignment = horizontalAlignment,
