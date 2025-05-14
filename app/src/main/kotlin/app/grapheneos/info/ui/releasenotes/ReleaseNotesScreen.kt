@@ -1,8 +1,5 @@
 package app.grapheneos.info.ui.releasenotes
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.VectorConverter
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,7 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshState
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -65,26 +62,7 @@ fun ReleaseNotesScreen(
 
     var isRefreshing by remember { mutableStateOf(false) }
 
-    val state = remember {
-        object : PullToRefreshState {
-            private val anim = Animatable(0f, Float.VectorConverter)
-
-            override val distanceFraction
-                get() = anim.value
-
-            override suspend fun animateToThreshold() {
-                anim.animateTo(1f, spring())
-            }
-
-            override suspend fun animateToHidden() {
-                anim.animateTo(0f)
-            }
-
-            override suspend fun snapTo(targetValue: Float) {
-                anim.snapTo(targetValue)
-            }
-        }
-    }
+    val state = rememberPullToRefreshState()
 
     PullToRefreshBox(
         isRefreshing = isRefreshing,
