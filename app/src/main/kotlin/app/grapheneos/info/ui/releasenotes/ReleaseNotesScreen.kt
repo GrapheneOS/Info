@@ -22,10 +22,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import app.grapheneos.info.R
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 import kotlinx.coroutines.launch
 
@@ -104,7 +106,7 @@ fun ReleaseNotesScreen(
                     horizontalArrangement = Arrangement.Center,
                 ) {
                     Button(onClick = { localUriHandler.openUri("https://grapheneos.org/releases") }) {
-                        Text(text = "See all release notes")
+                        Text(text = stringResource(R.string.release_notes_see_all_button))
                     }
                 }
             }
