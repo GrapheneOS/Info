@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import app.grapheneos.info.InfoAppScreens
 import app.grapheneos.info.dataStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +40,16 @@ class PreferencesViewModel(private val application: Application) : AndroidViewMo
                 _uiState.update {
                     PreferencesUiState(
                         isPreferencesLoaded = mutableStateOf(true),
-                        startDestination = getPreferencePair(uiState.value.startDestination)
+                        startDestination = getPreferencePair(uiState.value.startDestination).let {
+                            // migrate from old value
+                            if (it.second.value == "ReleaseNotes") {
+                                it.copy(
+                                    second = mutableStateOf(InfoAppScreens.Releases.name)
+                                )
+                            } else {
+                                it
+                            }
+                        }
                     )
                 }
             }.collect()
