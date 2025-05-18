@@ -2,7 +2,7 @@ package app.grapheneos.info
 
 import android.net.http.HttpResponseCache
 import android.util.Log
-import app.grapheneos.info.ui.releasenotes.TAG
+import app.grapheneos.info.ui.releases.TAG
 import java.io.File
 import java.io.IOException
 

@@ -1,4 +1,4 @@
-package app.grapheneos.info.ui.releasenotes
+package app.grapheneos.info.ui.releases
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReleaseNotesScreen(
+fun ReleasesScreen(
     modifier: Modifier = Modifier,
     entries: List<Pair<String, String>>,
     updateReleaseNotes: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
@@ -106,7 +106,7 @@ fun ReleaseNotesScreen(
                     horizontalArrangement = Arrangement.Center,
                 ) {
                     Button(onClick = { localUriHandler.openUri("https://grapheneos.org/releases") }) {
-                        Text(text = stringResource(R.string.release_notes_see_all_button))
+                        Text(text = stringResource(R.string.releases_see_all_button))
                     }
                 }
             }

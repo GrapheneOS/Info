@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Info</string>
-    <string name="release_notes">Release Notes</string>
+    <string name="releases">Releases</string>
     <string name="community">Community</string>
     <string name="donate">Donate</string>
     <string name="github_sponsors">GitHub Sponsors</string>
@@ -137,6 +137,6 @@
     <string name="screen_nav_card_item_on_click_label">open screen</string>
     <string name="account_info_item_copy_term">Copy %1$s</string>
     <string name="browser_link_illegal_argument_exception_snackbar_error">Unable to open link. Make sure a browser is installed and enabled on your device.</string>
-    <string name="release_notes_top_bar_info_button_content_description">Info about the releases</string>
-    <string name="release_notes_see_all_button">See all release notes</string>
+    <string name="releases_top_bar_info_button_content_description">Info about the releases</string>
+    <string name="releases_see_all_button">See all release notes</string>
 </resources>

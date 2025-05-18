@@ -1,4 +1,4 @@
-package app.grapheneos.info.ui.releasenotes
+package app.grapheneos.info.ui.releases
 
 import android.app.Application
 import android.util.Log
@@ -12,23 +12,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.grapheneos.tls.ModernTLSSocketFactory
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.URL
 import java.net.UnknownServiceException
 import javax.net.ssl.HttpsURLConnection
-import org.grapheneos.tls.ModernTLSSocketFactory
 
-const val TAG = "ReleaseNotesViewModel"
+const val TAG = "ReleasesViewModel"
 
-class ReleaseNotesViewModel(
+class ReleasesViewModel(
     private val application: Application,
     savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
 
     private val tlsSocketFactory = ModernTLSSocketFactory()
-    private val _uiState = MutableStateFlow(ReleaseNotesUiState(savedStateHandle))
-    val uiState: StateFlow<ReleaseNotesUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ReleasesUiState(savedStateHandle))
+    val uiState: StateFlow<ReleasesUiState> = _uiState.asStateFlow()
 
     init {
         updateReleaseNotes(

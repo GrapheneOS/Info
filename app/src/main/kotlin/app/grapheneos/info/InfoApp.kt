@@ -77,14 +77,14 @@ import app.grapheneos.info.ui.donate.cryptocurrency.EthereumScreen
 import app.grapheneos.info.ui.donate.cryptocurrency.LitecoinScreen
 import app.grapheneos.info.ui.donate.cryptocurrency.MoneroScreen
 import app.grapheneos.info.ui.donate.cryptocurrency.ZcashScreen
-import app.grapheneos.info.ui.releasenotes.ReleaseNotesScreen
-import app.grapheneos.info.ui.releasenotes.ReleaseNotesViewModel
+import app.grapheneos.info.ui.releases.ReleasesScreen
+import app.grapheneos.info.ui.releases.ReleasesViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 enum class InfoAppScreens(@StringRes val title: Int) {
-    ReleaseNotes(title = R.string.release_notes),
+    Releases(title = R.string.releases),
     Community(title = R.string.community),
     Donate(title = R.string.donate),
     DonateStart(title = R.string.donate),
@@ -102,7 +102,7 @@ enum class InfoAppScreens(@StringRes val title: Int) {
 }
 
 val navSuiteItemScreens = arrayOf(
-    InfoAppScreens.ReleaseNotes,
+    InfoAppScreens.Releases,
     InfoAppScreens.Community,
     InfoAppScreens.Donate
 )
@@ -132,9 +132,9 @@ fun InfoApp() {
         currentScreen.name.startsWith(it.name)
     }
 
-    val releaseNotesViewModel: ReleaseNotesViewModel = viewModel()
+    val releasesViewModel: ReleasesViewModel = viewModel()
 
-    val releaseNotesUiState = releaseNotesViewModel.uiState.collectAsState()
+    val releasesUiState = releasesViewModel.uiState.collectAsState()
 
     val releaseNotesLazyListState = rememberLazyListState()
 
@@ -189,7 +189,7 @@ fun InfoApp() {
                     },
                     icon = {
                         when (navSuiteItemScreen) {
-                            InfoAppScreens.ReleaseNotes -> Icon(
+                            InfoAppScreens.Releases -> Icon(
                                 painter = painterResource(id = R.drawable.outline_newsmode),
                                 contentDescription = null
                             )
@@ -244,7 +244,7 @@ fun InfoApp() {
                         }
                     },
                     actions = {
-                        if (navSuiteItemScreenSelected == InfoAppScreens.ReleaseNotes) {
+                        if (navSuiteItemScreenSelected == InfoAppScreens.Releases) {
                             IconButton(
                                 onClick = {
                                     try {
@@ -260,7 +260,7 @@ fun InfoApp() {
                             ) {
                                 Icon(
                                     imageVector = Icons.Outlined.Info,
-                                    contentDescription = stringResource(R.string.release_notes_top_bar_info_button_content_description)
+                                    contentDescription = stringResource(R.string.releases_top_bar_info_button_content_description)
                                 )
                             }
                         }
@@ -277,17 +277,17 @@ fun InfoApp() {
                 startDestination = startDestination,
             ) {
                 composableWithDefaultSlideTransitions(
-                    route = InfoAppScreens.ReleaseNotes,
+                    route = InfoAppScreens.Releases,
                     navigationSuiteType = navigationSuiteType,
                 ) {
-                    ReleaseNotesScreen(
+                    ReleasesScreen(
                         modifier = Modifier
                             .padding(top = innerPadding.calculateTopPadding())
                             .consumeWindowInsets(innerPadding),
                         entries =
-                            releaseNotesUiState.value.entries.toSortedMap().toList().asReversed(),
+                            releasesUiState.value.entries.toSortedMap().toList().asReversed(),
                         updateReleaseNotes = { useCaches, onFinishedUpdating ->
-                            releaseNotesViewModel.updateReleaseNotes(
+                            releasesViewModel.updateReleaseNotes(
                                 useCaches = useCaches,
                                 showSnackbarError = {
                                     snackbarHostState.showSnackbar(it)
