@@ -36,8 +36,8 @@ import kotlinx.coroutines.launch
 fun ReleasesScreen(
     modifier: Modifier = Modifier,
     entries: List<Pair<String, String>>,
-    updateReleaseNotes: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
-    lazyListState: LazyListState,
+    updateChangelog: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
+    changelogLazyListState: LazyListState,
     additionalContentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -50,7 +50,7 @@ fun ReleasesScreen(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_START) {
                 refreshCoroutineScope.launch {
-                    updateReleaseNotes(true) {}
+                    updateChangelog(true) {}
                 }
             }
         }
@@ -70,7 +70,7 @@ fun ReleasesScreen(
         isRefreshing = isRefreshing,
         onRefresh = {
             isRefreshing = true
-            updateReleaseNotes(false) {
+            updateChangelog(false) {
                 isRefreshing = false
 
                 refreshCoroutineScope.launch {
@@ -85,7 +85,7 @@ fun ReleasesScreen(
         ScreenLazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
-            state = lazyListState,
+            state = changelogLazyListState,
             additionalContentPadding = additionalContentPadding,
             verticalArrangement = Arrangement.Top
         ) {

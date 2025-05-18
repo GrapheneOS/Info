@@ -31,19 +31,19 @@ class ReleasesViewModel(
     val uiState: StateFlow<ReleasesUiState> = _uiState.asStateFlow()
 
     init {
-        updateReleaseNotes(
+        updateChangelog(
             useCaches = true,
             showSnackbarError = {},
-            scrollReleaseNotesLazyListTo = {},
+            scrollChangelogLazyListTo = {},
             countAsInitialScroll = false,
             onFinishedUpdating = {},
         )
     }
 
-    fun updateReleaseNotes(
+    fun updateChangelog(
         useCaches: Boolean,
         showSnackbarError: suspend (message: String) -> Unit,
-        scrollReleaseNotesLazyListTo: (scrollTo: Int) -> Unit,
+        scrollChangelogLazyListTo: (scrollTo: Int) -> Unit,
         countAsInitialScroll: Boolean = true,
         onFinishedUpdating: () -> Unit = {},
     ) {
@@ -98,25 +98,25 @@ class ReleasesViewModel(
 
                     if (countAsInitialScroll && !uiState.value.didInitialScroll) {
                         _uiState.value.didInitialScroll = true
-                        scrollReleaseNotesLazyListTo(currentOsChangelogIndex)
+                        scrollChangelogLazyListTo(currentOsChangelogIndex)
                     }
                 } catch (e: SocketTimeoutException) {
                     val errorMessage =
-                        application.getString(R.string.update_release_notes_socket_timeout_exception_snackbar_message)
+                        application.getString(R.string.update_changelog_socket_timeout_exception_snackbar_message)
                     Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
                         showSnackbarError("$errorMessage: $e")
                     }
                 } catch (e: IOException) {
                     val errorMessage =
-                        application.getString(R.string.update_release_notes_io_exception_snackbar_message)
+                        application.getString(R.string.update_changelog_io_exception_snackbar_message)
                     Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
                         showSnackbarError("$errorMessage: $e")
                     }
                 } catch (e: UnknownServiceException) {
                     val errorMessage =
-                        application.getString(R.string.update_release_notes_unknown_service_exception_snackbar_message)
+                        application.getString(R.string.update_changelog_unknown_service_exception_snackbar_message)
                     Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
                         showSnackbarError("$errorMessage: $e")
@@ -126,7 +126,7 @@ class ReleasesViewModel(
                 }
             } catch (e: IOException) {
                 val errorMessage =
-                    application.getString(R.string.update_release_notes_failed_to_create_httpsurlconnection_snackbar_message)
+                    application.getString(R.string.update_changelog_failed_to_create_httpsurlconnection_snackbar_message)
                 Log.e(TAG, errorMessage, e)
                 viewModelScope.launch {
                     showSnackbarError("$errorMessage: $e")
