@@ -136,9 +136,9 @@ fun InfoApp() {
 
     val releasesUiState = releasesViewModel.uiState.collectAsState()
 
-    val releaseNotesLazyListState = rememberLazyListState()
+    val changelogLazyListState = rememberLazyListState()
 
-    val releaseNotesLazyListStateScope = rememberCoroutineScope()
+    val changelogLazyListStateScope = rememberCoroutineScope()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -286,23 +286,23 @@ fun InfoApp() {
                             .consumeWindowInsets(innerPadding),
                         entries =
                             releasesUiState.value.entries.toSortedMap().toList().asReversed(),
-                        updateReleaseNotes = { useCaches, onFinishedUpdating ->
-                            releasesViewModel.updateReleaseNotes(
+                        updateChangelog = { useCaches, onFinishedUpdating ->
+                            releasesViewModel.updateChangelog(
                                 useCaches = useCaches,
                                 showSnackbarError = {
                                     snackbarHostState.showSnackbar(it)
                                 },
                                 {
-                                    releaseNotesLazyListStateScope.launch {
+                                    changelogLazyListStateScope.launch {
                                         withContext(Dispatchers.Main) {
-                                            releaseNotesLazyListState.animateScrollToItem(it)
+                                            changelogLazyListState.animateScrollToItem(it)
                                         }
                                     }
                                 },
                                 onFinishedUpdating = onFinishedUpdating,
                             )
                         },
-                        lazyListState = releaseNotesLazyListState,
+                        changelogLazyListState = changelogLazyListState,
                         additionalContentPadding = PaddingValues(
                             start = innerPadding.calculateStartPadding(layoutDirection),
                             top = 0.dp,
