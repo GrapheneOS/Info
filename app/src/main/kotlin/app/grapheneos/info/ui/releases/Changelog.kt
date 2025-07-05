@@ -73,9 +73,18 @@ private fun NodeToComposable(
 
         when (attribute.nodeName) {
             "href" -> {
+                val hrefValue = attribute.nodeValue
+                val home = "https://grapheneos.org"
+                val url = if (hrefValue.startsWith('/')) {
+                    "$home$hrefValue"
+                } else if (hrefValue.startsWith('#')) {
+                    "$home/releases$hrefValue"
+                } else {
+                    hrefValue
+                }
                 builder.apply {
-                    pushLink(LinkAnnotation.Url(attribute.nodeValue))
-                    pushStringAnnotation("URL", attribute.nodeValue)
+                    pushLink(LinkAnnotation.Url(url))
+                    pushStringAnnotation("URL", url)
                     pushStyle(SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold))
                 }
             }
