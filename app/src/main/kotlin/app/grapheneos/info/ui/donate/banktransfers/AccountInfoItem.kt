@@ -16,22 +16,25 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ClipEntry
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
 import app.grapheneos.info.R
+import kotlinx.coroutines.launch
 
 @Composable
 fun AccountInfoItemEntry(
     term: String,
     description: String,
 ) {
-    val clipboardManager = LocalClipboardManager.current
+    val clipboard = LocalClipboard.current
+    val clipboardScope = rememberCoroutineScope()
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -51,7 +54,9 @@ fun AccountInfoItemEntry(
         }
         IconButton(
             onClick = {
-                clipboardManager.setClip(ClipEntry(ClipData.newPlainText(term, description)))
+                clipboardScope.launch {
+                    clipboard.setClipEntry(ClipEntry(ClipData.newPlainText(term, description)))
+                }
             },
             modifier = Modifier.weight(0.10f)
         ) {
