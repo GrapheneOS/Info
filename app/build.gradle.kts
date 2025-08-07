@@ -36,7 +36,7 @@ android {
         applicationId = "app.grapheneos.info"
         minSdk = 33
         targetSdk = 36
-        versionCode = 6
+        versionCode = 7
         versionName = versionCode.toString()
 
         vectorDrawables {
