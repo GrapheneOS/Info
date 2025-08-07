@@ -35,7 +35,7 @@ android {
     defaultConfig {
         applicationId = "app.grapheneos.info"
         minSdk = 33
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 6
         versionName = versionCode.toString()
 
