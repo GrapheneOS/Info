@@ -1,4 +1,4 @@
-package app.grapheneos.info.ui.releasenotes
+package app.grapheneos.info.ui.releases
 
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,7 @@ import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
 
 @OptIn(SavedStateHandleSaveableApi::class)
-class ReleaseNotesUiState(savedStateHandle: SavedStateHandle) {
+class ReleasesUiState(savedStateHandle: SavedStateHandle) {
     var didInitialScroll: Boolean by savedStateHandle.saveable {
         mutableStateOf(false)
     }

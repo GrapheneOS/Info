@@ -1,4 +1,4 @@
-package app.grapheneos.info.ui.releasenotes
+package app.grapheneos.info.ui.releases
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +16,6 @@ import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -74,9 +73,18 @@ private fun NodeToComposable(
 
         when (attribute.nodeName) {
             "href" -> {
+                val hrefValue = attribute.nodeValue
+                val home = "https://grapheneos.org"
+                val url = if (hrefValue.startsWith('/')) {
+                    "$home$hrefValue"
+                } else if (hrefValue.startsWith('#')) {
+                    "$home/releases$hrefValue"
+                } else {
+                    hrefValue
+                }
                 builder.apply {
-                    pushLink(LinkAnnotation.Url(attribute.nodeValue))
-                    pushStringAnnotation("URL", attribute.nodeValue)
+                    pushLink(LinkAnnotation.Url(url))
+                    pushStringAnnotation("URL", url)
                     pushStyle(SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold))
                 }
             }

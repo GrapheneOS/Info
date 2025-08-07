@@ -11,24 +11,32 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Forum
+import androidx.compose.material.icons.filled.VolunteerActivism
 import androidx.compose.material.icons.outlined.Forum
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.VolunteerActivism
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,11 +46,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
@@ -67,14 +77,14 @@ import app.grapheneos.info.ui.donate.cryptocurrency.EthereumScreen
 import app.grapheneos.info.ui.donate.cryptocurrency.LitecoinScreen
 import app.grapheneos.info.ui.donate.cryptocurrency.MoneroScreen
 import app.grapheneos.info.ui.donate.cryptocurrency.ZcashScreen
-import app.grapheneos.info.ui.releasenotes.ReleaseNotesScreen
-import app.grapheneos.info.ui.releasenotes.ReleaseNotesViewModel
+import app.grapheneos.info.ui.releases.ReleasesScreen
+import app.grapheneos.info.ui.releases.ReleasesViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 enum class InfoAppScreens(@StringRes val title: Int) {
-    ReleaseNotes(title = R.string.release_notes),
+    Releases(title = R.string.releases),
     Community(title = R.string.community),
     Donate(title = R.string.donate),
     DonateStart(title = R.string.donate),
@@ -91,8 +101,8 @@ enum class InfoAppScreens(@StringRes val title: Int) {
     DonateBankTransfers(title = R.string.bank_transfers)
 }
 
-val navBarScreens = listOf(
-    InfoAppScreens.ReleaseNotes,
+val navSuiteItemScreens = arrayOf(
+    InfoAppScreens.Releases,
     InfoAppScreens.Community,
     InfoAppScreens.Donate
 )
@@ -115,19 +125,20 @@ fun InfoApp() {
      */
     val startDestination by rememberSaveable { preferencesUiState.startDestination.second }
 
-    val currentScreen = InfoAppScreens.valueOf(backStackEntry?.destination?.route ?: startDestination)
+    val currentScreen =
+        InfoAppScreens.valueOf(backStackEntry?.destination?.route ?: startDestination)
 
-    val navBarSelected = navBarScreens.find {
+    val navSuiteItemScreenSelected = navSuiteItemScreens.find {
         currentScreen.name.startsWith(it.name)
     }
 
-    val releaseNotesViewModel: ReleaseNotesViewModel = viewModel()
+    val releasesViewModel: ReleasesViewModel = viewModel()
 
-    val releaseNotesUiState = releaseNotesViewModel.uiState.collectAsState()
+    val releasesUiState = releasesViewModel.uiState.collectAsState()
 
-    val releaseNotesLazyListState = rememberLazyListState()
+    val changelogLazyListState = rememberLazyListState()
 
-    val releaseNotesLazyListStateScope = rememberCoroutineScope()
+    val changelogLazyListStateScope = rememberCoroutineScope()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -140,377 +151,380 @@ fun InfoApp() {
     val openUriIllegalArguementExceptionSnackbarError =
         stringResource(R.string.browser_link_illegal_argument_exception_snackbar_error)
 
-    Scaffold(
-        modifier = Modifier
-            .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
-            .animateContentSize(),
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = currentScreen.title),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    if (!((currentScreen == InfoAppScreens.ReleaseNotes) || (currentScreen == InfoAppScreens.Community) || (currentScreen == InfoAppScreens.DonateStart))) {
-                        IconButton(onClick = { navController.navigateUp() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.navigate_up_button_description)
+    val navigationSuiteType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
+        currentWindowAdaptiveInfo()
+    )
+
+    val layoutDirection = LocalLayoutDirection.current
+
+    NavigationSuiteScaffold(
+        navigationSuiteItems = {
+            navSuiteItemScreens.forEach { navSuiteItemScreen ->
+                val selected = navSuiteItemScreen == navSuiteItemScreenSelected
+                item(
+                    selected = selected,
+                    onClick = {
+                        if (navSuiteItemScreenSelected != null) {
+                            navController.popBackStack(
+                                navSuiteItemScreenSelected.name,
+                                inclusive = true,
+                                saveState = true
                             )
                         }
-                    }
-                },
-                actions = {
-                    if (navBarSelected == InfoAppScreens.ReleaseNotes) {
-                        IconButton(
-                            onClick = {
-                                try {
-                                    localUriHandler.openUri("https://grapheneos.org/releases#about-the-releases")
-                                } catch (e: IllegalArgumentException) {
-                                    snackbarCoroutine.launch {
-                                        snackbarHostState.showSnackbar(openUriIllegalArguementExceptionSnackbarError)
-                                    }
-                                }
-                            }
+                        navController.navigate(
+                            route = navSuiteItemScreen.name
                         ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Info,
-                                contentDescription = stringResource(R.string.release_notes_top_bar_info_button_content_description)
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                        navSuiteItemScreen.let {
+                            preferencesViewModel.setPreference(
+                                preferencesUiState.startDestination.first,
+                                it.name
                             )
                         }
-                    }
-                },
-                scrollBehavior = topAppBarScrollBehavior
-            )
-        },
-        bottomBar = {
-            NavigationBar {
-                navBarScreens.forEach { navBarScreen ->
-                    NavigationBarItem(
-                        selected = navBarScreen == navBarSelected,
-                        onClick = {
-                            if (navBarSelected != null) {
-                                navController.popBackStack(
-                                    navBarSelected.name,
-                                    inclusive = true,
-                                    saveState = true
-                                )
-                            }
-                            navController.navigate(navBarScreen.name) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                            navBarScreen.let {
-                                preferencesViewModel.setPreference(
-                                    preferencesUiState.startDestination.first,
-                                    it.name
-                                )
-                            }
-                        },
-                        icon = {
-                            when (navBarScreen) {
-                                InfoAppScreens.ReleaseNotes -> Icon(
-                                    painter = painterResource(id = R.drawable.outline_newsmode),
-                                    contentDescription = null
-                                )
+                    },
+                    icon = {
+                        when (navSuiteItemScreen) {
+                            InfoAppScreens.Releases -> Icon(
+                                painter = painterResource(id = R.drawable.outline_newsmode),
+                                contentDescription = null
+                            )
 
-                                InfoAppScreens.Community -> Icon(
-                                    imageVector = Icons.Outlined.Forum,
-                                    contentDescription = null
-                                )
+                            InfoAppScreens.Community -> Icon(
+                                imageVector = if (selected) {
+                                    Icons.Filled.Forum
+                                } else {
+                                    Icons.Outlined.Forum
+                                },
+                                contentDescription = null
+                            )
 
-                                InfoAppScreens.Donate -> Icon(
-                                    imageVector = Icons.Outlined.VolunteerActivism,
-                                    contentDescription = null
-                                )
+                            InfoAppScreens.Donate -> Icon(
+                                imageVector = if (selected) {
+                                    Icons.Filled.VolunteerActivism
+                                } else {
+                                    Icons.Outlined.VolunteerActivism
+                                },
+                                contentDescription = null
+                            )
 
-                                else -> {}
-                            }
-                        },
-                        label = { Text(text = stringResource(id = navBarScreen.title)) }
-                    )
-                }
+                            else -> {}
+                        }
+                    },
+                    label = { Text(text = stringResource(id = navSuiteItemScreen.title)) }
+                )
             }
         },
-        snackbarHost = {
-            SnackbarHost(snackbarHostState)
-        },
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = startDestination,
-            modifier = Modifier.padding(innerPadding),
-        ) {
-            composableWithDefaultSlideTransitions(
-                route = InfoAppScreens.ReleaseNotes,
-            ) {
-                ReleaseNotesScreen(
-                    releaseNotesUiState.value.entries.toSortedMap().toList().asReversed(),
-                    releaseNotesUiState.value.releaseStates.toSortedMap().toList(),
-                    { useCaches, onFinishedUpdating ->
-                        releaseNotesViewModel.updateReleaseNotes(
-                            useCaches = useCaches,
-                            showSnackbarError = {
-                                snackbarHostState.showSnackbar(it)
-                            },
-                            {
-                                releaseNotesLazyListStateScope.launch {
-                                    withContext(Dispatchers.Main) {
-                                        releaseNotesLazyListState.animateScrollToItem(it)
+    ) {
+        Scaffold(
+            modifier = Modifier
+                .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
+                .animateContentSize(),
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = stringResource(id = currentScreen.title),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
+                    navigationIcon = {
+                        if (navController.previousBackStackEntry != null) {
+                            IconButton(onClick = { navController.navigateUp() }) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = stringResource(R.string.navigate_up_button_description)
+                                )
+                            }
+                        }
+                    },
+                    actions = {
+                        if (navSuiteItemScreenSelected == InfoAppScreens.Releases) {
+                            IconButton(
+                                onClick = {
+                                    try {
+                                        localUriHandler.openUri("https://grapheneos.org/releases#about-the-releases")
+                                    } catch (e: IllegalArgumentException) {
+                                        snackbarCoroutine.launch {
+                                            snackbarHostState.showSnackbar(
+                                                openUriIllegalArguementExceptionSnackbarError
+                                            )
+                                        }
                                     }
                                 }
-                            },
-                            onFinishedUpdating = onFinishedUpdating,
-                        )
-                    },
-                    { useCaches, onFinishedUpdating ->
-                        releaseNotesViewModel.updateReleaseStates(
-                            useCaches = useCaches,
-                            showSnackbarError = {
-                                snackbarHostState.showSnackbar(it)
-                            },
-                            onFinishedUpdating = onFinishedUpdating,
-                        )
-                    },
-                    releaseNotesLazyListState,
-                )
-            }
-            composableWithDefaultSlideTransitions(
-                route = InfoAppScreens.Community,
-            ) {
-                CommunityScreen(
-                    showSnackbarError = {
-                        snackbarCoroutine.launch {
-                            snackbarHostState.showSnackbar(it)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Info,
+                                    contentDescription = stringResource(R.string.releases_top_bar_info_button_content_description)
+                                )
+                            }
                         }
                     },
+                    scrollBehavior = topAppBarScrollBehavior
                 )
-            }
-            navigationWithDefaultSlideTransitions(
-                route = InfoAppScreens.Donate,
-                startDestination = InfoAppScreens.DonateStart.name,
+            },
+            snackbarHost = {
+                SnackbarHost(snackbarHostState)
+            },
+        ) { innerPadding ->
+            NavHost(
+                navController = navController,
+                startDestination = startDestination,
             ) {
                 composableWithDefaultSlideTransitions(
-                    route = InfoAppScreens.DonateStart,
+                    route = InfoAppScreens.Releases,
+                    navigationSuiteType = navigationSuiteType,
                 ) {
-                    DonateStartScreen(
-                        onNavigateToGithubSponsorsScreen = {
-                            navController.navigate(InfoAppScreens.DonateGithubSponsors.name)
+                    ReleasesScreen(
+                        modifier = Modifier
+                            .padding(top = innerPadding.calculateTopPadding())
+                            .consumeWindowInsets(innerPadding),
+                        entries =
+                            releasesUiState.value.entries.toSortedMap().toList().asReversed(),
+                        releasesUiState.value.releaseStates.toSortedMap().toList(),
+                        updateChangelog = { useCaches, onFinishedUpdating ->
+                            releasesViewModel.updateChangelog(
+                                useCaches = useCaches,
+                                showSnackbarError = {
+                                    snackbarHostState.showSnackbar(it)
+                                },
+                                {
+                                    changelogLazyListStateScope.launch {
+                                        withContext(Dispatchers.Main) {
+                                            changelogLazyListState.animateScrollToItem(it)
+                                        }
+                                    }
+                                },
+                                onFinishedUpdating = onFinishedUpdating,
+                            )
                         },
-                        onNavigateToCryptocurrenciesScreen = {
-                            navController.navigate(InfoAppScreens.DonateCryptocurrencies.name)
+                        updateReleaseStates = { useCaches, onFinishedUpdating ->
+                            releasesViewModel.updateReleaseStates(
+                                useCaches = useCaches,
+                                showSnackbarError = {
+                                    snackbarHostState.showSnackbar(it)
+                                },
+                                onFinishedUpdating = onFinishedUpdating,
+                            )
                         },
-                        onNavigateToPayPalScreen = {
-                            navController.navigate(InfoAppScreens.DonatePaypal.name)
-                        },
-                        onNavigateToBankTransfersScreen = {
-                            navController.navigate(InfoAppScreens.DonateBankTransfers.name)
-                        }
+                        changelogLazyListState = changelogLazyListState,
+                        additionalContentPadding = PaddingValues(
+                            start = innerPadding.calculateStartPadding(layoutDirection),
+                            top = 0.dp,
+                            end = innerPadding.calculateEndPadding(layoutDirection),
+                            bottom = innerPadding.calculateBottomPadding()
+                        )
                     )
                 }
                 composableWithDefaultSlideTransitions(
-                    route = InfoAppScreens.DonateGithubSponsors,
+                    route = InfoAppScreens.Community,
+                    navigationSuiteType = navigationSuiteType,
                 ) {
-                    GithubSponsorsScreen(
+                    CommunityScreen(
+                        modifier = Modifier.consumeWindowInsets(innerPadding),
                         showSnackbarError = {
                             snackbarCoroutine.launch {
                                 snackbarHostState.showSnackbar(it)
                             }
                         },
+                        additionalContentPadding = innerPadding
                     )
                 }
                 navigationWithDefaultSlideTransitions(
-                    route = InfoAppScreens.DonateCryptocurrencies,
-                    startDestination = InfoAppScreens.DonateCryptocurrenciesStart.name
+                    route = InfoAppScreens.Donate,
+                    startDestination = InfoAppScreens.DonateStart.name,
+                    navigationSuiteType = navigationSuiteType,
                 ) {
                     composableWithDefaultSlideTransitions(
-                        route = InfoAppScreens.DonateCryptocurrenciesStart,
+                        route = InfoAppScreens.DonateStart,
+                        navigationSuiteType = navigationSuiteType,
                     ) {
-                        DonateCryptoCurrencyStartScreen(
-                            onNavigateToBitcoinScreen = {
-                                navController.navigate(InfoAppScreens.DonateCryptocurrenciesBitcoin.name)
+                        DonateStartScreen(
+                            modifier = Modifier.consumeWindowInsets(innerPadding),
+                            onNavigateToGithubSponsorsScreen = {
+                                navController.navigate(InfoAppScreens.DonateGithubSponsors.name)
                             },
-                            onNavigateToMoneroScreen = {
-                                navController.navigate(InfoAppScreens.DonateCryptocurrenciesMonero.name)
+                            onNavigateToCryptocurrenciesScreen = {
+                                navController.navigate(InfoAppScreens.DonateCryptocurrencies.name)
                             },
-                            onNavigateToZcashScreen = {
-                                navController.navigate(InfoAppScreens.DonateCryptocurrenciesZcash.name)
+                            onNavigateToPayPalScreen = {
+                                navController.navigate(InfoAppScreens.DonatePaypal.name)
                             },
-                            onNavigateToEthereumScreen = {
-                                navController.navigate(InfoAppScreens.DonateCryptocurrenciesEthereum.name)
+                            onNavigateToBankTransfersScreen = {
+                                navController.navigate(InfoAppScreens.DonateBankTransfers.name)
                             },
-                            onNavigateToCardanoScreen = {
-                                navController.navigate(InfoAppScreens.DonateCryptocurrenciesCardano.name)
-                            },
-                            onNavigateToLitecoinScreen = {
-                                navController.navigate(InfoAppScreens.DonateCryptocurrenciesLitecoin.name)
-                            }
+                            additionalContentPadding = innerPadding
                         )
                     }
-                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesBitcoin) {
-                        BitcoinScreen(
+                    composableWithDefaultSlideTransitions(
+                        route = InfoAppScreens.DonateGithubSponsors,
+                        navigationSuiteType = navigationSuiteType,
+                    ) {
+                        GithubSponsorsScreen(
+                            modifier = Modifier.consumeWindowInsets(innerPadding),
                             showSnackbarError = {
                                 snackbarCoroutine.launch {
                                     snackbarHostState.showSnackbar(it)
                                 }
                             },
+                            additionalContentPadding = innerPadding
                         )
                     }
-                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesMonero) {
-                        MoneroScreen(
-                            showSnackbarError = {
-                                snackbarCoroutine.launch {
-                                    snackbarHostState.showSnackbar(it)
-                                }
-                            }
-                        )
-                    }
-                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesZcash) {
-                        ZcashScreen(
-                            showSnackbarError = {
-                                snackbarCoroutine.launch {
-                                    snackbarHostState.showSnackbar(it)
-                                }
-                            }
-                        )
-                    }
-                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesEthereum) {
-                        EthereumScreen(
-                            showSnackbarError = {
-                                snackbarCoroutine.launch {
-                                    snackbarHostState.showSnackbar(it)
-                                }
-                            }
-                        )
-                    }
-                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesCardano) {
-                        CardanoScreen(
-                            showSnackbarError = {
-                                snackbarCoroutine.launch {
-                                    snackbarHostState.showSnackbar(it)
-                                }
-                            }
-                        )
-                    }
-                    composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateCryptocurrenciesLitecoin) {
-                        LitecoinScreen(
-                            showSnackbarError = {
-                                snackbarCoroutine.launch {
-                                    snackbarHostState.showSnackbar(it)
-                                }
-                            }
-                        )
-                    }
-                }
-                composableWithDefaultSlideTransitions(route = InfoAppScreens.DonatePaypal) {
-                    PaypalScreen(
-                        showSnackbarError = {
-                            snackbarCoroutine.launch {
-                                snackbarHostState.showSnackbar(it)
-                            }
+                    navigationWithDefaultSlideTransitions(
+                        route = InfoAppScreens.DonateCryptocurrencies,
+                        startDestination = InfoAppScreens.DonateCryptocurrenciesStart.name,
+                        navigationSuiteType = navigationSuiteType,
+                    ) {
+                        composableWithDefaultSlideTransitions(
+                            route = InfoAppScreens.DonateCryptocurrenciesStart,
+                            navigationSuiteType = navigationSuiteType,
+                        ) {
+                            DonateCryptoCurrencyStartScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
+                                onNavigateToBitcoinScreen = {
+                                    navController.navigate(InfoAppScreens.DonateCryptocurrenciesBitcoin.name)
+                                },
+                                onNavigateToMoneroScreen = {
+                                    navController.navigate(InfoAppScreens.DonateCryptocurrenciesMonero.name)
+                                },
+                                onNavigateToZcashScreen = {
+                                    navController.navigate(InfoAppScreens.DonateCryptocurrenciesZcash.name)
+                                },
+                                onNavigateToEthereumScreen = {
+                                    navController.navigate(InfoAppScreens.DonateCryptocurrenciesEthereum.name)
+                                },
+                                onNavigateToCardanoScreen = {
+                                    navController.navigate(InfoAppScreens.DonateCryptocurrenciesCardano.name)
+                                },
+                                onNavigateToLitecoinScreen = {
+                                    navController.navigate(InfoAppScreens.DonateCryptocurrenciesLitecoin.name)
+                                },
+                                additionalContentPadding = innerPadding
+                            )
                         }
-                    )
-                }
-                composableWithDefaultSlideTransitions(route = InfoAppScreens.DonateBankTransfers) {
-                    BankTransfersScreen()
+                        composableWithDefaultSlideTransitions(
+                            route = InfoAppScreens.DonateCryptocurrenciesBitcoin,
+                            navigationSuiteType = navigationSuiteType,
+                        ) {
+                            BitcoinScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
+                                showSnackbarError = {
+                                    snackbarCoroutine.launch {
+                                        snackbarHostState.showSnackbar(it)
+                                    }
+                                },
+                                additionalContentPadding = innerPadding
+                            )
+                        }
+                        composableWithDefaultSlideTransitions(
+                            route = InfoAppScreens.DonateCryptocurrenciesMonero,
+                            navigationSuiteType = navigationSuiteType,
+                        ) {
+                            MoneroScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
+                                showSnackbarError = {
+                                    snackbarCoroutine.launch {
+                                        snackbarHostState.showSnackbar(it)
+                                    }
+                                },
+                                additionalContentPadding = innerPadding
+                            )
+                        }
+                        composableWithDefaultSlideTransitions(
+                            route = InfoAppScreens.DonateCryptocurrenciesZcash,
+                            navigationSuiteType = navigationSuiteType,
+                        ) {
+                            ZcashScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
+                                showSnackbarError = {
+                                    snackbarCoroutine.launch {
+                                        snackbarHostState.showSnackbar(it)
+                                    }
+                                },
+                                additionalContentPadding = innerPadding
+                            )
+                        }
+                        composableWithDefaultSlideTransitions(
+                            route = InfoAppScreens.DonateCryptocurrenciesEthereum,
+                            navigationSuiteType = navigationSuiteType,
+                        ) {
+                            EthereumScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
+                                showSnackbarError = {
+                                    snackbarCoroutine.launch {
+                                        snackbarHostState.showSnackbar(it)
+                                    }
+                                },
+                                additionalContentPadding = innerPadding
+                            )
+                        }
+                        composableWithDefaultSlideTransitions(
+                            route = InfoAppScreens.DonateCryptocurrenciesCardano,
+                            navigationSuiteType = navigationSuiteType,
+                        ) {
+                            CardanoScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
+                                showSnackbarError = {
+                                    snackbarCoroutine.launch {
+                                        snackbarHostState.showSnackbar(it)
+                                    }
+                                },
+                                additionalContentPadding = innerPadding
+                            )
+                        }
+                        composableWithDefaultSlideTransitions(
+                            route = InfoAppScreens.DonateCryptocurrenciesLitecoin,
+                            navigationSuiteType = navigationSuiteType,
+                        ) {
+                            LitecoinScreen(
+                                modifier = Modifier.consumeWindowInsets(innerPadding),
+                                showSnackbarError = {
+                                    snackbarCoroutine.launch {
+                                        snackbarHostState.showSnackbar(it)
+                                    }
+                                },
+                                additionalContentPadding = innerPadding
+                            )
+                        }
+                    }
+                    composableWithDefaultSlideTransitions(
+                        route = InfoAppScreens.DonatePaypal,
+                        navigationSuiteType = navigationSuiteType,
+                    ) {
+                        PaypalScreen(
+                            modifier = Modifier.consumeWindowInsets(innerPadding),
+                            showSnackbarError = {
+                                snackbarCoroutine.launch {
+                                    snackbarHostState.showSnackbar(it)
+                                }
+                            },
+                            additionalContentPadding = innerPadding
+                        )
+                    }
+                    composableWithDefaultSlideTransitions(
+                        route = InfoAppScreens.DonateBankTransfers,
+                        navigationSuiteType = navigationSuiteType,
+                    ) {
+                        BankTransfersScreen(
+                            modifier = Modifier.consumeWindowInsets(innerPadding),
+                            additionalContentPadding = innerPadding
+                        )
+                    }
                 }
             }
         }
     }
-}
-
-fun getStateNavBarRoute(state: NavBackStackEntry): InfoAppScreens? {
-    state.destination.route?.let { return InfoAppScreens.valueOf(it) }
-    return null
-}
-
-fun getEnterTransition(initialState: NavBackStackEntry, targetState: NavBackStackEntry): EnterTransition {
-    val initialNavBarRoute = getStateNavBarRoute(initialState)
-    val targetNavBarRoute = getStateNavBarRoute(targetState)
-
-    return if ((initialNavBarRoute != null) && (targetNavBarRoute != null)) {
-        slideIn {
-            IntOffset(
-                if (initialNavBarRoute.ordinal > targetNavBarRoute.ordinal) {
-                    -it.width
-                } else {
-                    it.width
-                },
-                0
-            )
-        } + fadeIn()
-    } else {
-        EnterTransition.None
-    }
-}
-
-fun getExitTransition(initialState: NavBackStackEntry, targetState: NavBackStackEntry): ExitTransition {
-    val initialNavBarRoute = getStateNavBarRoute(initialState)
-    val targetNavBarRoute = getStateNavBarRoute(targetState)
-
-    return if ((initialNavBarRoute != null) && (targetNavBarRoute != null)) {
-        slideOut {
-            IntOffset(
-                if (initialNavBarRoute.ordinal > targetNavBarRoute.ordinal) {
-                    it.width
-                } else {
-                    -it.width
-                },
-                0
-            )
-        } + fadeOut()
-    } else {
-        ExitTransition.None
-    }
-}
-
-fun NavGraphBuilder.composableWithDefaultSlideTransitions(
-    route: InfoAppScreens,
-    arguments: List<NamedNavArgument> = emptyList(),
-    deepLinks: List<NavDeepLink> = emptyList(),
-    enterTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
-    exitTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
-    popEnterTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
-    popExitTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    sizeTransform: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? = null,
-    content: @Composable (AnimatedContentScope.(NavBackStackEntry) -> Unit),
-) {
-    composable(route.name, arguments, deepLinks, if (enterTransition == null) {
-        {
-            getEnterTransition(initialState, targetState)
-        }
-    } else {
-        null
-    }, if (exitTransition == null) {
-        {
-            getExitTransition(initialState, targetState)
-        }
-    } else {
-        null
-    }, if (popEnterTransition == null) {
-        {
-            getEnterTransition(initialState, targetState)
-        }
-    } else {
-        null
-    }, if (popExitTransition == null) {
-        {
-            getExitTransition(initialState, targetState)
-        }
-    } else {
-        null
-    }, sizeTransform, content)
 }
 
 fun NavGraphBuilder.navigationWithDefaultSlideTransitions(
     startDestination: String,
     route: InfoAppScreens,
+    navigationSuiteType: NavigationSuiteType,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
     enterTransition: (@JvmSuppressWildcards AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
@@ -522,27 +536,180 @@ fun NavGraphBuilder.navigationWithDefaultSlideTransitions(
 ) {
     navigation(startDestination, route.name, arguments, deepLinks, if (enterTransition == null) {
         {
-            getEnterTransition(initialState, targetState)
+            getEnterTransition(initialState, targetState, navigationSuiteType)
         }
     } else {
-        null
+        enterTransition
     }, if (exitTransition == null) {
         {
-            getExitTransition(initialState, targetState)
+            getExitTransition(initialState, targetState, navigationSuiteType)
         }
     } else {
-        null
+        exitTransition
     }, if (popEnterTransition == null) {
         {
-            getEnterTransition(initialState, targetState)
+            getEnterTransition(initialState, targetState, navigationSuiteType)
         }
     } else {
-        null
+        popEnterTransition
     }, if (popExitTransition == null) {
         {
-            getExitTransition(initialState, targetState)
+            getExitTransition(initialState, targetState, navigationSuiteType)
         }
     } else {
-        null
+        popExitTransition
     }, sizeTransform, builder)
+}
+
+fun NavGraphBuilder.composableWithDefaultSlideTransitions(
+    route: InfoAppScreens,
+    navigationSuiteType: NavigationSuiteType,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    enterTransition: @JvmSuppressWildcards() (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
+    exitTransition: @JvmSuppressWildcards() (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
+    popEnterTransition: @JvmSuppressWildcards() (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
+    popExitTransition: @JvmSuppressWildcards() (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
+    sizeTransform: @JvmSuppressWildcards() (AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? = null,
+    content: @Composable() (AnimatedContentScope.(NavBackStackEntry) -> Unit),
+) {
+    composable(route.name, arguments, deepLinks, if (enterTransition == null) {
+        {
+            getEnterTransition(initialState, targetState, navigationSuiteType)
+        }
+    } else {
+        enterTransition
+    }, if (exitTransition == null) {
+        {
+            getExitTransition(initialState, targetState, navigationSuiteType)
+        }
+    } else {
+        exitTransition
+    }, if (popEnterTransition == null) {
+        {
+            getEnterTransition(initialState, targetState, navigationSuiteType)
+        }
+    } else {
+        popEnterTransition
+    }, if (popExitTransition == null) {
+        {
+            getExitTransition(initialState, targetState, navigationSuiteType)
+        }
+    } else {
+        popExitTransition
+    }, sizeTransform, content)
+}
+
+fun getEnterTransition(
+    initialState: NavBackStackEntry,
+    targetState: NavBackStackEntry,
+    navigationSuiteType: NavigationSuiteType,
+): EnterTransition {
+    val initialNavRoute = getStateNavRoute(initialState)
+    val targetNavRoute = getStateNavRoute(targetState)
+    val isNavAnimationVertical = isNavAnimationVertical(
+        initialNavRoute,
+        targetNavRoute,
+        navigationSuiteType
+    )
+
+    return if ((initialNavRoute != null) && (targetNavRoute != null)) {
+        val isInitialNavRouteGreaterThanTarget =
+            initialNavRoute.ordinal > targetNavRoute.ordinal
+
+        slideIn {
+            if (isNavAnimationVertical) {
+                IntOffset(
+                    0,
+                    if (isInitialNavRouteGreaterThanTarget) {
+                        -it.height
+                    } else {
+                        it.height
+                    }
+                )
+            } else {
+                IntOffset(
+                    if (isInitialNavRouteGreaterThanTarget) {
+                        -it.width
+                    } else {
+                        it.width
+                    },
+                    0
+                )
+            }
+        } + fadeIn()
+    } else {
+        EnterTransition.None
+    }
+}
+
+fun getExitTransition(
+    initialState: NavBackStackEntry,
+    targetState: NavBackStackEntry,
+    navigationSuiteType: NavigationSuiteType,
+): ExitTransition {
+    val initialNavRoute = getStateNavRoute(initialState)
+    val targetNavRoute = getStateNavRoute(targetState)
+    val isNavAnimationVertical = isNavAnimationVertical(
+        initialNavRoute,
+        targetNavRoute,
+        navigationSuiteType
+    )
+
+    return if ((initialNavRoute != null) && (targetNavRoute != null)) {
+        val isInitialNavRouteGreaterThanTarget =
+            initialNavRoute.ordinal > targetNavRoute.ordinal
+
+        slideOut {
+            if (isNavAnimationVertical) {
+                IntOffset(
+                    0,
+                    if (isInitialNavRouteGreaterThanTarget) {
+                        it.height
+                    } else {
+                        -it.height
+                    }
+                )
+            } else {
+                IntOffset(
+                    if (isInitialNavRouteGreaterThanTarget) {
+                        it.width
+                    } else {
+                        -it.width
+                    },
+                    0
+                )
+            }
+        } + fadeOut()
+    } else {
+        ExitTransition.None
+    }
+}
+
+fun getStateNavRoute(state: NavBackStackEntry): InfoAppScreens? {
+    state.destination.route?.let { return InfoAppScreens.valueOf(it) }
+    return null
+}
+
+private fun isNavAnimationVertical(
+    initialNavRoute: InfoAppScreens?,
+    targetNavRoute: InfoAppScreens?,
+    navigationSuiteType: NavigationSuiteType
+): Boolean {
+    val isNavigatingToADifferentNavSuiteItem =
+        navSuiteItemScreens.find {
+            initialNavRoute?.name?.startsWith(it.name) == true
+        } != navSuiteItemScreens.find {
+            targetNavRoute?.name?.startsWith(it.name) == true
+        }
+
+    val isNavAnimationVerticalBecauseOfNavSuiteType = when (navigationSuiteType) {
+        NavigationSuiteType.NavigationBar -> false
+        NavigationSuiteType.NavigationRail -> true
+        NavigationSuiteType.NavigationDrawer -> true
+        NavigationSuiteType.None -> false
+        else -> false
+    }
+
+    return isNavigatingToADifferentNavSuiteItem && (isNavAnimationVerticalBecauseOfNavSuiteType)
 }

@@ -1,4 +1,4 @@
-package app.grapheneos.info.ui.releasenotes
+package app.grapheneos.info.ui.releases
 
 import android.app.Application
 import android.util.Log
@@ -12,27 +12,29 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.grapheneos.tls.ModernTLSSocketFactory
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.URL
 import java.net.UnknownServiceException
 import javax.net.ssl.HttpsURLConnection
 
-const val TAG = "ReleaseNotesViewModel"
+const val TAG = "ReleasesViewModel"
 
-class ReleaseNotesViewModel(
+class ReleasesViewModel(
     private val application: Application,
     savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
 
-    private val _uiState = MutableStateFlow(ReleaseNotesUiState(savedStateHandle))
-    val uiState: StateFlow<ReleaseNotesUiState> = _uiState.asStateFlow()
+    private val tlsSocketFactory = ModernTLSSocketFactory()
+    private val _uiState = MutableStateFlow(ReleasesUiState(savedStateHandle))
+    val uiState: StateFlow<ReleasesUiState> = _uiState.asStateFlow()
 
     init {
-        updateReleaseNotes(
+        updateChangelog(
             useCaches = true,
             showSnackbarError = {},
-            scrollReleaseNotesLazyListTo = {},
+            scrollChangelogLazyListTo = {},
             countAsInitialScroll = false,
             onFinishedUpdating = {},
         )
@@ -43,10 +45,10 @@ class ReleaseNotesViewModel(
         )
     }
 
-    fun updateReleaseNotes(
+    fun updateChangelog(
         useCaches: Boolean,
         showSnackbarError: suspend (message: String) -> Unit,
-        scrollReleaseNotesLazyListTo: (scrollTo: Int) -> Unit,
+        scrollChangelogLazyListTo: (scrollTo: Int) -> Unit,
         countAsInitialScroll: Boolean = true,
         onFinishedUpdating: () -> Unit = {},
     ) {
@@ -56,6 +58,7 @@ class ReleaseNotesViewModel(
                 val connection = url.openConnection() as HttpsURLConnection
 
                 connection.apply {
+                    sslSocketFactory = tlsSocketFactory
                     connectTimeout = 10_000
                     readTimeout = 30_000
                 }
@@ -100,25 +103,25 @@ class ReleaseNotesViewModel(
 
                     if (countAsInitialScroll && !uiState.value.didInitialScroll) {
                         _uiState.value.didInitialScroll = true
-                        scrollReleaseNotesLazyListTo(currentOsChangelogIndex)
+                        scrollChangelogLazyListTo(currentOsChangelogIndex)
                     }
                 } catch (e: SocketTimeoutException) {
                     val errorMessage =
-                        application.getString(R.string.update_release_notes_socket_timeout_exception_snackbar_message)
+                        application.getString(R.string.update_changelog_socket_timeout_exception_snackbar_message)
                     Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
                         showSnackbarError("$errorMessage: $e")
                     }
                 } catch (e: IOException) {
                     val errorMessage =
-                        application.getString(R.string.update_release_notes_io_exception_snackbar_message)
+                        application.getString(R.string.update_changelog_io_exception_snackbar_message)
                     Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
                         showSnackbarError("$errorMessage: $e")
                     }
                 } catch (e: UnknownServiceException) {
                     val errorMessage =
-                        application.getString(R.string.update_release_notes_unknown_service_exception_snackbar_message)
+                        application.getString(R.string.update_changelog_unknown_service_exception_snackbar_message)
                     Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
                         showSnackbarError("$errorMessage: $e")
@@ -126,11 +129,9 @@ class ReleaseNotesViewModel(
                 } finally {
                     connection.disconnect()
                 }
-
-
             } catch (e: IOException) {
                 val errorMessage =
-                    application.getString(R.string.update_release_notes_failed_to_create_httpsurlconnection_snackbar_message)
+                    application.getString(R.string.update_changelog_failed_to_create_httpsurlconnection_snackbar_message)
                 Log.e(TAG, errorMessage, e)
                 viewModelScope.launch {
                     showSnackbarError("$errorMessage: $e")
@@ -140,7 +141,7 @@ class ReleaseNotesViewModel(
             }
         }
     }
-    
+
     fun updateReleaseStates(
         useCaches: Boolean,
         showSnackbarError: suspend (message: String) -> Unit,

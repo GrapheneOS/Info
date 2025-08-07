@@ -1,9 +1,7 @@
-package app.grapheneos.info.ui.releasenotes
+package app.grapheneos.info.ui.releases
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.VectorConverter
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,31 +12,36 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshState
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import app.grapheneos.info.R
+import app.grapheneos.info.ui.releasenotes.ReleaseState
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReleaseNotesScreen(
+fun ReleasesScreen(
+    modifier: Modifier = Modifier,
     entries: List<Pair<String, String>>,
     releaseStates: List<Pair<String, String>>,
-    updateReleaseNotes: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
+    updateChangelog: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
     updateReleaseStates: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
-    lazyListState: LazyListState,
+    changelogLazyListState: LazyListState,
+    additionalContentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -50,8 +53,7 @@ fun ReleaseNotesScreen(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_START) {
                 refreshCoroutineScope.launch {
-                    updateReleaseNotes(true) {}
-                    updateReleaseStates(true) {}
+                    updateChangelog(true) {}
                 }
             }
         }
@@ -63,34 +65,15 @@ fun ReleaseNotesScreen(
         }
     }
 
-    var isRefreshing by remember { mutableStateOf(false) }
+    var isRefreshing by rememberSaveable { mutableStateOf(false) }
 
-    val state = remember {
-        object : PullToRefreshState {
-            private val anim = Animatable(0f, Float.VectorConverter)
-
-            override val distanceFraction
-                get() = anim.value
-
-            override suspend fun animateToThreshold() {
-                anim.animateTo(1f, spring())
-            }
-
-            override suspend fun animateToHidden() {
-                anim.animateTo(0f)
-            }
-
-            override suspend fun snapTo(targetValue: Float) {
-                anim.snapTo(targetValue)
-            }
-        }
-    }
+    val state = rememberPullToRefreshState()
 
     PullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
             isRefreshing = true
-            updateReleaseNotes(false) {
+            updateChangelog(false) {
                 isRefreshing = false
 
                 refreshCoroutineScope.launch {
@@ -99,13 +82,14 @@ fun ReleaseNotesScreen(
             }
         },
         state = state,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         ScreenLazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
-            state = lazyListState,
+            state = changelogLazyListState,
+            additionalContentPadding = additionalContentPadding,
             verticalArrangement = Arrangement.Top
         ) {
             item {
@@ -128,7 +112,7 @@ fun ReleaseNotesScreen(
                     horizontalArrangement = Arrangement.Center,
                 ) {
                     Button(onClick = { localUriHandler.openUri("https://grapheneos.org/releases") }) {
-                        Text(text = "See all release notes")
+                        Text(text = stringResource(R.string.releases_see_all_button))
                     }
                 }
             }
