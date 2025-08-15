@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ReleasesScreen(
     modifier: Modifier = Modifier,
+    showSnackbarError: (String) -> Unit,
     entries: List<Pair<String, String>>,
     updateChangelog: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
     changelogLazyListState: LazyListState,
@@ -45,6 +46,9 @@ fun ReleasesScreen(
     val localUriHandler = LocalUriHandler.current
 
     val refreshCoroutineScope = rememberCoroutineScope()
+
+    val openUriIllegalArguementExceptionSnackbarError =
+        stringResource(R.string.browser_link_illegal_argument_exception_snackbar_error)
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -105,7 +109,13 @@ fun ReleasesScreen(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
                     horizontalArrangement = Arrangement.Center,
                 ) {
-                    Button(onClick = { localUriHandler.openUri("https://grapheneos.org/releases") }) {
+                    Button(onClick = {
+                        try {
+                            localUriHandler.openUri("https://grapheneos.org/releases")
+                        } catch (_: IllegalArgumentException) {
+                            showSnackbarError(openUriIllegalArguementExceptionSnackbarError)
+                        }
+                    }) {
                         Text(text = stringResource(R.string.releases_see_all_button))
                     }
                 }
