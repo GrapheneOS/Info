@@ -286,7 +286,7 @@ fun InfoApp() {
                             .consumeWindowInsets(innerPadding),
                         entries =
                             releasesUiState.value.entries.toSortedMap().toList().asReversed(),
-                        releasesUiState.value.releaseStates.toSortedMap().toList(),
+                        releaseStates = releasesUiState.value.releaseStates.toSortedMap().toList(),
                         updateChangelog = { useCaches, onFinishedUpdating ->
                             releasesViewModel.updateChangelog(
                                 useCaches = useCaches,
