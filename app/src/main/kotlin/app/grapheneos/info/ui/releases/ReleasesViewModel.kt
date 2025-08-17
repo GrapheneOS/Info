@@ -147,7 +147,7 @@ class ReleasesViewModel(
         showSnackbarError: suspend (message: String) -> Unit,
         onFinishedUpdating: () -> Unit = {},
     ) {
-        var board = android.os.Build.DEVICE
+        val board = android.os.Build.DEVICE
         val releasePhases = arrayOf("stable", "beta", "alpha")
         for (releasePhase in releasePhases) {
             viewModelScope.launch(Dispatchers.IO) {

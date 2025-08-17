@@ -28,7 +28,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import app.grapheneos.info.R
-import app.grapheneos.info.ui.releasenotes.ReleaseState
 import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 import kotlinx.coroutines.launch
 
@@ -93,7 +92,13 @@ fun ReleasesScreen(
             verticalArrangement = Arrangement.Top
         ) {
             item {
-                ReleaseState(releaseStates)
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                ) {
+                    ReleaseState(releaseStates)
+                }
             }
             items(
                 items = entries,
