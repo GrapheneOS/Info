@@ -53,6 +53,7 @@ fun ReleasesScreen(
             if (event == Lifecycle.Event.ON_START) {
                 refreshCoroutineScope.launch {
                     updateChangelog(true) {}
+                    updateReleaseStates(true) {}
                 }
             }
         }
@@ -79,6 +80,7 @@ fun ReleasesScreen(
                     state.animateToHidden()
                 }
             }
+            updateReleaseStates(false) {}
         },
         state = state,
         modifier = modifier
