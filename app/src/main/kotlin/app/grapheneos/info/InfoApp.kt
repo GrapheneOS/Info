@@ -318,7 +318,12 @@ fun InfoApp() {
                             top = 0.dp,
                             end = innerPadding.calculateEndPadding(layoutDirection),
                             bottom = innerPadding.calculateBottomPadding()
-                        )
+                        ),
+                        showSnackbarError = {
+                            snackbarCoroutine.launch {
+                                snackbarHostState.showSnackbar(it)
+                            }
+                        }
                     )
                 }
                 composableWithDefaultSlideTransitions(
