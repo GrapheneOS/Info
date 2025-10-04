@@ -14,6 +14,11 @@
     <string name="cardano">Cardano</string>
     <string name="litecoin">Litecoin</string>
     <string name="local_bank_transfer_to_wise">Local Bank Transfer to Wise</string>
+    <string name="wise_quick_link_title">Wise Quick Pay</string>
+    <string name="wise_quick_link_description">If you have a Wise account, you can donate directly via Wise using our Wise Quick Pay link rather than using the bank account details.
+        This enables sending donations from anywhere Wise is available. If the currency you\'re using isn\'t listed due to not being one of the currencies where we accept local bank transfers,
+        please select CAD or USD so we can avoid another conversion.
+    </string>
     <string name="eu_sepa_eur">EU/SEPA (EUR)</string>
     <string name="account_holder">Account holder</string>
     <string name="grapheneos_foundation">GrapheneOS Foundation</string>
