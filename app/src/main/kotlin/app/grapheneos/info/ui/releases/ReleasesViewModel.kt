@@ -83,7 +83,12 @@ class ReleasesViewModel(
                             val title = "<title>(.*?)</title>".toRegex()
                                 .find(entry.second)?.groups?.get(1)?.value
 
-                            title?.dropLast(1) + "1" == osIncrementalVersion
+                            val incrementedTitle = title?.replace(Regex("(\\d+)$")) { matchResult ->
+                                val num = matchResult.value.toInt()
+                                (num + 1).toString()
+                            }
+
+                            incrementedTitle == osIncrementalVersion
                         }
 
                         if (currentOsChangelogIndex == -1) {
