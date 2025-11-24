@@ -21,7 +21,8 @@ import app.grapheneos.info.ui.reusablecomposables.ScreenLazyColumn
 @Composable
 fun BankTransfersScreen(
     modifier: Modifier = Modifier,
-    additionalContentPadding: PaddingValues = PaddingValues(0.dp)
+    additionalContentPadding: PaddingValues = PaddingValues(0.dp),
+    showSnackbarError: (String) -> Unit = {}
 ) {
     ScreenLazyColumn(
         modifier = modifier
@@ -33,6 +34,11 @@ fun BankTransfersScreen(
                 stringResource(R.string.local_bank_transfer_to_wise),
                 modifier = Modifier.padding(top = 16.dp),
                 style = MaterialTheme.typography.titleLarge
+            )
+        }
+        item {
+            WiseQuickLinkCard(
+                showSnackbarError = showSnackbarError
             )
         }
         item {

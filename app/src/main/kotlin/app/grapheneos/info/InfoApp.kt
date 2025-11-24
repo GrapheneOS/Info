@@ -507,7 +507,12 @@ fun InfoApp() {
                     ) {
                         BankTransfersScreen(
                             modifier = Modifier.consumeWindowInsets(innerPadding),
-                            additionalContentPadding = innerPadding
+                            additionalContentPadding = innerPadding,
+                            showSnackbarError = {
+                                snackbarCoroutine.launch {
+                                    snackbarHostState.showSnackbar(it)
+                                }
+                            }
                         )
                     }
                 }
