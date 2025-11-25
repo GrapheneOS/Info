@@ -14,6 +14,12 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") version "2.2.10"
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 android {
     if (useKeystoreProperties) {
         signingConfigs {
@@ -29,8 +35,8 @@ android {
 
     namespace = "app.grapheneos.info"
     compileSdk = 36
-    buildToolsVersion = "36.0.0"
-    ndkVersion = "28.2.13676358"
+    buildToolsVersion = "36.1.0"
+    ndkVersion = "29.0.14206865"
 
     defaultConfig {
         applicationId = "app.grapheneos.info"
@@ -47,15 +53,6 @@ android {
             abiFilters.clear()
             abiFilters.addAll(listOf("arm64-v8a", "x86_64"))
         }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
     }
 
     buildFeatures {
