@@ -139,4 +139,13 @@
     <string name="browser_link_illegal_argument_exception_snackbar_error">Unable to open link. Make sure a browser is installed and enabled on your device.</string>
     <string name="releases_top_bar_info_button_content_description">Info about the releases</string>
     <string name="releases_see_all_button">See all release notes</string>
+    <string name="stable">Stable</string>
+    <string name="beta">Beta</string>
+    <string name="alpha">Alpha</string>
+    <string name="update_release_states_socket_timeout_exception_snackbar_message">Socket Timeout Exception</string>
+    <string name="update_release_states_io_exception_snackbar_message">Failed to retrieve latest release states</string>
+    <string name="update_release_states_unknown_service_exception_snackbar_message">Unknown Service Exception</string>
+    <string name="update_release_states_failed_to_create_httpsurlconnection_snackbar_message">Failed to create
+        HttpsURLConnection
+    </string>
 </resources>
