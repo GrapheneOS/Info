@@ -69,15 +69,31 @@ class ReleasesViewModel(
                         Pair("<id>(.*?)</id>".toRegex().find(entry)?.groups?.get(1)?.value ?: entry.hashCode().toString(), entry)
                     }.toMap()
 
+                    val osIncrementalVersion = android.os.Build.VERSION.INCREMENTAL
+
                     var currentOsChangelogIndex = newEntries.toSortedMap().toList().asReversed().indexOfFirst { entry ->
                         val title = "<title>(.*?)</title>".toRegex()
                             .find(entry.second)?.groups?.get(1)?.value
 
-                        title == android.os.Build.VERSION.INCREMENTAL
+                        title == osIncrementalVersion
                     }
 
                     if (currentOsChangelogIndex == -1) {
-                        currentOsChangelogIndex = 0
+                        currentOsChangelogIndex = newEntries.toSortedMap().toList().asReversed().indexOfFirst { entry ->
+                            val title = "<title>(.*?)</title>".toRegex()
+                                .find(entry.second)?.groups?.get(1)?.value
+
+                            val incrementedTitle = title?.replace(Regex("(\\d+)$")) { matchResult ->
+                                val num = matchResult.value.toInt()
+                                (num + 1).toString()
+                            }
+
+                            incrementedTitle == osIncrementalVersion
+                        }
+
+                        if (currentOsChangelogIndex == -1) {
+                            currentOsChangelogIndex = 0
+                        }
                     }
 
                     newEntries = newEntries.toSortedMap().toList().asReversed().filterIndexed { index, _ ->
