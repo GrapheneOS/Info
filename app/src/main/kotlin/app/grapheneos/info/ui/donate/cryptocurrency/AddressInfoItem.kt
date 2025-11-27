@@ -34,12 +34,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityOptionsCompat
 import app.grapheneos.info.R
-import app.grapheneos.info.ui.reusablecomposables.ClickableText
 
 @Composable
 fun AddressInfoItem(
@@ -95,31 +96,26 @@ fun AddressInfoItem(
                 )
             }
 
-            val annotatedString = buildAnnotatedString {
-                pushLink(LinkAnnotation.Url(addressUrl))
-                pushStringAnnotation("URL", addressUrl)
-                pushStyle(SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold))
-
-                append(address)
-
-                pop()
-                pop()
-                pop()
+            val link = LinkAnnotation.Url(
+                url = addressUrl,
+                styles = TextLinkStyles(
+                    style = SpanStyle(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            ) {
+                try {
+                    localUriHandler.openUri(addressUrl)
+                } catch (_: IllegalArgumentException) {
+                    showSnackbarError(activityNotFoundForDonationAddressSnackbarErrorMessage)
+                }
             }
 
-            ClickableText(
-                text = annotatedString,
-                onClick = { offset ->
-                    annotatedString
-                        .getStringAnnotations("URL", offset, offset).firstOrNull()
-                        ?.let { annotation ->
-                            try {
-                                localUriHandler.openUri(annotation.item)
-                            } catch (e: IllegalArgumentException) {
-                                showSnackbarError(activityNotFoundForDonationAddressSnackbarErrorMessage)
-                            }
-                        }
-                },
+            Text(
+                buildAnnotatedString {
+                    withLink(link) { append(address) }
+                }
             )
             IconButton(
                 onClick = {
