@@ -107,9 +107,7 @@
     <string name="share">Share</string>
     <string name="ok">OK</string>
     <string name="image_enlarged">%1$s (enlarged)</string>
-    <string name="activity_not_found_for_donation_address_snackbar_error">Couldn\'t find an app to open donation address
-        with!
-    </string>
+    <string name="activity_not_found_for_donation_address_snackbar_error">No wallet app installed to open this address</string>
     <string name="cardano_info">Cardano can be used to make donations to the non-profit GrapheneOS Foundation.</string>
     <string name="cardano_qr_code_description">Cardano donation QR code</string>
     <string name="cardano_handle_notice">
