@@ -139,4 +139,8 @@
     <string name="browser_link_illegal_argument_exception_snackbar_error">Unable to open link. Make sure a browser is installed and enabled on your device.</string>
     <string name="releases_top_bar_info_button_content_description">Info about the releases</string>
     <string name="releases_see_all_button">See all release notes</string>
+    <string name="update_changelog_no_internet_connection_snackbar_message">
+    Internet connection not found
+    </string>
+
 </resources>

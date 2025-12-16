@@ -16,6 +16,7 @@ import org.grapheneos.tls.ModernTLSSocketFactory
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.URL
+import java.net.UnknownHostException
 import java.net.UnknownServiceException
 import javax.net.ssl.HttpsURLConnection
 
@@ -60,38 +61,49 @@ class ReleasesViewModel(
 
                 try {
                     connection.useCaches = useCaches
-
                     connection.connect()
 
                     val responseText = String(connection.inputStream.readBytes())
 
-                    var newEntries = "<entry>(.*?)</entry>".toRegex().findAll(responseText).map { it.groups[1]!!.value }.map { entry ->
-                        Pair("<id>(.*?)</id>".toRegex().find(entry)?.groups?.get(1)?.value ?: entry.hashCode().toString(), entry)
-                    }.toMap()
+                    var newEntries = "<entry>(.*?)</entry>".toRegex()
+                        .findAll(responseText)
+                        .map { it.groups[1]!!.value }
+                        .map { entry ->
+                            Pair(
+                                "<id>(.*?)</id>".toRegex()
+                                    .find(entry)?.groups?.get(1)?.value
+                                    ?: entry.hashCode().toString(),
+                                entry
+                            )
+                        }
+                        .toMap()
 
-                    var currentOsChangelogIndex = newEntries.toSortedMap().toList().asReversed().indexOfFirst { entry ->
-                        val title = "<title>(.*?)</title>".toRegex()
-                            .find(entry.second)?.groups?.get(1)?.value
+                    var currentOsChangelogIndex =
+                        newEntries.toSortedMap().toList().asReversed().indexOfFirst { entry ->
+                            val title = "<title>(.*?)</title>".toRegex()
+                                .find(entry.second)?.groups?.get(1)?.value
 
-                        title == android.os.Build.VERSION.INCREMENTAL
-                    }
+                            title == android.os.Build.VERSION.INCREMENTAL
+                        }
 
                     if (currentOsChangelogIndex == -1) {
                         currentOsChangelogIndex = 0
                     }
 
-                    newEntries = newEntries.toSortedMap().toList().asReversed().filterIndexed { index, _ ->
-                        index <= currentOsChangelogIndex + 3
-                    }.toMap()
+                    newEntries = newEntries.toSortedMap().toList().asReversed()
+                        .filterIndexed { index, _ ->
+                            index <= currentOsChangelogIndex + 3
+                        }
+                        .toMap()
 
                     // Only update if there are changes to the number of changelogs
                     if ((newEntries.count() - uiState.value.entries.size) != 0) {
                         withContext(Dispatchers.Main) {
-                            _uiState.value.entries.filterKeys {
-                                !newEntries.keys.contains(it)
-                            }.forEach {
-                                _uiState.value.entries.remove(it.key)
-                            }
+                            _uiState.value.entries
+                                .filterKeys { !newEntries.keys.contains(it) }
+                                .forEach {
+                                    _uiState.value.entries.remove(it.key)
+                                }
                             _uiState.value.entries.putAll(newEntries)
                         }
                     }
@@ -101,35 +113,47 @@ class ReleasesViewModel(
                         scrollChangelogLazyListTo(currentOsChangelogIndex)
                     }
                 } catch (e: SocketTimeoutException) {
-                    val errorMessage =
-                        application.getString(R.string.update_changelog_socket_timeout_exception_snackbar_message)
+                    val errorMessage = application.getString(
+                        R.string.update_changelog_socket_timeout_exception_snackbar_message
+                    )
                     Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
-                        showSnackbarError("$errorMessage: $e")
+                        showSnackbarError(errorMessage)
                     }
                 } catch (e: IOException) {
                     val errorMessage =
-                        application.getString(R.string.update_changelog_io_exception_snackbar_message)
+                        if (e is UnknownHostException || e.cause is UnknownHostException) {
+                            application.getString(
+                                R.string.update_changelog_no_internet_connection_snackbar_message
+                            )
+                        } else {
+                            application.getString(
+                                R.string.update_changelog_io_exception_snackbar_message
+                            )
+                        }
+
                     Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
-                        showSnackbarError("$errorMessage: $e")
+                        showSnackbarError(errorMessage)
                     }
                 } catch (e: UnknownServiceException) {
-                    val errorMessage =
-                        application.getString(R.string.update_changelog_unknown_service_exception_snackbar_message)
+                    val errorMessage = application.getString(
+                        R.string.update_changelog_unknown_service_exception_snackbar_message
+                    )
                     Log.e(TAG, errorMessage, e)
                     viewModelScope.launch {
-                        showSnackbarError("$errorMessage: $e")
+                        showSnackbarError(errorMessage)
                     }
                 } finally {
                     connection.disconnect()
                 }
             } catch (e: IOException) {
-                val errorMessage =
-                    application.getString(R.string.update_changelog_failed_to_create_httpsurlconnection_snackbar_message)
+                val errorMessage = application.getString(
+                    R.string.update_changelog_failed_to_create_httpsurlconnection_snackbar_message
+                )
                 Log.e(TAG, errorMessage, e)
                 viewModelScope.launch {
-                    showSnackbarError("$errorMessage: $e")
+                    showSnackbarError(errorMessage)
                 }
             } finally {
                 onFinishedUpdating()
