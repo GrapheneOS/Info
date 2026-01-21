@@ -139,4 +139,8 @@
     <string name="browser_link_illegal_argument_exception_snackbar_error">Unable to open link. Make sure a browser is installed and enabled on your device.</string>
     <string name="releases_top_bar_info_button_content_description">Info about the releases</string>
     <string name="releases_see_all_button">See all release notes</string>
+    <string name="wise_description_part_1">"If you have a Wise account, you can donate directly via Wise using "</string>
+    <string name="wise_description_part_2">our Wise Quick Pay link</string>
+    <string name="wise_description_part_3">" rather than using the bank account details. This enables sending donations from anywhere Wise is available. If the currency you're using isn't listed due to not being one of the currencies where we accept local bank transfers, please select CAD or USD so we can avoid another conversion."</string>
+    <string name="wise">Wise</string>
 </resources>
