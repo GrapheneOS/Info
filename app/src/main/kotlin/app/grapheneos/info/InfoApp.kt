@@ -69,6 +69,7 @@ import app.grapheneos.info.ui.community.CommunityScreen
 import app.grapheneos.info.ui.donate.DonateStartScreen
 import app.grapheneos.info.ui.donate.GithubSponsorsScreen
 import app.grapheneos.info.ui.donate.PaypalScreen
+import app.grapheneos.info.ui.donate.WiseScreen
 import app.grapheneos.info.ui.donate.banktransfers.BankTransfersScreen
 import app.grapheneos.info.ui.donate.cryptocurrency.BitcoinScreen
 import app.grapheneos.info.ui.donate.cryptocurrency.CardanoScreen
@@ -98,6 +99,7 @@ enum class InfoAppScreens(@StringRes val title: Int) {
     DonateCryptocurrenciesCardano(title = R.string.cardano),
     DonateCryptocurrenciesLitecoin(title = R.string.litecoin),
     DonatePaypal(title = R.string.paypal),
+    DonateWise(title = R.string.wise),
     DonateBankTransfers(title = R.string.bank_transfers)
 }
 
@@ -350,6 +352,9 @@ fun InfoApp() {
                             onNavigateToPayPalScreen = {
                                 navController.navigate(InfoAppScreens.DonatePaypal.name)
                             },
+                            onNavigateToWiseScreen = {
+                                navController.navigate(InfoAppScreens.DonateWise.name)
+                            },
                             onNavigateToBankTransfersScreen = {
                                 navController.navigate(InfoAppScreens.DonateBankTransfers.name)
                             },
@@ -492,6 +497,20 @@ fun InfoApp() {
                         navigationSuiteType = navigationSuiteType,
                     ) {
                         PaypalScreen(
+                            modifier = Modifier.consumeWindowInsets(innerPadding),
+                            showSnackbarError = {
+                                snackbarCoroutine.launch {
+                                    snackbarHostState.showSnackbar(it)
+                                }
+                            },
+                            additionalContentPadding = innerPadding
+                        )
+                    }
+                    composableWithDefaultSlideTransitions(
+                        route = InfoAppScreens.DonateWise,
+                        navigationSuiteType = navigationSuiteType,
+                    ) {
+                        WiseScreen(
                             modifier = Modifier.consumeWindowInsets(innerPadding),
                             showSnackbarError = {
                                 snackbarCoroutine.launch {
