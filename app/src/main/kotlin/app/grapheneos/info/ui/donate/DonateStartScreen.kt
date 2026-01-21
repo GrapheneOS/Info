@@ -34,6 +34,7 @@ fun DonateStartScreen(
     onNavigateToGithubSponsorsScreen: () -> Unit = {},
     onNavigateToCryptocurrenciesScreen: () -> Unit = {},
     onNavigateToPayPalScreen: () -> Unit = {},
+    onNavigateToWiseScreen: () -> Unit = {},
     onNavigateToBankTransfersScreen: () -> Unit = {},
     additionalContentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -81,6 +82,14 @@ fun DonateStartScreen(
                 title = stringResource(id = R.string.paypal)
             ) {
                 onNavigateToPayPalScreen()
+            }
+        }
+        item {
+            ScreenNavCardItem(
+                painter = painterResource(id = R.drawable.wise_logo),
+                title = stringResource(id = R.string.wise)
+            ) {
+                onNavigateToWiseScreen()
             }
         }
         item {
