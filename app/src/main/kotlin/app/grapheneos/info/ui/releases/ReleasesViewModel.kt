@@ -71,19 +71,18 @@ class ReleasesViewModel(
 
                     val osIncrementalVersion = android.os.Build.VERSION.INCREMENTAL
 
-                    var currentOsChangelogIndex = newEntries.toSortedMap().toList().asReversed().indexOfFirst { entry ->
-                        val title = "<title>(.*?)</title>".toRegex()
-                            .find(entry.second)?.groups?.get(1)?.value
+                    val titleValue = fun(entry : Pair<String, String>): String? {
+                        return "<title>(.*?)</title>".toRegex()
+                        .find(entry.second)?.groups?.get(1)?.value
+                    }
 
-                        title == osIncrementalVersion
+                    var currentOsChangelogIndex = newEntries.toSortedMap().toList().asReversed().indexOfFirst { entry ->
+                        titleValue(entry) == osIncrementalVersion
                     }
 
                     if (currentOsChangelogIndex == -1) {
                         currentOsChangelogIndex = newEntries.toSortedMap().toList().asReversed().indexOfFirst { entry ->
-                            val title = "<title>(.*?)</title>".toRegex()
-                                .find(entry.second)?.groups?.get(1)?.value
-
-                            val incrementedTitle = title?.replace(Regex("(\\d+)$")) { matchResult ->
+                            val incrementedTitle = titleValue(entry)?.replace(Regex("""(\d+)$""")) { matchResult ->
                                 val num = matchResult.value.toInt()
                                 (num + 1).toString()
                             }
