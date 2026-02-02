@@ -59,8 +59,12 @@
     <string name="hiring_footer_part_2">hiring page</string>
     <string name="hiring_footer_part_3">.</string>
     <string name="chat">Chat</string>
-    <string name="community_screen_chat_rooms_description">Our chat rooms are bridged across Discord, Telegram and Matrix so
-        you can choose your preferred platform.
+    <string name="community_screen_chat_rooms_description">GrapheneOS has official chat rooms on Discord and Matrix.
+        Discord provides a much better user interface and moderation tools so it\'s a better experience and far more
+        active than Matrix. Matrix is an open platform with federation between servers. Our public chat rooms don\'t
+        benefit from Matrix supporting end-to-end encryption but it\'s useful for private chats created between users
+        in our rooms. We no longer bridge our chat rooms across platforms and don\'t plan on adding it back so Discord
+        and Matrix have entirely separate chat rooms.
     </string>
     <string name="discord">Discord</string>
     <string name="matrix">Matrix</string>
