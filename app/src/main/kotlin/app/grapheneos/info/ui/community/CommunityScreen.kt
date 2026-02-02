@@ -48,15 +48,7 @@ fun CommunityScreen(
                 link = "https://discord.com/invite/grapheneos",
                 showSnackbarError = showSnackbarError
             )
-        }
-        item {
-            LinkCardItem(
-                painter = painterResource(id = R.drawable.telegram_logo),
-                title = stringResource(R.string.telegram),
-                link = "https://t.me/GrapheneOS",
-                showSnackbarError = showSnackbarError
-            )
-        }
+        }     
         item {
             LinkCardItem(
                 painter = painterResource(id = R.drawable.matrix_logo),

@@ -59,11 +59,11 @@
     <string name="hiring_footer_part_2">hiring page</string>
     <string name="hiring_footer_part_3">.</string>
     <string name="chat">Chat</string>
-    <string name="community_screen_chat_rooms_description">Our chat rooms are bridged across Discord, Telegram and Matrix so
-        you can choose your preferred platform.
+    <string name="community_screen_chat_rooms_description">GrapheneOS has official chat rooms on Discord and Matrix. Our 
+        Discord rooms have a better experience and are more active, while Matrix is federated and offers end-to-end encryption 
+        for private chats created between users.
     </string>
     <string name="discord">Discord</string>
-    <string name="telegram">Telegram</string>
     <string name="matrix">Matrix</string>
     <string name="forum">Forum</string>
     <string name="forum_description">We have an official forum for longer form posts, which is publicly accessible and
