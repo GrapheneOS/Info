@@ -143,4 +143,13 @@
     <string name="wise_description_part_2">our Wise Quick Pay link</string>
     <string name="wise_description_part_3">" rather than using the bank account details. This enables sending donations from anywhere Wise is available. If the currency you're using isn't listed due to not being one of the currencies where we accept local bank transfers, please select CAD or USD so we can avoid another conversion."</string>
     <string name="wise">Wise</string>
+    <string name="stable">Stable</string>
+    <string name="beta">Beta</string>
+    <string name="alpha">Alpha</string>
+    <string name="update_release_states_socket_timeout_exception_snackbar_message">Socket Timeout Exception</string>
+    <string name="update_release_states_io_exception_snackbar_message">Failed to retrieve latest release states</string>
+    <string name="update_release_states_unknown_service_exception_snackbar_message">Unknown Service Exception</string>
+    <string name="update_release_states_failed_to_create_httpsurlconnection_snackbar_message">Failed to create
+        HttpsURLConnection
+    </string>
 </resources>
