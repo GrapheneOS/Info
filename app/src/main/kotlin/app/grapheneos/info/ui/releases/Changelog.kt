@@ -180,7 +180,7 @@ private fun ParseChildren(
                             )
                             buildDate?.let {
                                 Text(
-                                    text = it.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
+                                    text = it.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " (UTC)",
                                     style = typography.titleSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
