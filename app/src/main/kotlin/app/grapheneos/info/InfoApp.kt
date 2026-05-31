@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Forum
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.VolunteerActivism
 import androidx.compose.material.icons.outlined.Forum
 import androidx.compose.material.icons.outlined.Info
@@ -65,6 +66,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import app.grapheneos.info.preferences.PreferencesViewModel
+import app.grapheneos.info.ui.about.AboutScreen
 import app.grapheneos.info.ui.community.CommunityScreen
 import app.grapheneos.info.ui.donate.DonateStartScreen
 import app.grapheneos.info.ui.donate.GithubSponsorsScreen
@@ -86,6 +88,7 @@ import kotlinx.coroutines.withContext
 
 enum class InfoAppScreens(@StringRes val title: Int) {
     Releases(title = R.string.releases),
+    About(title = R.string.about),
     Community(title = R.string.community),
     Donate(title = R.string.donate),
     DonateStart(title = R.string.donate),
@@ -105,6 +108,7 @@ enum class InfoAppScreens(@StringRes val title: Int) {
 
 val navSuiteItemScreens = arrayOf(
     InfoAppScreens.Releases,
+    InfoAppScreens.About,
     InfoAppScreens.Community,
     InfoAppScreens.Donate
 )
@@ -193,6 +197,15 @@ fun InfoApp() {
                         when (navSuiteItemScreen) {
                             InfoAppScreens.Releases -> Icon(
                                 painter = painterResource(id = R.drawable.outline_newsmode),
+                                contentDescription = null
+                            )
+
+                            InfoAppScreens.About -> Icon(
+                                imageVector = if (selected) {
+                                    Icons.Filled.Info
+                                } else {
+                                    Icons.Outlined.Info
+                                },
                                 contentDescription = null
                             )
 
@@ -316,6 +329,20 @@ fun InfoApp() {
                                 snackbarHostState.showSnackbar(it)
                             }
                         }
+                    )
+                }
+                composableWithDefaultSlideTransitions(
+                    route = InfoAppScreens.About,
+                    navigationSuiteType = navigationSuiteType,
+                ) {
+                    AboutScreen(
+                        modifier = Modifier.consumeWindowInsets(innerPadding),
+                        showSnackbarError = {
+                            snackbarCoroutine.launch {
+                                snackbarHostState.showSnackbar(it)
+                            }
+                        },
+                        additionalContentPadding = innerPadding
                     )
                 }
                 composableWithDefaultSlideTransitions(
