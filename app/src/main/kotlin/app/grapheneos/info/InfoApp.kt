@@ -288,6 +288,7 @@ fun InfoApp() {
                             .consumeWindowInsets(innerPadding),
                         entries =
                             releasesUiState.value.entries.toSortedMap().toList().asReversed(),
+                        releaseStates = releasesUiState.value.releaseStates.toSortedMap().toList(),
                         updateChangelog = { useCaches, onFinishedUpdating ->
                             releasesViewModel.updateChangelog(
                                 useCaches = useCaches,
@@ -300,6 +301,15 @@ fun InfoApp() {
                                             changelogLazyListState.animateScrollToItem(it)
                                         }
                                     }
+                                },
+                                onFinishedUpdating = onFinishedUpdating,
+                            )
+                        },
+                        updateReleaseStates = { useCaches, onFinishedUpdating ->
+                            releasesViewModel.updateReleaseStates(
+                                useCaches = useCaches,
+                                showSnackbarError = {
+                                    snackbarHostState.showSnackbar(it)
                                 },
                                 onFinishedUpdating = onFinishedUpdating,
                             )
