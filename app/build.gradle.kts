@@ -33,7 +33,7 @@ android {
     }
 
     namespace = "app.grapheneos.info"
-    compileSdk = 36
+    compileSdk = 37
     buildToolsVersion = "36.1.0"
     ndkVersion = "29.0.14206865"
 
