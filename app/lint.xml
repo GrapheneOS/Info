@@ -16,6 +16,5 @@
         <ignore path="src/main/res/drawable/litecoin.xml"/>
         <ignore path="src/main/res/drawable/mastodon_logo.xml"/>
         <ignore path="src/main/res/drawable/matrix_logo.xml"/>
-        <ignore path="src/main/res/drawable/telegram_logo.xml"/>
     </issue>
 </lint>
