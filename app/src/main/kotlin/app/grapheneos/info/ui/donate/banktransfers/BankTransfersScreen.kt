@@ -289,7 +289,7 @@ fun BankTransfersScreen(
                 )
                 AccountInfoItemEntry(
                     term = stringResource(R.string.bank_address),
-                    description = "Büyükdere Cad. 129, Esentepe Mah., Sisli"
+                    description = "Büyükdere Cad. 129, Esentepe Mah., Sisli, Istanbul, Turkey"
                 )
             }
         }

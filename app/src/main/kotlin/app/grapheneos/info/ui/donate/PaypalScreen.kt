@@ -13,6 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
@@ -74,6 +79,19 @@ fun PaypalScreen(
                 title = stringResource(R.string.british_pound_gbp),
                 link = "https://www.paypal.com/donate/?hosted_button_id=N498QNB7NPKU8",
                 showSnackbarError = showSnackbarError
+            )
+        }
+        item {
+            Text(
+                AnnotatedString.fromHtml(
+                    stringResource(R.string.paypal_region_restriction_description),
+                    linkStyles = TextLinkStyles(
+                        style = SpanStyle(
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                )
             )
         }
         item {

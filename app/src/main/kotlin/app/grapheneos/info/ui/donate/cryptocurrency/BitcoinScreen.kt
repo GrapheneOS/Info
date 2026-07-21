@@ -48,7 +48,7 @@ fun BitcoinScreen(
         }
         item {
             AddressInfoItem(
-                title = "Bech32m (Taproot)",
+                title = "Bech32m (Taproot, preferred)",
                 qrCodePainterResourceId = R.drawable.donate_bitcoin_taproot_qr_code,
                 qrCodeContentDescription = stringResource(R.string.bech32m_taproot_qr_code_description),
                 addressUrl = "bitcoin:bc1prqf5hks5dnd4j87wxw3djn20559yhj7wvvcv6fqxpwlg96udkzgqtamhry?label=GrapheneOS%20Foundation&message=Donation%20to%20GrapheneOS%20Foundation",
