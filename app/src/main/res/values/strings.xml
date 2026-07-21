@@ -49,7 +49,8 @@
     </string>
     <string name="donate_start_info_part_2">Donations are used for paying developers, purchasing hardware
         (workstations, test devices, debugging cables/boards, etc.), paying for infrastructure (domains,
-        virtual/dedicated servers) and paying legal fees.
+        virtual/dedicated servers) and paying legal fees. Donations may also be used for other reasonable,
+        project-related expenses necessary to support and maintain GrapheneOS.
     </string>
     <string name="donate_the_way_you_want">Donate the way you want</string>
     <string name="donate_start_info_part_3">GrapheneOS offers the following ways to donate.\nChoose the one you
@@ -97,6 +98,10 @@
     <string name="united_states_dollar_usd">United States dollar (USD)</string>
     <string name="euro_eur">Euro (EUR)</string>
     <string name="british_pound_gbp">British pound (GBP)</string>
+    <string name="paypal_region_restriction_description">If you can\'t use the donation links due to region
+        restrictions, you can send a donation via our &lt;a href="https://paypal.me/GrapheneOS">PayPal.Me link&lt;/a>
+        or via our &lt;i>paypal@grapheneos.org&lt;/i> email.
+    </string>
     <string name="paypal_fee_description" formatted="false">PayPal charges a base fee of 30 cents and 2.9% of the donation amount within
         Canada. There\'s an additional 0.8% fee for donations from the US and 1% for other countries. Currency
         conversion adds an additional 4% fee as opposed to the usual PayPal conversion fee of 3%.

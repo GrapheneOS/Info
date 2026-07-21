@@ -30,7 +30,7 @@ fun LitecoinScreen(
         }
         item {
             AddressInfoItem(
-                title = "Litecoin",
+                title = "Bech32 (Segwit)",
                 qrCodePainterResourceId = R.drawable.donate_litecoin_qr_code,
                 qrCodeContentDescription = stringResource(R.string.litecoin_qr_code_description),
                 addressUrl = "litecoin:ltc1qzssmqueth6zjzr95rkluy5xdx9q4lk8vyrvea9?label=GrapheneOS%20Foundation&message=Donation%20to%20GrapheneOS%20Foundation",
