@@ -37,7 +37,9 @@ fun ReleasesScreen(
     modifier: Modifier = Modifier,
     showSnackbarError: (String) -> Unit,
     entries: List<Pair<String, String>>,
+    releaseStates: List<Pair<String, String>>,
     updateChangelog: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
+    updateReleaseStates: (useCaches: Boolean, finishedUpdating: () -> Unit) -> Unit,
     changelogLazyListState: LazyListState,
     additionalContentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -55,6 +57,7 @@ fun ReleasesScreen(
             if (event == Lifecycle.Event.ON_START) {
                 refreshCoroutineScope.launch {
                     updateChangelog(true) {}
+                    updateReleaseStates(true) {}
                 }
             }
         }
@@ -66,19 +69,32 @@ fun ReleasesScreen(
         }
     }
 
-    var isRefreshing by rememberSaveable { mutableStateOf(false) }
+    var isChangelogRefreshing by rememberSaveable { mutableStateOf(false) }
+    var isReleaseStatesRefreshing by rememberSaveable { mutableStateOf(false) }
 
     val state = rememberPullToRefreshState()
 
     PullToRefreshBox(
-        isRefreshing = isRefreshing,
+        isRefreshing = isChangelogRefreshing || isReleaseStatesRefreshing,
         onRefresh = {
-            isRefreshing = true
+            isChangelogRefreshing = true
+            isReleaseStatesRefreshing = true
             updateChangelog(false) {
-                isRefreshing = false
+                isChangelogRefreshing = false
 
-                refreshCoroutineScope.launch {
-                    state.animateToHidden()
+                if (!isReleaseStatesRefreshing) {
+                    refreshCoroutineScope.launch {
+                        state.animateToHidden()
+                    }
+                }
+            }
+            updateReleaseStates(false) {
+                isReleaseStatesRefreshing = false
+
+                if (!isChangelogRefreshing) {
+                    refreshCoroutineScope.launch {
+                        state.animateToHidden()
+                    }
                 }
             }
         },
@@ -93,6 +109,15 @@ fun ReleasesScreen(
             additionalContentPadding = additionalContentPadding,
             verticalArrangement = Arrangement.Top
         ) {
+            item {
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                ) {
+                    ReleaseState(releaseStates)
+                }
+            }
             items(
                 items = entries,
                 key = { it.first }) {
