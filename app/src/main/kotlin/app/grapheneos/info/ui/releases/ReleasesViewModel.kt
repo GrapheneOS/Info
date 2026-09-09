@@ -16,6 +16,7 @@ import org.grapheneos.tls.ModernTLSSocketFactory
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.URL
+import java.net.UnknownHostException
 import java.net.UnknownServiceException
 import javax.net.ssl.HttpsURLConnection
 
@@ -33,7 +34,7 @@ class ReleasesViewModel(
     init {
         updateChangelog(
             useCaches = true,
-            showSnackbarError = {},
+            showSnackbarError = { false },
             scrollChangelogLazyListTo = {},
             countAsInitialScroll = false,
             onFinishedUpdating = {},
@@ -42,11 +43,27 @@ class ReleasesViewModel(
 
     fun updateChangelog(
         useCaches: Boolean,
-        showSnackbarError: suspend (message: String) -> Unit,
+        showSnackbarError: suspend (message: String) -> Boolean,
         scrollChangelogLazyListTo: (scrollTo: Int) -> Unit,
         countAsInitialScroll: Boolean = true,
         onFinishedUpdating: () -> Unit = {},
     ) {
+        fun showErrorSnackbar(e: Exception, errorMessage: String) {
+            Log.e(TAG, errorMessage, e)
+            viewModelScope.launch {
+                val retry = showSnackbarError(errorMessage)
+                if (retry) {
+                    updateChangelog(
+                        useCaches,
+                        showSnackbarError,
+                        scrollChangelogLazyListTo,
+                        countAsInitialScroll,
+                        onFinishedUpdating,
+                    )
+                }
+            }
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val url = URL("https://grapheneos.org/releases.atom")
@@ -115,37 +132,19 @@ class ReleasesViewModel(
                         _uiState.value.didInitialScroll = true
                         scrollChangelogLazyListTo(currentOsChangelogIndex)
                     }
+                } catch (e: UnknownHostException) {
+                    showErrorSnackbar(e, application.getString(R.string.update_changelog_offline_snackbar_message))
                 } catch (e: SocketTimeoutException) {
-                    val errorMessage =
-                        application.getString(R.string.update_changelog_socket_timeout_exception_snackbar_message)
-                    Log.e(TAG, errorMessage, e)
-                    viewModelScope.launch {
-                        showSnackbarError("$errorMessage: $e")
-                    }
-                } catch (e: IOException) {
-                    val errorMessage =
-                        application.getString(R.string.update_changelog_io_exception_snackbar_message)
-                    Log.e(TAG, errorMessage, e)
-                    viewModelScope.launch {
-                        showSnackbarError("$errorMessage: $e")
-                    }
+                    showErrorSnackbar(e, application.getString(R.string.update_changelog_socket_timeout_exception_snackbar_message))
                 } catch (e: UnknownServiceException) {
-                    val errorMessage =
-                        application.getString(R.string.update_changelog_unknown_service_exception_snackbar_message)
-                    Log.e(TAG, errorMessage, e)
-                    viewModelScope.launch {
-                        showSnackbarError("$errorMessage: $e")
-                    }
+                    showErrorSnackbar(e, application.getString(R.string.update_changelog_unknown_service_exception_snackbar_message))
+                } catch (e: IOException) {
+                    showErrorSnackbar(e, application.getString(R.string.update_changelog_io_exception_snackbar_message))
                 } finally {
                     connection.disconnect()
                 }
             } catch (e: IOException) {
-                val errorMessage =
-                    application.getString(R.string.update_changelog_failed_to_create_httpsurlconnection_snackbar_message)
-                Log.e(TAG, errorMessage, e)
-                viewModelScope.launch {
-                    showSnackbarError("$errorMessage: $e")
-                }
+                showErrorSnackbar(e, application.getString(R.string.update_changelog_failed_to_create_httpsurlconnection_snackbar_message))
             } finally {
                 onFinishedUpdating()
             }
