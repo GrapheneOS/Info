@@ -28,8 +28,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -152,6 +154,8 @@ fun InfoApp() {
 
     val openUriIllegalArguementExceptionSnackbarError =
         stringResource(R.string.browser_link_illegal_argument_exception_snackbar_error)
+
+    val updateChangelogRetryButtonLabel = stringResource(R.string.update_changelog_retry_button)
 
     val navigationSuiteType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
         currentWindowAdaptiveInfo()
@@ -292,7 +296,11 @@ fun InfoApp() {
                             releasesViewModel.updateChangelog(
                                 useCaches = useCaches,
                                 showSnackbarError = {
-                                    snackbarHostState.showSnackbar(it)
+                                    snackbarHostState.showSnackbar(
+                                        message = it,
+                                        actionLabel = updateChangelogRetryButtonLabel,
+                                        duration = SnackbarDuration.Long,
+                                    ) == SnackbarResult.ActionPerformed
                                 },
                                 {
                                     changelogLazyListStateScope.launch {
