@@ -29,6 +29,11 @@ import org.w3c.dom.Document
 import org.w3c.dom.Node
 import org.xml.sax.InputSource
 import java.io.StringReader
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
+import java.time.format.FormatStyle
+import java.util.Locale
 import javax.xml.parsers.DocumentBuilderFactory
 
 @Composable
@@ -151,18 +156,36 @@ private fun ParseChildren(
 
                         val annotatedString = annotatedStringBuilder.toAnnotatedString()
 
-                        ClickableText(
-                            text = annotatedString,
-                            modifier = modifier.semantics { heading() },
-                            onClick = { offset ->
-                                annotatedString
-                                    .getStringAnnotations("URL", offset, offset).firstOrNull()
-                                    ?.let { annotation ->
-                                        localUriHandler.openUri(annotation.item)
-                                    }
-                            },
-                            style = typography.titleLarge,
-                        )
+                        val buildDate = try {
+                            LocalDate.parse(
+                                annotatedString.text.take(8),
+                                DateTimeFormatter.ofPattern("yyyyMMdd", Locale.ROOT)
+                            )
+                        } catch (_: DateTimeParseException) {
+                            null
+                        }
+
+                        Column {
+                            ClickableText(
+                                text = annotatedString,
+                                modifier = modifier.semantics { heading() },
+                                onClick = { offset ->
+                                    annotatedString
+                                        .getStringAnnotations("URL", offset, offset).firstOrNull()
+                                        ?.let { annotation ->
+                                            localUriHandler.openUri(annotation.item)
+                                        }
+                                },
+                                style = typography.titleLarge,
+                            )
+                            buildDate?.let {
+                                Text(
+                                    text = it.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) + " (UTC)",
+                                    style = typography.titleSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
                     }
 
                     "content" -> NodeToComposable(
