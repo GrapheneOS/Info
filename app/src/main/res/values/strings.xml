@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Info</string>
     <string name="releases">Releases</string>
+    <string name="about">About</string>
     <string name="community">Community</string>
     <string name="donate">Donate</string>
     <string name="github_sponsors">GitHub Sponsors</string>
@@ -44,6 +45,19 @@
         question to GrapheneOS.
     </string>
     <string name="navigate_up_button_description">Navigate up</string>
+    <string name="about_start_info_part_1">GrapheneOS is a privacy and security focused mobile OS with
+        Android app compatibility developed as a non-profit open source project.</string>
+    <string name="about_start_info_part_2">It\'s focused on the research and development of privacy
+        and security technology including substantial improvements to sandboxing, exploit mitigations and the permission model.</string>
+    <string name="about_start_info_part_3">It was founded in 2014 and was formerly known as CopperheadOS.</string>
+    <string name="articles">Articles</string>
+    <string name="features_overview">Features overview</string>
+    <string name="install">Install</string>
+    <string name="build">Build</string>
+    <string name="usage_guide">Usage guide</string>
+    <string name="frequently_asked_questions">Frequently Asked Questions</string>
+    <string name="source_code">Source code</string>
+    <string name="history">History</string>
     <string name="donate_start_info_part_1">GrapheneOS is an open source project supported via donations from
         individuals, companies and other organizations.
     </string>
