@@ -1,5 +1,6 @@
 package app.grapheneos.info.ui.reusablecomposables
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.LocalContentColor
@@ -61,7 +62,9 @@ fun ClickableText(
 
     Text(
         text = text,
-        modifier = modifier.then(pressIndicator),
+        modifier = modifier
+            .clickable(onClick = { })
+            .then(pressIndicator),
         style = style.merge(
             color = textColor,
             fontSize = fontSize,
