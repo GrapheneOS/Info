@@ -13,4 +13,7 @@ class ReleasesUiState(savedStateHandle: SavedStateHandle) {
     }
     /** Unsorted release notes, use .toSortedMap().toList().asReversible() to get them in the proper order. */
     val entries: MutableMap<String, String> = mutableStateMapOf()
+
+    /** Unsorted release states, use .toSortedMap().toList().asReversible() to get them in the proper order. */
+    val releaseStates: MutableMap<String, String> = mutableStateMapOf("stable" to "-", "beta" to "-", "alpha" to "-")
 }
